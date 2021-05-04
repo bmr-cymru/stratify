@@ -307,6 +307,15 @@ def mkfs_xfs(device):
         _log_error("Failed to create XFS file system on '%s'" % device)
 
 
+def mkfs_vfat(device):
+    """Create a VFAT file system on ``device`` with the default options.
+    """
+    mkfs_cmd = ["mkfs.vfat", "/dev/%s" % device]
+    mkfs_run = run(mkfs_cmd)
+    if mkfs_run.returncode != 0:
+        _log_error("Failed to create VFAT file system on '%s'" % device)
+
+
 def create_pool(name, devices):
     """Create a stratis pool named ``name`` on the list of devices
     given in ``devices``.
