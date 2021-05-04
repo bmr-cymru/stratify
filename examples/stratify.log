@@ -1,52 +1,46 @@
-2021-05-02 14:54:46,660 stratify.py 0.1 - 2021-05-02
-2021-05-02 14:54:46,661 Installing host dependencies
-2021-05-02 14:54:46,661 Package list: git, anaconda, stratisd, stratis-cli, vim-enhanced
-2021-05-02 14:54:47,970 Invoking umount command: umount /mnt/stratisroot/boot
-2021-05-02 14:54:48,087 Destroying file system fs1 in pool p1
-2021-05-02 14:54:48,087 Invoking umount command: umount /dev/stratis/p1/fs1
-2021-05-02 14:54:48,384 Destroying pool p1
-2021-05-02 14:54:48,641 Using vda1 as boot device
-2021-05-02 14:54:48,641 Using vda2 as Stratis pool device
-2021-05-02 14:54:48,644 Wiping partitions on device vda
-2021-05-02 14:54:48,644 Wiping partition vda1
-2021-05-02 14:54:48,658 Wiping partition vda2
-2021-05-02 14:54:48,671 Wiping device vda
-2021-05-02 14:54:48,711 Creating partition table on vda
-2021-05-02 14:54:48,757 Partitioning target device vda [1000, 0]
-2021-05-02 14:54:48,849 Starting Stratis daemon
-2021-05-02 14:54:48,898 Creating pool p1 with vda2
-2021-05-02 14:54:49,167 Creating file system p1 in pool fs1
-2021-05-02 14:54:50,370 Mounting p1/fs1 on /mnt/stratisroot
-2021-05-02 14:54:50,370 Invoking mount command: mount /dev/stratis/p1/fs1 /mnt/stratisroot
-2021-05-02 14:54:50,395 Mounting vda1 on /mnt/stratisroot/boot
-2021-05-02 14:54:50,395 Invoking mount command: mount /dev/vda1 /mnt/stratisroot/boot
-2021-05-02 14:54:50,409 Running anaconda: anaconda --dirinstall /mnt/stratisroot --repo http://mirrors.mit.edu/fedora/linux/development/34/Server/x86_64/os/ --text --kickstart /root/ks.cfg
-2021-05-02 15:00:35,898 Invoking mount command: mount --bind /dev /mnt/stratisroot/dev
-2021-05-02 15:00:35,903 Invoking mount command: mount --bind /proc /mnt/stratisroot/proc
-2021-05-02 15:00:35,905 Invoking mount command: mount --bind /run /mnt/stratisroot/run
-2021-05-02 15:00:35,909 Invoking mount command: mount --bind /sys /mnt/stratisroot/sys
-2021-05-02 15:00:35,911 Installing build dependencies
-2021-05-02 15:00:35,911 Package list: asciidoc, cargo, clang, cryptsetup-devel, cryptsetup-libs, dbus-devel, dbus-devel.i686, dbus-devel.x86_64, dbus-glib-devel, dbus-python-devel, device-mapper-persistent-data, gcc, git, glibc-devel.i686, glibc-devel.x86_64, keyutils, libblkid-devel, llvm, llvm-devel, make, openssl-devel, python3-coverage, python3-dateutil, python3-dbus-client-gen, python3-dbus-python-client-gen, python3-devel, python3-justbytes, python3-psutil, python3-pyparsing, python3-pytest.noarch, python3-pyudev, python3-semantic_version, python3-setuptools, python3-wcwidth, rpm-build, rpmdevtools, rust, systemd-devel, systemd-devel.x86_64, xfsprogs, python3-dbus, clevis-luks
-2021-05-02 15:04:14,484 Creating git directory /mnt/stratisroot/root/git
-2021-05-02 15:04:14,484 Cloning git repository https://github.com/stratis-storage/stratisd into /mnt/stratisroot/root/git
-2021-05-02 15:04:17,223 Installing from develop-2.3.0 (make install)
-2021-05-02 15:09:52,488 Cloning git repository https://github.com/stratis-storage/stratis-cli into /mnt/stratisroot/root/git
-2021-05-02 15:09:53,673 Installing from develop-2.3.0 (python setup.py install)
-2021-05-02 15:09:54,093 Creating dracut initramfs
-2021-05-02 15:10:16,098 Installing boot dependencies
-2021-05-02 15:10:16,098 Package list: grub2-pc, grub2-pc-modules, boom-boot
-2021-05-02 15:10:31,147 Installing grub2 bootloader
-2021-05-02 15:10:31,147 Generating grub2 bootloader configuration
-2021-05-02 15:10:32,002 Removing non-stratis boot entries from
-2021-05-02 15:10:32,390 Configuring boom OsProfile for pool_uuid=95723c78-33fc-46d8-a2b5-a85b1dc33dfe
-2021-05-02 15:10:32,390 Creating boom OsProfile for Stratis boot
-2021-05-02 15:10:32,531 Creating stratis root fs boot entry
-2021-05-02 15:10:32,532 Creating boom boot entry
-2021-05-02 15:10:32,614 Unmounting /mnt/stratisroot chroot layout
-2021-05-02 15:10:32,615 Invoking umount command: umount /mnt/stratisroot/dev
-2021-05-02 15:10:32,626 Invoking umount command: umount /mnt/stratisroot/proc
-2021-05-02 15:10:32,629 Invoking umount command: umount /mnt/stratisroot/run
-2021-05-02 15:10:32,632 Invoking umount command: umount /mnt/stratisroot/sys
-2021-05-02 15:10:32,633 Invoking umount command: umount /mnt/stratisroot/boot
-2021-05-02 15:10:32,663 Invoking umount command: umount /mnt/stratisroot
-2021-05-02 15:10:32,813 Stratis root fs installation complete.
+2021-05-04 06:00:01,877 stratify.py 0.2 - 2021-05-03
+2021-05-04 06:00:01,877 Installing host dependencies
+2021-05-04 06:00:01,877 Package list: git, anaconda, stratisd, stratis-cli, vim-enhanced
+2021-05-04 06:00:11,270 Invoking umount command: umount /mnt/stratisroot/boot
+2021-05-04 06:00:11,293 Using vda1 as boot device
+2021-05-04 06:00:11,293 Using vda2 as Stratis pool device
+2021-05-04 06:00:11,293 Creating partition table on vda
+2021-05-04 06:00:11,344 Partitioning target device vda [1000, 0]
+2021-05-04 06:00:11,528 Starting Stratis daemon
+2021-05-04 06:00:11,572 Creating pool p1 with vda2
+2021-05-04 06:00:12,195 Creating file system fs1 in pool p1
+2021-05-04 06:00:13,302 Mounting p1/fs1 on /mnt/stratisroot
+2021-05-04 06:00:13,302 Invoking mount command: mount /dev/stratis/p1/fs1 /mnt/stratisroot
+2021-05-04 06:00:13,332 Mounting vda1 on /mnt/stratisroot/boot
+2021-05-04 06:00:13,332 Invoking mount command: mount /dev/vda1 /mnt/stratisroot/boot
+2021-05-04 06:00:13,360 Running anaconda: anaconda --dirinstall /mnt/stratisroot --repo http://mirrors.mit.edu/fedora/linux/development/34/Server/x86_64/os/ --text --kickstart /root/ks.cfg
+2021-05-04 06:09:23,026 Invoking mount command: mount --bind /dev /mnt/stratisroot/dev
+2021-05-04 06:09:23,049 Invoking mount command: mount --bind /proc /mnt/stratisroot/proc
+2021-05-04 06:09:23,053 Invoking mount command: mount --bind /run /mnt/stratisroot/run
+2021-05-04 06:09:23,055 Invoking mount command: mount --bind /sys /mnt/stratisroot/sys
+2021-05-04 06:09:23,057 Installing build dependencies in chroot
+2021-05-04 06:09:23,058 Package list: asciidoc, cargo, clang, cryptsetup-devel, cryptsetup-libs, dbus-devel, dbus-devel.i686, dbus-devel.x86_64, dbus-glib-devel, dbus-python-devel, device-mapper-persistent-data, gcc, git, glibc-devel.i686, glibc-devel.x86_64, keyutils, libblkid-devel, llvm, llvm-devel, make, openssl-devel, python3-coverage, python3-dateutil, python3-dbus-client-gen, python3-dbus-python-client-gen, python3-devel, python3-justbytes, python3-psutil, python3-pyparsing, python3-pytest.noarch, python3-pyudev, python3-semantic_version, python3-setuptools, python3-wcwidth, rpm-build, rpmdevtools, rust, systemd-devel, systemd-devel.x86_64, xfsprogs, python3-dbus, clevis-luks
+2021-05-04 06:12:59,163 Creating git directory /mnt/stratisroot/root/git
+2021-05-04 06:12:59,173 Cloning git repository https://github.com/stratis-storage/stratisd into /mnt/stratisroot/root/git
+2021-05-04 06:13:02,178 Installing from develop-2.3.0 (make install)
+2021-05-04 06:19:39,654 Cloning git repository https://github.com/stratis-storage/stratis-cli into /mnt/stratisroot/root/git
+2021-05-04 06:19:41,351 Installing from develop-2.3.0 (python setup.py install)
+2021-05-04 06:19:41,883 Enabling unit=stratisd.service for sysinit.target.wants in /mnt/stratisroot
+2021-05-04 06:19:41,887 Creating dracut initramfs
+2021-05-04 06:20:07,098 Installing boot dependencies in chroot
+2021-05-04 06:20:07,098 Package list: grub2-pc, grub2-pc-modules, boom-boot
+2021-05-04 06:20:19,875 Installing grub2 bootloader
+2021-05-04 06:20:19,876 Generating grub2 bootloader configuration
+2021-05-04 06:20:20,869 Removing non-stratis boot entries from /mnt/stratisroot/boot
+2021-05-04 06:20:21,331 Configuring boom OsProfile for pool_uuid=b4074ec0-c526-4342-9129-8812e714b962
+2021-05-04 06:20:21,332 Creating boom OsProfile for Stratis boot
+2021-05-04 06:20:21,477 Creating stratis root fs boot entry
+2021-05-04 06:20:21,478 Creating boom boot entry
+2021-05-04 06:20:21,558 Unmounting /mnt/stratisroot chroot layout
+2021-05-04 06:20:21,559 Invoking umount command: umount /mnt/stratisroot/dev
+2021-05-04 06:20:21,581 Invoking umount command: umount /mnt/stratisroot/proc
+2021-05-04 06:20:21,586 Invoking umount command: umount /mnt/stratisroot/run
+2021-05-04 06:20:21,597 Invoking umount command: umount /mnt/stratisroot/sys
+2021-05-04 06:20:21,605 Invoking umount command: umount /mnt/stratisroot/boot
+2021-05-04 06:20:21,668 Invoking umount command: umount /mnt/stratisroot
+2021-05-04 06:20:21,792 Stratis root fs installation complete.

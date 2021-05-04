@@ -1,28 +1,163 @@
-# ./stratify.py --wipe --text --kickstart /root/ks.cfg 
-INFO - stratify.py 0.1 - 2021-05-02
+[liveuser@localhost-live ~]$ sudo su -
+
+We trust you have received the usual lecture from the local System
+Administrator. It usually boils down to these three things:
+
+    #1) Respect the privacy of others.
+    #2) Think before you type.
+    #3) With great power comes great responsibility.
+
+[root@localhost-live ~]# curl --insecure -o stratify.py https://gitlab.cee.redhat.com/breeves/stratify/-/raw/main/stratify.py
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100 24273  100 24273    0     0  40658      0 --:--:-- --:--:-- --:--:-- 40658
+[root@localhost-live ~]# curl --insecure -o ks.cfg https://gitlab.cee.redhat.com/breeves/stratify/-/raw/main/ks.cfg
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100   805  100   805    0     0   2152      0 --:--:-- --:--:-- --:--:--  2146
+[root@localhost-live ~]# sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
+systemctl start sshd
+passwd
+Changing password for user root.
+New password: 
+BAD PASSWORD: The password is shorter than 8 characters
+Retype new password: 
+passwd: all authentication tokens updated successfully.
+[root@localhost-live ~]# python stratify.py --text --target vda --kickstart /root/ks.cfg
+INFO - stratify.py 0.2 - 2021-05-03
 INFO - Installing host dependencies
-Last metadata expiration check: 0:21:40 ago on Sun 02 May 2021 02:33:07 PM EDT.
+Last metadata expiration check: 0:02:46 ago on Tue 04 May 2021 05:57:17 AM EDT.
 Package git-2.31.1-1.fc34.x86_64 is already installed.
 Package anaconda-34.24.9-1.fc34.x86_64 is already installed.
-Package stratisd-2.4.0-1.fc34.x86_64 is already installed.
-Package stratis-cli-2.4.0-1.fc34.noarch is already installed.
 Package vim-enhanced-2:8.2.2811-1.fc34.x86_64 is already installed.
 Dependencies resolved.
-Nothing to do.
+==============================================================================================================================
+ Package                                        Architecture         Version                      Repository             Size
+==============================================================================================================================
+Installing:
+ stratis-cli                                    noarch               2.4.0-1.fc34                 updates                82 k
+ stratisd                                       x86_64               2.4.0-1.fc34                 updates               2.5 M
+Installing dependencies:
+ clevis                                         x86_64               18-1.fc34                    updates                56 k
+ jose                                           x86_64               10-9.fc34                    fedora                 57 k
+ libjose                                        x86_64               10-9.fc34                    fedora                 64 k
+ libluksmeta                                    x86_64               9-10.fc34                    fedora                 25 k
+ luksmeta                                       x86_64               9-10.fc34                    fedora                 21 k
+ python3-dbus-client-gen                        noarch               0.5-2.fc34                   fedora                 25 k
+ python3-dbus-python-client-gen                 noarch               0.8-2.fc34                   fedora                 27 k
+ python3-dbus-signature-pyparsing               noarch               0.04-2.fc34                  fedora                 19 k
+ python3-into-dbus-python                       noarch               0.08-2.fc34                  fedora                 27 k
+ python3-justbases                              noarch               0.15-3.fc34                  fedora                 45 k
+ python3-justbytes                              noarch               0.15-3.fc34                  fedora                 42 k
+ python3-psutil                                 x86_64               5.8.0-5.fc34                 fedora                400 k
+ python3-pyparsing                              noarch               2.4.7-5.fc34                 fedora                150 k
+ python3-semantic_version                       noarch               2.8.4-6.fc34                 fedora                 40 k
+ python3-wcwidth                                noarch               0.2.5-3.fc34                 fedora                 42 k
+ tpm2-tools                                     x86_64               5.0-2.fc34                   fedora                727 k
+Installing weak dependencies:
+ clevis-luks                                    x86_64               18-1.fc34                    updates                35 k
+ clevis-pin-tpm2                                x86_64               0.3.0-1.fc34                 fedora                757 k
+
+Transaction Summary
+==============================================================================================================================
+Install  20 Packages
+
+Total download size: 5.0 M
+Installed size: 20 M
+Downloading Packages:
+(1/20): clevis-luks-18-1.fc34.x86_64.rpm                                                      258 kB/s |  35 kB     00:00    
+(2/20): clevis-18-1.fc34.x86_64.rpm                                                           410 kB/s |  56 kB     00:00    
+(3/20): stratis-cli-2.4.0-1.fc34.noarch.rpm                                                   438 kB/s |  82 kB     00:00    
+(4/20): jose-10-9.fc34.x86_64.rpm                                                             339 kB/s |  57 kB     00:00    
+(5/20): libjose-10-9.fc34.x86_64.rpm                                                          814 kB/s |  64 kB     00:00    
+(6/20): libluksmeta-9-10.fc34.x86_64.rpm                                                      341 kB/s |  25 kB     00:00    
+(7/20): luksmeta-9-10.fc34.x86_64.rpm                                                         183 kB/s |  21 kB     00:00    
+(8/20): python3-dbus-client-gen-0.5-2.fc34.noarch.rpm                                         187 kB/s |  25 kB     00:00    
+(9/20): python3-dbus-python-client-gen-0.8-2.fc34.noarch.rpm                                  376 kB/s |  27 kB     00:00    
+(10/20): clevis-pin-tpm2-0.3.0-1.fc34.x86_64.rpm                                              862 kB/s | 757 kB     00:00    
+(11/20): python3-dbus-signature-pyparsing-0.04-2.fc34.noarch.rpm                              101 kB/s |  19 kB     00:00    
+(12/20): python3-into-dbus-python-0.08-2.fc34.noarch.rpm                                      218 kB/s |  27 kB     00:00    
+(13/20): python3-justbases-0.15-3.fc34.noarch.rpm                                             316 kB/s |  45 kB     00:00    
+(14/20): python3-justbytes-0.15-3.fc34.noarch.rpm                                             361 kB/s |  42 kB     00:00    
+(15/20): python3-pyparsing-2.4.7-5.fc34.noarch.rpm                                            506 kB/s | 150 kB     00:00    
+(16/20): stratisd-2.4.0-1.fc34.x86_64.rpm                                                     1.5 MB/s | 2.5 MB     00:01    
+(17/20): python3-psutil-5.8.0-5.fc34.x86_64.rpm                                               704 kB/s | 400 kB     00:00    
+(18/20): python3-semantic_version-2.8.4-6.fc34.noarch.rpm                                     219 kB/s |  40 kB     00:00    
+(19/20): python3-wcwidth-0.2.5-3.fc34.noarch.rpm                                              656 kB/s |  42 kB     00:00    
+(20/20): tpm2-tools-5.0-2.fc34.x86_64.rpm                                                     1.9 MB/s | 727 kB     00:00    
+------------------------------------------------------------------------------------------------------------------------------
+Total                                                                                         1.5 MB/s | 5.0 MB     00:03     
+Running transaction check
+Transaction check succeeded.
+Running transaction test
+Transaction test succeeded.
+Running transaction
+  Preparing        :                                                                                                      1/1 
+  Installing       : libjose-10-9.fc34.x86_64                                                                            1/20 
+  Installing       : jose-10-9.fc34.x86_64                                                                               2/20 
+  Installing       : tpm2-tools-5.0-2.fc34.x86_64                                                                        3/20 
+  Installing       : clevis-pin-tpm2-0.3.0-1.fc34.x86_64                                                                 4/20 
+  Running scriptlet: clevis-18-1.fc34.x86_64                                                                             5/20 
+  Installing       : clevis-18-1.fc34.x86_64                                                                             5/20 
+  Installing       : python3-wcwidth-0.2.5-3.fc34.noarch                                                                 6/20 
+  Installing       : python3-semantic_version-2.8.4-6.fc34.noarch                                                        7/20 
+  Installing       : python3-pyparsing-2.4.7-5.fc34.noarch                                                               8/20 
+  Installing       : python3-dbus-signature-pyparsing-0.04-2.fc34.noarch                                                 9/20 
+  Installing       : python3-into-dbus-python-0.08-2.fc34.noarch                                                        10/20 
+  Installing       : python3-dbus-python-client-gen-0.8-2.fc34.noarch                                                   11/20 
+  Installing       : python3-psutil-5.8.0-5.fc34.x86_64                                                                 12/20 
+  Installing       : python3-justbases-0.15-3.fc34.noarch                                                               13/20 
+  Installing       : python3-justbytes-0.15-3.fc34.noarch                                                               14/20 
+  Installing       : python3-dbus-client-gen-0.5-2.fc34.noarch                                                          15/20 
+  Installing       : libluksmeta-9-10.fc34.x86_64                                                                       16/20 
+  Installing       : luksmeta-9-10.fc34.x86_64                                                                          17/20 
+  Installing       : clevis-luks-18-1.fc34.x86_64                                                                       18/20 
+  Installing       : stratisd-2.4.0-1.fc34.x86_64                                                                       19/20 
+  Running scriptlet: stratisd-2.4.0-1.fc34.x86_64                                                                       19/20 
+Created symlink /etc/systemd/system/sysinit.target.wants/stratisd.service → /usr/lib/systemd/system/stratisd.service.
+
+  Installing       : stratis-cli-2.4.0-1.fc34.noarch                                                                    20/20 
+  Running scriptlet: clevis-18-1.fc34.x86_64                                                                            20/20 
+  Running scriptlet: stratis-cli-2.4.0-1.fc34.noarch                                                                    20/20 
+Creating group sgx with gid 974.
+
+  Verifying        : clevis-18-1.fc34.x86_64                                                                             1/20 
+  Verifying        : clevis-luks-18-1.fc34.x86_64                                                                        2/20 
+  Verifying        : stratis-cli-2.4.0-1.fc34.noarch                                                                     3/20 
+  Verifying        : stratisd-2.4.0-1.fc34.x86_64                                                                        4/20 
+  Verifying        : clevis-pin-tpm2-0.3.0-1.fc34.x86_64                                                                 5/20 
+  Verifying        : jose-10-9.fc34.x86_64                                                                               6/20 
+  Verifying        : libjose-10-9.fc34.x86_64                                                                            7/20 
+  Verifying        : libluksmeta-9-10.fc34.x86_64                                                                        8/20 
+  Verifying        : luksmeta-9-10.fc34.x86_64                                                                           9/20 
+  Verifying        : python3-dbus-client-gen-0.5-2.fc34.noarch                                                          10/20 
+  Verifying        : python3-dbus-python-client-gen-0.8-2.fc34.noarch                                                   11/20 
+  Verifying        : python3-dbus-signature-pyparsing-0.04-2.fc34.noarch                                                12/20 
+  Verifying        : python3-into-dbus-python-0.08-2.fc34.noarch                                                        13/20 
+  Verifying        : python3-justbases-0.15-3.fc34.noarch                                                               14/20 
+  Verifying        : python3-justbytes-0.15-3.fc34.noarch                                                               15/20 
+  Verifying        : python3-psutil-5.8.0-5.fc34.x86_64                                                                 16/20 
+  Verifying        : python3-pyparsing-2.4.7-5.fc34.noarch                                                              17/20 
+  Verifying        : python3-semantic_version-2.8.4-6.fc34.noarch                                                       18/20 
+  Verifying        : python3-wcwidth-0.2.5-3.fc34.noarch                                                                19/20 
+  Verifying        : tpm2-tools-5.0-2.fc34.x86_64                                                                       20/20 
+
+Installed:
+  clevis-18-1.fc34.x86_64                                      clevis-luks-18-1.fc34.x86_64                                   
+  clevis-pin-tpm2-0.3.0-1.fc34.x86_64                          jose-10-9.fc34.x86_64                                          
+  libjose-10-9.fc34.x86_64                                     libluksmeta-9-10.fc34.x86_64                                   
+  luksmeta-9-10.fc34.x86_64                                    python3-dbus-client-gen-0.5-2.fc34.noarch                      
+  python3-dbus-python-client-gen-0.8-2.fc34.noarch             python3-dbus-signature-pyparsing-0.04-2.fc34.noarch            
+  python3-into-dbus-python-0.08-2.fc34.noarch                  python3-justbases-0.15-3.fc34.noarch                           
+  python3-justbytes-0.15-3.fc34.noarch                         python3-psutil-5.8.0-5.fc34.x86_64                             
+  python3-pyparsing-2.4.7-5.fc34.noarch                        python3-semantic_version-2.8.4-6.fc34.noarch                   
+  python3-wcwidth-0.2.5-3.fc34.noarch                          stratis-cli-2.4.0-1.fc34.noarch                                
+  stratisd-2.4.0-1.fc34.x86_64                                 tpm2-tools-5.0-2.fc34.x86_64                                   
+
 Complete!
 umount: /mnt/stratisroot/boot: no mount point specified.
-WARNING - Destroying file system fs1 in pool p1
-umount: /dev/stratis/p1/fs1: not mounted.
-WARNING - Destroying pool p1
 INFO - Using vda1 as boot device
 INFO - Using vda2 as Stratis pool device
-WARNING - Wiping partitions on device vda
-WARNING - Wiping partition vda1
-/dev/vda1: 4 bytes were erased at offset 0x00000000 (xfs): 58 46 53 42
-WARNING - Wiping partition vda2
-WARNING - Wiping device vda
-/dev/vda: 2 bytes were erased at offset 0x000001fe (dos): 55 aa
-/dev/vda: calling ioctl to re-read partition table: Success
 INFO - Creating partition table on vda
 
 Welcome to fdisk (util-linux 2.36.2).
@@ -30,9 +165,9 @@ Changes will remain in memory only, until you decide to write them.
 Be careful before using the write command.
 
 Device does not contain a recognized partition table.
-Created a new DOS disklabel with disk identifier 0x09962e87.
+Created a new DOS disklabel with disk identifier 0x88476809.
 
-Command (m for help): Created a new GPT disklabel (GUID: E0FE10F7-B3A0-9B44-B957-12BFEE0687AD).
+Command (m for help): Created a new GPT disklabel (GUID: C7614108-8AD7-484D-AA80-137D0BE9500B).
 
 Command (m for help): 
 INFO - Partitioning target device vda [1000, 0]
@@ -42,12 +177,12 @@ Changes will remain in memory only, until you decide to write them.
 Be careful before using the write command.
 
 Device does not contain a recognized partition table.
-Created a new DOS disklabel with disk identifier 0x89196b26.
+Created a new DOS disklabel with disk identifier 0x960368db.
 
 Command (m for help): Partition type
    p   primary (0 primary, 0 extended, 4 free)
    e   extended (container for logical partitions)
-Select (default p): Partition number (1-4, default 1): First sector (2048-41943039, default 2048): Last sector, +/-sectors or +/-size{K,M,G,T,P} (2048-41943039, default 41943039): 
+Select (default p): Partition number (1-4, default 1): First sector (2048-20971519, default 2048): Last sector, +/-sectors or +/-size{K,M,G,T,P} (2048-20971519, default 20971519): 
 Created a new partition 1 of type 'Linux' and of size 1000 MiB.
 
 Command (m for help): The partition table has been altered.
@@ -63,8 +198,8 @@ Be careful before using the write command.
 Command (m for help): Partition type
    p   primary (1 primary, 0 extended, 3 free)
    e   extended (container for logical partitions)
-Select (default p): Partition number (2-4, default 2): First sector (2050048-41943039, default 2050048): Last sector, +/-sectors or +/-size{K,M,G,T,P} (2050048-41943039, default 41943039): 
-Created a new partition 2 of type 'Linux' and of size 19 GiB.
+Select (default p): Partition number (2-4, default 2): First sector (2050048-20971519, default 2050048): Last sector, +/-sectors or +/-size{K,M,G,T,P} (2050048-20971519, default 20971519): 
+Created a new partition 2 of type 'Linux' and of size 9 GiB.
 
 Command (m for help): The partition table has been altered.
 Calling ioctl() to re-read partition table.
@@ -83,15 +218,15 @@ realtime =none                   extsz=4096   blocks=0, rtextents=0
 Discarding blocks...Done.
 INFO - Starting Stratis daemon
 INFO - Creating pool p1 with vda2
-INFO - Creating file system p1 in pool fs1
+INFO - Creating file system fs1 in pool p1
 INFO - Mounting p1/fs1 on /mnt/stratisroot
 INFO - Mounting vda1 on /mnt/stratisroot/boot
 INFO - Running anaconda: anaconda --dirinstall /mnt/stratisroot --repo http://mirrors.mit.edu/fedora/linux/development/34/Server/x86_64/os/ --text --kickstart /root/ks.cfg
 Starting installer, one moment...
 anaconda 34.24.9-1.fc34 for anaconda bluesky (pre-release) started.
-14:54:54 Not asking for VNC because of an automated install
-14:54:54 Not asking for VNC because text mode was explicitly asked for in kickstart
-Starting automated install...
+06:00:18 Not asking for VNC because of an automated install
+06:00:18 Not asking for VNC because text mode was explicitly asked for in kickstart
+Starting automated install....
 ================================================================================
 ================================================================================
 Installation
@@ -124,78 +259,113 @@ Running pre-installation tasks
 Installing.
 Starting package installation process
 Downloading packages
-Downloading 586 RPMs, 6.71 MiB / 470.42 MiB (1%) done.
-Downloading 586 RPMs, 12.84 MiB / 470.42 MiB (2%) done.
-Downloading 586 RPMs, 15.7 MiB / 470.42 MiB (3%) done.
-Downloading 586 RPMs, 18.87 MiB / 470.42 MiB (4%) done.
-Downloading 586 RPMs, 22.61 MiB / 470.42 MiB (4%) done.
-Downloading 586 RPMs, 30.95 MiB / 470.42 MiB (6%) done.
-Downloading 586 RPMs, 34.46 MiB / 470.42 MiB (7%) done.
-Downloading 586 RPMs, 38.5 MiB / 470.42 MiB (8%) done.
-Downloading 586 RPMs, 44.28 MiB / 470.42 MiB (9%) done.
-Downloading 586 RPMs, 52.49 MiB / 470.42 MiB (11%) done.
-Downloading 586 RPMs, 63.09 MiB / 470.42 MiB (13%) done.
-Downloading 586 RPMs, 73.19 MiB / 470.42 MiB (15%) done.
-Downloading 586 RPMs, 76.59 MiB / 470.42 MiB (16%) done.
-Downloading 586 RPMs, 81.71 MiB / 470.42 MiB (17%) done.
-Downloading 586 RPMs, 91.49 MiB / 470.42 MiB (19%) done.
-Downloading 586 RPMs, 101.66 MiB / 470.42 MiB (21%) done.
-Downloading 586 RPMs, 109.42 MiB / 470.42 MiB (23%) done.
-Downloading 586 RPMs, 120.89 MiB / 470.42 MiB (25%) done.
-Downloading 586 RPMs, 131.48 MiB / 470.42 MiB (27%) done.
-Downloading 586 RPMs, 137.6 MiB / 470.42 MiB (29%) done.
-Downloading 586 RPMs, 148.41 MiB / 470.42 MiB (31%) done.
-Downloading 586 RPMs, 159.52 MiB / 470.42 MiB (33%) done.
-Downloading 586 RPMs, 170.64 MiB / 470.42 MiB (36%) done.
-Downloading 586 RPMs, 180.43 MiB / 470.42 MiB (38%) done.
-Downloading 586 RPMs, 187.12 MiB / 470.42 MiB (39%) done.
-Downloading 586 RPMs, 191.36 MiB / 470.42 MiB (40%) done.
-Downloading 586 RPMs, 194.86 MiB / 470.42 MiB (41%) done.
-Downloading 586 RPMs, 200.73 MiB / 470.42 MiB (42%) done.
-Downloading 586 RPMs, 205.92 MiB / 470.42 MiB (43%) done.
-Downloading 586 RPMs, 208.32 MiB / 470.42 MiB (44%) done.
-Downloading 586 RPMs, 210.86 MiB / 470.42 MiB (44%) done.
-Downloading 586 RPMs, 212.62 MiB / 470.42 MiB (45%) done.
-Downloading 586 RPMs, 216.03 MiB / 470.42 MiB (45%) done.
-Downloading 586 RPMs, 220.85 MiB / 470.42 MiB (46%) done.
-Downloading 586 RPMs, 226.26 MiB / 470.42 MiB (48%) done.
-Downloading 586 RPMs, 232.07 MiB / 470.42 MiB (49%) done.
-Downloading 586 RPMs, 241.77 MiB / 470.42 MiB (51%) done.
-Downloading 586 RPMs, 252.45 MiB / 470.42 MiB (53%) done.
-Downloading 586 RPMs, 259.34 MiB / 470.42 MiB (55%) done.
-Downloading 586 RPMs, 265.81 MiB / 470.42 MiB (56%) done.
-Downloading 586 RPMs, 271.38 MiB / 470.42 MiB (57%) done.
-Downloading 586 RPMs, 277.5 MiB / 470.42 MiB (58%) done.
-Downloading 586 RPMs, 285.06 MiB / 470.42 MiB (60%) done.
-Downloading 586 RPMs, 294.69 MiB / 470.42 MiB (62%) done.
-Downloading 586 RPMs, 303.54 MiB / 470.42 MiB (64%) done.
-Downloading 586 RPMs, 311.2 MiB / 470.42 MiB (66%) done.
-Downloading 586 RPMs, 321.03 MiB / 470.42 MiB (68%) done.
-Downloading 586 RPMs, 325.24 MiB / 470.42 MiB (69%) done.
-Downloading 586 RPMs, 332.74 MiB / 470.42 MiB (70%) done.
-Downloading 586 RPMs, 340.16 MiB / 470.42 MiB (72%) done.
-Downloading 586 RPMs, 346.77 MiB / 470.42 MiB (73%) done.
-Downloading 586 RPMs, 355.54 MiB / 470.42 MiB (75%) done.
-Downloading 586 RPMs, 363.78 MiB / 470.42 MiB (77%) done.
-Downloading 586 RPMs, 366.85 MiB / 470.42 MiB (77%) done.
-Downloading 586 RPMs, 370.8 MiB / 470.42 MiB (78%) done.
-Downloading 586 RPMs, 373.76 MiB / 470.42 MiB (79%) done.
-Downloading 586 RPMs, 376.22 MiB / 470.42 MiB (79%) done.
-Downloading 586 RPMs, 379.24 MiB / 470.42 MiB (80%) done.
-Downloading 586 RPMs, 384.47 MiB / 470.42 MiB (81%) done.
-Downloading 586 RPMs, 392.64 MiB / 470.42 MiB (83%) done.
-Downloading 586 RPMs, 401.79 MiB / 470.42 MiB (85%) done.
-Downloading 586 RPMs, 411.16 MiB / 470.42 MiB (87%) done.
-Downloading 586 RPMs, 421.18 MiB / 470.42 MiB (89%) done.
-Downloading 586 RPMs, 429.2 MiB / 470.42 MiB (91%) done.
-Downloading 586 RPMs, 432.54 MiB / 470.42 MiB (91%) done.
-Downloading 586 RPMs, 436.6 MiB / 470.42 MiB (92%) done.
-Downloading 586 RPMs, 442.04 MiB / 470.42 MiB (93%) done.
-Downloading 586 RPMs, 447.63 MiB / 470.42 MiB (95%) done.
-Downloading 586 RPMs, 453.07 MiB / 470.42 MiB (96%) done.
-Downloading 586 RPMs, 459.42 MiB / 470.42 MiB (97%) done.
-Downloading 586 RPMs, 465.99 MiB / 470.42 MiB (99%) done.
-Downloading 586 RPMs, 470.42 MiB / 470.42 MiB (100%) done.
+Downloading 586 RPMs, 6.59 MiB / 470.42 MiB (1%) done.
+Downloading 586 RPMs, 13.27 MiB / 470.42 MiB (2%) done.
+Downloading 586 RPMs, 20.94 MiB / 470.42 MiB (4%) done.
+Downloading 586 RPMs, 28.83 MiB / 470.42 MiB (6%) done.
+Downloading 586 RPMs, 34.78 MiB / 470.42 MiB (7%) done.
+Downloading 586 RPMs, 40.46 MiB / 470.42 MiB (8%) done.
+Downloading 586 RPMs, 45.16 MiB / 470.42 MiB (9%) done.
+Downloading 586 RPMs, 52.95 MiB / 470.42 MiB (11%) done.
+Downloading 586 RPMs, 61.32 MiB / 470.42 MiB (13%) done.
+Downloading 586 RPMs, 67.29 MiB / 470.42 MiB (14%) done.
+Downloading 586 RPMs, 70.94 MiB / 470.42 MiB (15%) done.
+Downloading 586 RPMs, 76.71 MiB / 470.42 MiB (16%) done.
+Downloading 586 RPMs, 78.31 MiB / 470.42 MiB (16%) done.
+Downloading 586 RPMs, 83.01 MiB / 470.42 MiB (17%) done.
+Downloading 586 RPMs, 92.04 MiB / 470.42 MiB (19%) done.
+Downloading 586 RPMs, 104.72 MiB / 470.42 MiB (22%) done.
+Downloading 586 RPMs, 115.05 MiB / 470.42 MiB (24%) done.
+Downloading 586 RPMs, 120.46 MiB / 470.42 MiB (25%) done.
+Downloading 586 RPMs, 127.49 MiB / 470.42 MiB (27%) done.
+Downloading 586 RPMs, 130.16 MiB / 470.42 MiB (27%) done.
+Downloading 586 RPMs, 135.89 MiB / 470.42 MiB (28%) done.
+Downloading 586 RPMs, 140.27 MiB / 470.42 MiB (29%) done.
+Downloading 586 RPMs, 147.47 MiB / 470.42 MiB (31%) done.
+Downloading 586 RPMs, 155.17 MiB / 470.42 MiB (32%) done.
+Downloading 586 RPMs, 163.59 MiB / 470.42 MiB (34%) done.
+Downloading 586 RPMs, 168.13 MiB / 470.42 MiB (35%) done.
+Downloading 586 RPMs, 172.53 MiB / 470.42 MiB (36%) done.
+Downloading 586 RPMs, 176.05 MiB / 470.42 MiB (37%) done.
+Downloading 586 RPMs, 179.28 MiB / 470.42 MiB (38%) done.
+Downloading 586 RPMs, 182.24 MiB / 470.42 MiB (38%) done.
+Downloading 586 RPMs, 185.62 MiB / 470.42 MiB (39%) done.
+Downloading 586 RPMs, 188.23 MiB / 470.42 MiB (40%) done.
+Downloading 586 RPMs, 190.61 MiB / 470.42 MiB (40%) done.
+Downloading 586 RPMs, 192.56 MiB / 470.42 MiB (40%) done.
+Downloading 586 RPMs, 195.07 MiB / 470.42 MiB (41%) done.
+Downloading 586 RPMs, 197.09 MiB / 470.42 MiB (41%) done.
+Downloading 586 RPMs, 199.33 MiB / 470.42 MiB (42%) done.
+Downloading 586 RPMs, 202.05 MiB / 470.42 MiB (42%) done.
+Downloading 586 RPMs, 205.25 MiB / 470.42 MiB (43%) done.
+Downloading 586 RPMs, 209.3 MiB / 470.42 MiB (44%) done.
+Downloading 586 RPMs, 212.41 MiB / 470.42 MiB (45%) done.
+Downloading 586 RPMs, 215.66 MiB / 470.42 MiB (45%) done.
+Downloading 586 RPMs, 224.91 MiB / 470.42 MiB (47%) done.
+Downloading 586 RPMs, 233.55 MiB / 470.42 MiB (49%) done.
+Downloading 586 RPMs, 243.96 MiB / 470.42 MiB (51%) done.
+Downloading 586 RPMs, 250.61 MiB / 470.42 MiB (53%) done.
+Downloading 586 RPMs, 257.88 MiB / 470.42 MiB (54%) done.
+Downloading 586 RPMs, 265.16 MiB / 470.42 MiB (56%) done.
+Downloading 586 RPMs, 266.26 MiB / 470.42 MiB (56%) done.
+Downloading 586 RPMs, 272.47 MiB / 470.42 MiB (57%) done.
+Downloading 586 RPMs, 281.9 MiB / 470.42 MiB (59%) done.
+Downloading 586 RPMs, 294.35 MiB / 470.42 MiB (62%) done.
+Downloading 586 RPMs, 306.53 MiB / 470.42 MiB (65%) done.
+Downloading 586 RPMs, 315.94 MiB / 470.42 MiB (67%) done.
+Downloading 586 RPMs, 324.72 MiB / 470.42 MiB (69%) done.
+Downloading 586 RPMs, 328.33 MiB / 470.42 MiB (69%) done.
+Downloading 586 RPMs, 338.11 MiB / 470.42 MiB (71%) done.
+Downloading 586 RPMs, 346.42 MiB / 470.42 MiB (73%) done.
+Downloading 586 RPMs, 350.65 MiB / 470.42 MiB (74%) done.
+Downloading 586 RPMs, 356.29 MiB / 470.42 MiB (75%) done.
+Downloading 586 RPMs, 364.46 MiB / 470.42 MiB (77%) done.
+Downloading 586 RPMs, 373.24 MiB / 470.42 MiB (79%) done.
+Downloading 586 RPMs, 378.76 MiB / 470.42 MiB (80%) done.
+Downloading 586 RPMs, 384.7 MiB / 470.42 MiB (81%) done.
+Downloading 586 RPMs, 390.87 MiB / 470.42 MiB (83%) done.
+Downloading 586 RPMs, 394.65 MiB / 470.42 MiB (83%) done.
+Downloading 586 RPMs, 398.65 MiB / 470.42 MiB (84%) done.
+Downloading 586 RPMs, 403.41 MiB / 470.42 MiB (85%) done.
+Downloading 586 RPMs, 408.2 MiB / 470.42 MiB (86%) done.
+Downloading 586 RPMs, 412.9 MiB / 470.42 MiB (87%) done.
+Downloading 586 RPMs, 417.75 MiB / 470.42 MiB (88%) done.
+Downloading 586 RPMs, 420.75 MiB / 470.42 MiB (89%) done.
+Downloading 586 RPMs, 422.93 MiB / 470.42 MiB (89%) done.
+Downloading 586 RPMs, 424.56 MiB / 470.42 MiB (90%) done.
+Downloading 586 RPMs, 425.5 MiB / 470.42 MiB (90%) done.
+Downloading 586 RPMs, 425.76 MiB / 470.42 MiB (90%) done.
+Downloading 586 RPMs, 426.15 MiB / 470.42 MiB (90%) done.
+Downloading 586 RPMs, 426.94 MiB / 470.42 MiB (90%) done.
+Downloading 586 RPMs, 427.88 MiB / 470.42 MiB (90%) done.
+Downloading 586 RPMs, 429.41 MiB / 470.42 MiB (91%) done.
+Downloading 586 RPMs, 430.96 MiB / 470.42 MiB (91%) done.
+Downloading 586 RPMs, 432.45 MiB / 470.42 MiB (91%) done.
+Downloading 586 RPMs, 434.1 MiB / 470.42 MiB (92%) done.
+Downloading 586 RPMs, 435.61 MiB / 470.42 MiB (92%) done.
+Downloading 586 RPMs, 436.3 MiB / 470.42 MiB (92%) done.
+Downloading 586 RPMs, 437.26 MiB / 470.42 MiB (92%) done.
+Downloading 586 RPMs, 437.78 MiB / 470.42 MiB (93%) done.
+Downloading 586 RPMs, 438.6 MiB / 470.42 MiB (93%) done.
+Downloading 586 RPMs, 439.74 MiB / 470.42 MiB (93%) done.
+Downloading 586 RPMs, 440.62 MiB / 470.42 MiB (93%) done.
+Downloading 586 RPMs, 441.84 MiB / 470.42 MiB (93%) done.
+Downloading 586 RPMs, 443.34 MiB / 470.42 MiB (94%) done.
+Downloading 586 RPMs, 445.1 MiB / 470.42 MiB (94%) done.
+Downloading 586 RPMs, 445.68 MiB / 470.42 MiB (94%) done.
+Downloading 586 RPMs, 446.66 MiB / 470.42 MiB (94%) done.
+Downloading 586 RPMs, 446.94 MiB / 470.42 MiB (95%) done.
+Downloading 586 RPMs, 448.35 MiB / 470.42 MiB (95%) done.
+Downloading 586 RPMs, 448.99 MiB / 470.42 MiB (95%) done.
+Downloading 586 RPMs, 449.7 MiB / 470.42 MiB (95%) done.
+Downloading 586 RPMs, 451.09 MiB / 470.42 MiB (95%) done.
+Downloading 586 RPMs, 452.17 MiB / 470.42 MiB (96%) done.
+Downloading 586 RPMs, 453.06 MiB / 470.42 MiB (96%) done.
+Downloading 586 RPMs, 454.26 MiB / 470.42 MiB (96%) done.
+Downloading 586 RPMs, 455.79 MiB / 470.42 MiB (96%) done.
+Downloading 586 RPMs, 457.76 MiB / 470.42 MiB (97%) done.
+Downloading 586 RPMs, 460.87 MiB / 470.42 MiB (97%) done.
+Downloading 586 RPMs, 466.52 MiB / 470.42 MiB (99%) done.
 Preparing transaction from installation source
 Installing libgcc.x86_64 (1/586)
 Installing linux-firmware-whence.noarch (2/586)
@@ -495,7 +665,7 @@ Installing libreport-plugin-ureport.x86_64 (295/586)
 Installing rpm-plugin-selinux.x86_64 (296/586)
 Installing selinux-policy.noarch (297/586)
 Installing selinux-policy-targeted.noarch (298/586)
-uavc:  op=load_policy lsm=selinux seqno=3 res=1Installing libqmi.x86_64 (299/586)
+uavc:  op=load_policy lsm=selinux seqno=2 res=1Installing libqmi.x86_64 (299/586)
 Installing gobject-introspection.x86_64 (300/586)
 Installing python3-gobject-base.x86_64 (301/586)
 Installing libuser.x86_64 (302/586)
@@ -1449,12 +1619,12 @@ Storing configuration files and kickstarts
 .
 
 Installation complete. Press ENTER to quit: 
-INFO - Installing build dependencies
-Fedora 34 openh264 (From Cisco) - x86_64                                                      1.5 kB/s | 2.5 kB     00:01    
-Fedora Modular 34 - x86_64                                                                    2.6 MB/s | 3.8 MB     00:01    
-Fedora Modular 34 - x86_64 - Updates                                                          328 kB/s | 755 kB     00:02    
-Fedora 34 - x86_64 - Updates                                                                  2.5 MB/s | 6.8 MB     00:02    
-Fedora 34 - x86_64                                                                            3.9 MB/s |  57 MB     00:14    
+INFO - Installing build dependencies in chroot
+Fedora 34 openh264 (From Cisco) - x86_64                                                      1.8 kB/s | 2.5 kB     00:01    
+Fedora Modular 34 - x86_64                                                                    340 kB/s | 3.8 MB     00:11    
+Fedora Modular 34 - x86_64 - Updates                                                          699 kB/s | 761 kB     00:01    
+Fedora 34 - x86_64 - Updates                                                                  1.7 MB/s | 7.3 MB     00:04    
+Fedora 34 - x86_64                                                                            2.9 MB/s |  57 MB     00:19    
 Package cryptsetup-libs-2.3.5-2.fc34.x86_64 is already installed.
 Package device-mapper-persistent-data-0.9.0-3.fc34.x86_64 is already installed.
 Package keyutils-1.6.1-2.fc34.x86_64 is already installed.
@@ -1552,7 +1722,7 @@ Installing dependencies:
  glibc                                       i686          2.33-5.fc34                                   fedora         3.3 M
  glibc-headers-x86                           noarch        2.33-5.fc34                                   fedora         515 k
  gnat-srpm-macros                            noarch        4-13.fc34                                     fedora         8.3 k
- go-srpm-macros                              noarch        3.0.9-3.fc34                                  fedora          25 k
+ go-srpm-macros                              noarch        3.0.10-1.fc34                                 updates         25 k
  google-droid-sans-fonts                     noarch        20200215-9.fc34                               fedora         2.7 M
  graphite2                                   x86_64        1.3.14-7.fc34                                 fedora          95 k
  graphviz                                    x86_64        2.44.0-17.fc34                                fedora         3.4 M
@@ -1816,346 +1986,346 @@ Upgrade    5 Packages
 
 Total download size: 468 M
 Downloading Packages:
-(1/338): adwaita-cursor-theme-40.0-2.fc34.noarch.rpm                                          1.6 MB/s | 623 kB     00:00    
-(2/338): clevis-18-1.fc34.x86_64.rpm                                                          885 kB/s |  56 kB     00:00    
-(3/338): clevis-luks-18-1.fc34.x86_64.rpm                                                     533 kB/s |  35 kB     00:00    
-(4/338): cargo-1.51.0-3.fc34.x86_64.rpm                                                       2.1 MB/s | 3.6 MB     00:01    
-(5/338): dconf-0.40.0-3.fc34.x86_64.rpm                                                       814 kB/s | 110 kB     00:00    
-(6/338): cpp-11.1.1-1.fc34.x86_64.rpm                                                         1.6 MB/s |  10 MB     00:06    
-(7/338): adwaita-icon-theme-40.0-2.fc34.noarch.rpm                                            1.5 MB/s |  11 MB     00:07    
-(8/338): gstreamer1-1.18.4-2.fc34.x86_64.rpm                                                  2.3 MB/s | 1.4 MB     00:00    
-(9/338): gtk-update-icon-cache-3.24.29-1.fc34.x86_64.rpm                                      556 kB/s |  35 kB     00:00    
-(10/338): gtk3-3.24.29-1.fc34.x86_64.rpm                                                      2.3 MB/s | 4.7 MB     00:02    
-(11/338): kernel-headers-5.11.16-300.fc34.x86_64.rpm                                          2.2 MB/s | 1.2 MB     00:00    
-(12/338): libgcc-11.1.1-1.fc34.i686.rpm                                                       1.5 MB/s | 112 kB     00:00    
-(13/338): librsvg2-2.50.4-1.fc34.x86_64.rpm                                                   2.3 MB/s | 3.4 MB     00:01    
-(14/338): libstdc++-devel-11.1.1-1.fc34.x86_64.rpm                                            2.2 MB/s | 2.2 MB     00:00    
-(15/338): python-rpm-macros-3.9-36.fc34.noarch.rpm                                            296 kB/s |  15 kB     00:00    
-(16/338): python-srpm-macros-3.9-36.fc34.noarch.rpm                                           424 kB/s |  21 kB     00:00    
-(17/338): python-unversioned-command-3.9.4-1.fc34.noarch.rpm                                  189 kB/s |  12 kB     00:00    
-(18/338): gcc-c++-11.1.1-1.fc34.x86_64.rpm                                                    1.8 MB/s |  12 MB     00:06    
-(19/338): python3-devel-3.9.4-1.fc34.x86_64.rpm                                               1.1 MB/s | 206 kB     00:00    
-(20/338): python3-rpm-macros-3.9-36.fc34.noarch.rpm                                           230 kB/s |  14 kB     00:00    
-(21/338): rav1e-libs-0.4.1-1.fc34.x86_64.rpm                                                  2.3 MB/s | 786 kB     00:00    
-(22/338): gcc-11.1.1-1.fc34.x86_64.rpm                                                        1.8 MB/s |  32 MB     00:17    
-(23/338): xorg-x11-fonts-ISO8859-1-100dpi-7.5-31.fc34.noarch.rpm                              1.6 MB/s | 1.0 MB     00:00    
-(24/338): adobe-mappings-cmap-20171205-10.fc34.noarch.rpm                                     1.7 MB/s | 1.9 MB     00:01    
-(25/338): adobe-mappings-cmap-deprecated-20171205-10.fc34.noarch.rpm                          1.0 MB/s | 109 kB     00:00    
-(26/338): adobe-mappings-pdf-20180407-8.fc34.noarch.rpm                                       1.5 MB/s | 668 kB     00:00    
-(27/338): alsa-lib-1.2.4-5.fc34.x86_64.rpm                                                    1.5 MB/s | 474 kB     00:00    
-(28/338): annobin-9.65-2.fc34.x86_64.rpm                                                      1.3 MB/s | 134 kB     00:00    
-(29/338): asciidoc-9.1.0-1.fc34.noarch.rpm                                                    1.4 MB/s | 238 kB     00:00    
-(30/338): at-spi2-atk-2.38.0-2.fc34.x86_64.rpm                                                610 kB/s |  90 kB     00:00    
-(31/338): at-spi2-core-2.40.0-2.fc34.x86_64.rpm                                               1.0 MB/s | 180 kB     00:00    
-(32/338): atk-2.36.0-3.fc34.x86_64.rpm                                                        1.4 MB/s | 273 kB     00:00    
-(33/338): rust-std-static-1.51.0-3.fc34.x86_64.rpm                                            2.8 MB/s |  27 MB     00:09    
-(34/338): binutils-gold-2.35.1-41.fc34.x86_64.rpm                                             2.1 MB/s | 747 kB     00:00    
-(35/338): cairo-1.17.4-3.fc34.x86_64.rpm                                                      2.5 MB/s | 671 kB     00:00    
-(36/338): cairo-gobject-1.17.4-3.fc34.x86_64.rpm                                              359 kB/s |  18 kB     00:00    
-(37/338): clang-12.0.0-0.3.rc1.fc34.x86_64.rpm                                                989 kB/s |  85 kB     00:00    
-(38/338): binutils-2.35.1-41.fc34.x86_64.rpm                                                  1.2 MB/s | 5.7 MB     00:04    
-(39/338): clang-resource-filesystem-12.0.0-0.3.rc1.fc34.x86_64.rpm                            229 kB/s |  12 kB     00:00    
-(40/338): clevis-pin-tpm2-0.3.0-1.fc34.x86_64.rpm                                             762 kB/s | 757 kB     00:00    
-(41/338): cmake-filesystem-3.19.7-1.fc34.i686.rpm                                             161 kB/s |  16 kB     00:00    
-(42/338): cmake-filesystem-3.19.7-1.fc34.x86_64.rpm                                           302 kB/s |  16 kB     00:00    
-(43/338): colord-libs-1.4.5-2.fc34.x86_64.rpm                                                 1.2 MB/s | 240 kB     00:00    
-(44/338): rust-1.51.0-3.fc34.x86_64.rpm                                                       1.6 MB/s |  25 MB     00:16    
-(45/338): cryptsetup-devel-2.3.5-2.fc34.x86_64.rpm                                            444 kB/s |  28 kB     00:00    
-(46/338): dbus-devel-1.12.20-3.fc34.i686.rpm                                                  275 kB/s |  34 kB     00:00    
-(47/338): dbus-devel-1.12.20-3.fc34.x86_64.rpm                                                394 kB/s |  34 kB     00:00    
-(48/338): dbus-glib-0.110-11.fc34.x86_64.rpm                                                  1.0 MB/s | 126 kB     00:00    
-(49/338): dbus-glib-devel-0.110-11.fc34.x86_64.rpm                                            555 kB/s |  65 kB     00:00    
-(50/338): dbus-libs-1.12.20-3.fc34.i686.rpm                                                   1.0 MB/s | 164 kB     00:00    
-(51/338): dbus-python-devel-1.2.16-4.fc34.x86_64.rpm                                          192 kB/s |  20 kB     00:00    
-(52/338): docbook-dtds-1.0-77.fc34.noarch.rpm                                                 1.4 MB/s | 280 kB     00:00    
-(53/338): compiler-rt-12.0.0-0.1.rc1.fc34.x86_64.rpm                                          1.2 MB/s | 2.3 MB     00:01    
-(54/338): dwz-0.14-1.fc34.x86_64.rpm                                                          889 kB/s | 129 kB     00:00    
-(55/338): docbook-style-xsl-1.79.2-14.fc34.noarch.rpm                                         1.2 MB/s | 1.2 MB     00:01    
-(56/338): efi-srpm-macros-5-2.fc34.noarch.rpm                                                 217 kB/s |  21 kB     00:00    
-(57/338): fakeroot-1.25.3-2.fc34.x86_64.rpm                                                   1.4 MB/s |  89 kB     00:00    
-(58/338): fakeroot-libs-1.25.3-2.fc34.x86_64.rpm                                              619 kB/s |  40 kB     00:00    
-(59/338): flac-libs-1.3.3-7.fc34.x86_64.rpm                                                   1.3 MB/s | 220 kB     00:00    
-(60/338): fontconfig-2.13.93-6.fc34.x86_64.rpm                                                1.5 MB/s | 275 kB     00:00    
-(61/338): fonts-srpm-macros-2.0.5-5.fc34.noarch.rpm                                           237 kB/s |  27 kB     00:00    
-(62/338): fpc-srpm-macros-1.3-3.fc34.noarch.rpm                                                77 kB/s | 7.7 kB     00:00    
-(63/338): fribidi-1.0.10-4.fc34.x86_64.rpm                                                    705 kB/s |  86 kB     00:00    
-(64/338): gd-2.3.2-2.fc34.x86_64.rpm                                                          802 kB/s | 140 kB     00:00    
-(65/338): freetype-2.10.4-3.fc34.x86_64.rpm                                                   1.1 MB/s | 394 kB     00:00    
-(66/338): gdk-pixbuf2-modules-2.42.4-2.fc34.x86_64.rpm                                        1.5 MB/s |  95 kB     00:00    
-(67/338): ghc-srpm-macros-1.5.0-4.fc34.noarch.rpm                                             210 kB/s | 7.8 kB     00:00    
-(68/338): git-2.31.1-1.fc34.x86_64.rpm                                                        1.1 MB/s | 121 kB     00:00    
-(69/338): git-core-doc-2.31.1-1.fc34.noarch.rpm                                               1.4 MB/s | 2.3 MB     00:01    
-(70/338): glib2-devel-2.68.1-1.fc34.x86_64.rpm                                                1.4 MB/s | 476 kB     00:00    
-(71/338): clang-libs-12.0.0-0.3.rc1.fc34.x86_64.rpm                                           2.0 MB/s |  21 MB     00:10    
-(72/338): glibc-devel-2.33-5.fc34.i686.rpm                                                    902 kB/s | 128 kB     00:00    
-(73/338): git-core-2.31.1-1.fc34.x86_64.rpm                                                   1.4 MB/s | 3.6 MB     00:02    
-(74/338): glibc-devel-2.33-5.fc34.x86_64.rpm                                                  1.0 MB/s | 128 kB     00:00    
-(75/338): gnat-srpm-macros-4-13.fc34.noarch.rpm                                                89 kB/s | 8.3 kB     00:00    
-(76/338): go-srpm-macros-3.0.9-3.fc34.noarch.rpm                                              697 kB/s |  25 kB     00:00    
-(77/338): glibc-headers-x86-2.33-5.fc34.noarch.rpm                                            1.4 MB/s | 515 kB     00:00    
-(78/338): graphite2-1.3.14-7.fc34.x86_64.rpm                                                  931 kB/s |  95 kB     00:00    
-(79/338): glibc-2.33-5.fc34.i686.rpm                                                          1.5 MB/s | 3.3 MB     00:02    
-(80/338): google-droid-sans-fonts-20200215-9.fc34.noarch.rpm                                  1.6 MB/s | 2.7 MB     00:01    
-(81/338): gsm-1.0.19-4.fc34.x86_64.rpm                                                        277 kB/s |  33 kB     00:00    
-(82/338): gts-0.7.6-39.20121130.fc34.x86_64.rpm                                               1.3 MB/s | 237 kB     00:00    
-(83/338): graphviz-2.44.0-17.fc34.x86_64.rpm                                                  1.1 MB/s | 3.4 MB     00:03    
-(84/338): gtk2-2.24.33-4.fc34.x86_64.rpm                                                      1.5 MB/s | 3.5 MB     00:02    
-(85/338): harfbuzz-2.7.4-3.fc34.x86_64.rpm                                                    1.1 MB/s | 634 kB     00:00    
-(86/338): hicolor-icon-theme-0.17-10.fc34.noarch.rpm                                          748 kB/s |  45 kB     00:00    
-(87/338): http-parser-2.9.4-4.fc34.x86_64.rpm                                                 356 kB/s |  38 kB     00:00    
-(88/338): jbig2dec-libs-0.19-4.fc34.x86_64.rpm                                                728 kB/s |  74 kB     00:00    
-(89/338): jbigkit-libs-2.1-21.fc34.x86_64.rpm                                                 1.0 MB/s |  53 kB     00:00    
-(90/338): jose-10-9.fc34.x86_64.rpm                                                           411 kB/s |  57 kB     00:00    
-(91/338): jq-1.6-7.fc34.x86_64.rpm                                                            985 kB/s | 179 kB     00:00    
-(92/338): kernel-srpm-macros-1.0-4.fc34.noarch.rpm                                             69 kB/s | 7.3 kB     00:00    
-(93/338): lasi-1.1.3-6.fc34.x86_64.rpm                                                        623 kB/s |  56 kB     00:00    
-(94/338): lcms2-2.12-1.fc34.x86_64.rpm                                                        1.5 MB/s | 171 kB     00:00    
-(95/338): libICE-1.0.10-6.fc34.x86_64.rpm                                                     854 kB/s |  71 kB     00:00    
-(96/338): libSM-1.2.3-8.fc34.x86_64.rpm                                                       735 kB/s |  42 kB     00:00    
-(97/338): libX11-common-1.7.0-3.fc34.noarch.rpm                                               1.8 MB/s | 153 kB     00:00    
-(98/338): libX11-xcb-1.7.0-3.fc34.x86_64.rpm                                                  109 kB/s |  12 kB     00:00    
-(99/338): libXau-1.0.9-6.fc34.x86_64.rpm                                                      571 kB/s |  31 kB     00:00    
-(100/338): libX11-1.7.0-3.fc34.x86_64.rpm                                                     1.6 MB/s | 661 kB     00:00    
-(101/338): libXaw-1.0.13-17.fc34.x86_64.rpm                                                   986 kB/s | 202 kB     00:00    
-(102/338): libXcomposite-0.4.5-5.fc34.x86_64.rpm                                              242 kB/s |  23 kB     00:00    
-(103/338): libXcursor-1.2.0-5.fc34.x86_64.rpm                                                 643 kB/s |  30 kB     00:00    
-(104/338): libXdamage-1.1.5-5.fc34.x86_64.rpm                                                 507 kB/s |  22 kB     00:00    
-(105/338): libXext-1.3.4-6.fc34.x86_64.rpm                                                    1.0 MB/s |  39 kB     00:00    
-(106/338): libXfixes-5.0.3-14.fc34.x86_64.rpm                                                 497 kB/s |  19 kB     00:00    
-(107/338): libXft-2.3.3-6.fc34.x86_64.rpm                                                     1.2 MB/s |  63 kB     00:00    
-(108/338): libXi-1.7.10-6.fc34.x86_64.rpm                                                     714 kB/s |  39 kB     00:00    
-(109/338): libXinerama-1.1.4-8.fc34.x86_64.rpm                                                411 kB/s |  14 kB     00:00    
-(110/338): libXmu-1.1.3-6.fc34.x86_64.rpm                                                     1.6 MB/s |  75 kB     00:00    
-(111/338): libXpm-3.5.13-5.fc34.x86_64.rpm                                                    815 kB/s |  59 kB     00:00    
-(112/338): libXrandr-1.5.2-6.fc34.x86_64.rpm                                                  496 kB/s |  28 kB     00:00    
-(113/338): guile22-2.2.7-2.fc34.x86_64.rpm                                                    1.9 MB/s | 6.5 MB     00:03    
-(114/338): libXrender-0.9.10-14.fc34.x86_64.rpm                                               202 kB/s |  27 kB     00:00    
-(115/338): libXt-1.2.0-4.fc34.x86_64.rpm                                                      1.4 MB/s | 183 kB     00:00    
-(116/338): libXtst-1.2.3-14.fc34.x86_64.rpm                                                   790 kB/s |  20 kB     00:00    
-(117/338): libasyncns-0.8-20.fc34.x86_64.rpm                                                  323 kB/s |  30 kB     00:00    
-(118/338): libavif-0.9.0-1.fc34.x86_64.rpm                                                    648 kB/s |  65 kB     00:00    
-(119/338): libblkid-devel-2.36.2-1.fc34.x86_64.rpm                                            246 kB/s |  14 kB     00:00    
-(120/338): libcanberra-0.30-24.fc34.x86_64.rpm                                                813 kB/s |  87 kB     00:00    
-(121/338): libcanberra-gtk2-0.30-24.fc34.x86_64.rpm                                           264 kB/s |  26 kB     00:00    
-(122/338): libcanberra-gtk3-0.30-24.fc34.x86_64.rpm                                           581 kB/s |  32 kB     00:00    
-(123/338): libcap-2.48-2.fc34.i686.rpm                                                        1.2 MB/s |  69 kB     00:00    
-(124/338): libcloudproviders-0.3.1-3.fc34.x86_64.rpm                                          855 kB/s |  46 kB     00:00    
-(125/338): libdatrie-0.2.13-1.fc34.x86_64.rpm                                                 542 kB/s |  32 kB     00:00    
-(126/338): libedit-devel-3.1-35.20210216cvs.fc34.x86_64.rpm                                   732 kB/s |  40 kB     00:00    
-(127/338): libdav1d-0.8.2-1.fc34.x86_64.rpm                                                   2.2 MB/s | 391 kB     00:00    
-(128/338): libaom-2.0.1-4.fc34.x86_64.rpm                                                     2.6 MB/s | 1.6 MB     00:00    
-(129/338): libffi-3.1-28.fc34.i686.rpm                                                        360 kB/s |  32 kB     00:00    
-(130/338): libepoxy-1.5.5-2.fc34.x86_64.rpm                                                   1.4 MB/s | 253 kB     00:00    
-(131/338): libffi-devel-3.1-28.fc34.x86_64.rpm                                                736 kB/s |  24 kB     00:00    
-(132/338): libfontenc-1.1.3-15.fc34.x86_64.rpm                                                762 kB/s |  31 kB     00:00    
-(133/338): libgpg-error-1.42-1.fc34.i686.rpm                                                  857 kB/s | 220 kB     00:00    
+(1/338): adwaita-cursor-theme-40.0-2.fc34.noarch.rpm                                          644 kB/s | 623 kB     00:00    
+(2/338): clevis-18-1.fc34.x86_64.rpm                                                          328 kB/s |  56 kB     00:00    
+(3/338): clevis-luks-18-1.fc34.x86_64.rpm                                                     349 kB/s |  35 kB     00:00    
+(4/338): cargo-1.51.0-3.fc34.x86_64.rpm                                                       624 kB/s | 3.6 MB     00:05    
+(5/338): dconf-0.40.0-3.fc34.x86_64.rpm                                                       198 kB/s | 110 kB     00:00    
+(6/338): adwaita-icon-theme-40.0-2.fc34.noarch.rpm                                            805 kB/s |  11 MB     00:13    
+(7/338): gcc-c++-11.1.1-1.fc34.x86_64.rpm                                                     2.4 MB/s |  12 MB     00:04    
+(8/338): cpp-11.1.1-1.fc34.x86_64.rpm                                                         593 kB/s |  10 MB     00:17    
+(9/338): go-srpm-macros-3.0.10-1.fc34.noarch.rpm                                              195 kB/s |  25 kB     00:00    
+(10/338): gtk-update-icon-cache-3.24.29-1.fc34.x86_64.rpm                                     249 kB/s |  35 kB     00:00    
+(11/338): gtk3-3.24.29-1.fc34.x86_64.rpm                                                      3.4 MB/s | 4.7 MB     00:01    
+(12/338): gstreamer1-1.18.4-2.fc34.x86_64.rpm                                                 820 kB/s | 1.4 MB     00:01    
+(13/338): kernel-headers-5.11.16-300.fc34.x86_64.rpm                                          3.0 MB/s | 1.2 MB     00:00    
+(14/338): libgcc-11.1.1-1.fc34.i686.rpm                                                       523 kB/s | 112 kB     00:00    
+(15/338): librsvg2-2.50.4-1.fc34.x86_64.rpm                                                   3.4 MB/s | 3.4 MB     00:01    
+(16/338): python-rpm-macros-3.9-36.fc34.noarch.rpm                                            150 kB/s |  15 kB     00:00    
+(17/338): python-srpm-macros-3.9-36.fc34.noarch.rpm                                           152 kB/s |  21 kB     00:00    
+(18/338): python-unversioned-command-3.9.4-1.fc34.noarch.rpm                                   91 kB/s |  12 kB     00:00    
+(19/338): python3-devel-3.9.4-1.fc34.x86_64.rpm                                               1.7 MB/s | 206 kB     00:00    
+(20/338): python3-rpm-macros-3.9-36.fc34.noarch.rpm                                            81 kB/s |  14 kB     00:00    
+(21/338): libstdc++-devel-11.1.1-1.fc34.x86_64.rpm                                            1.1 MB/s | 2.2 MB     00:02    
+(22/338): rav1e-libs-0.4.1-1.fc34.x86_64.rpm                                                  1.9 MB/s | 786 kB     00:00    
+(23/338): gcc-11.1.1-1.fc34.x86_64.rpm                                                        1.4 MB/s |  32 MB     00:22    
+(24/338): xorg-x11-fonts-ISO8859-1-100dpi-7.5-31.fc34.noarch.rpm                              418 kB/s | 1.0 MB     00:02    
+(25/338): adobe-mappings-cmap-20171205-10.fc34.noarch.rpm                                     655 kB/s | 1.9 MB     00:02    
+(26/338): adobe-mappings-cmap-deprecated-20171205-10.fc34.noarch.rpm                          346 kB/s | 109 kB     00:00    
+(27/338): rust-std-static-1.51.0-3.fc34.x86_64.rpm                                            2.2 MB/s |  27 MB     00:12    
+(28/338): adobe-mappings-pdf-20180407-8.fc34.noarch.rpm                                       726 kB/s | 668 kB     00:00    
+(29/338): alsa-lib-1.2.4-5.fc34.x86_64.rpm                                                    1.4 MB/s | 474 kB     00:00    
+(30/338): annobin-9.65-2.fc34.x86_64.rpm                                                      378 kB/s | 134 kB     00:00    
+(31/338): at-spi2-atk-2.38.0-2.fc34.x86_64.rpm                                                756 kB/s |  90 kB     00:00    
+(32/338): at-spi2-core-2.40.0-2.fc34.x86_64.rpm                                               759 kB/s | 180 kB     00:00    
+(33/338): atk-2.36.0-3.fc34.x86_64.rpm                                                        767 kB/s | 273 kB     00:00    
+(34/338): asciidoc-9.1.0-1.fc34.noarch.rpm                                                    266 kB/s | 238 kB     00:00    
+(35/338): binutils-gold-2.35.1-41.fc34.x86_64.rpm                                             1.3 MB/s | 747 kB     00:00    
+(36/338): cairo-1.17.4-3.fc34.x86_64.rpm                                                      1.3 MB/s | 671 kB     00:00    
+(37/338): cairo-gobject-1.17.4-3.fc34.x86_64.rpm                                              168 kB/s |  18 kB     00:00    
+(38/338): clang-12.0.0-0.3.rc1.fc34.x86_64.rpm                                                756 kB/s |  85 kB     00:00    
+(39/338): rust-1.51.0-3.fc34.x86_64.rpm                                                       1.6 MB/s |  25 MB     00:16    
+(40/338): clang-resource-filesystem-12.0.0-0.3.rc1.fc34.x86_64.rpm                            110 kB/s |  12 kB     00:00    
+(41/338): clevis-pin-tpm2-0.3.0-1.fc34.x86_64.rpm                                             969 kB/s | 757 kB     00:00    
+(42/338): binutils-2.35.1-41.fc34.x86_64.rpm                                                  1.7 MB/s | 5.7 MB     00:03    
+(43/338): cmake-filesystem-3.19.7-1.fc34.i686.rpm                                             198 kB/s |  16 kB     00:00    
+(44/338): cmake-filesystem-3.19.7-1.fc34.x86_64.rpm                                           103 kB/s |  16 kB     00:00    
+(45/338): colord-libs-1.4.5-2.fc34.x86_64.rpm                                                 829 kB/s | 240 kB     00:00    
+(46/338): cryptsetup-devel-2.3.5-2.fc34.x86_64.rpm                                             64 kB/s |  28 kB     00:00    
+(47/338): dbus-devel-1.12.20-3.fc34.i686.rpm                                                   97 kB/s |  34 kB     00:00    
+(48/338): dbus-devel-1.12.20-3.fc34.x86_64.rpm                                                314 kB/s |  34 kB     00:00    
+(49/338): dbus-glib-0.110-11.fc34.x86_64.rpm                                                  575 kB/s | 126 kB     00:00    
+(50/338): dbus-glib-devel-0.110-11.fc34.x86_64.rpm                                            460 kB/s |  65 kB     00:00    
+(51/338): compiler-rt-12.0.0-0.1.rc1.fc34.x86_64.rpm                                          1.5 MB/s | 2.3 MB     00:01    
+(52/338): dbus-libs-1.12.20-3.fc34.i686.rpm                                                   943 kB/s | 164 kB     00:00    
+(53/338): dbus-python-devel-1.2.16-4.fc34.x86_64.rpm                                           70 kB/s |  20 kB     00:00    
+(54/338): docbook-dtds-1.0-77.fc34.noarch.rpm                                                 779 kB/s | 280 kB     00:00    
+(55/338): dwz-0.14-1.fc34.x86_64.rpm                                                          784 kB/s | 129 kB     00:00    
+(56/338): efi-srpm-macros-5-2.fc34.noarch.rpm                                                 188 kB/s |  21 kB     00:00    
+(57/338): fakeroot-1.25.3-2.fc34.x86_64.rpm                                                   796 kB/s |  89 kB     00:00    
+(58/338): fakeroot-libs-1.25.3-2.fc34.x86_64.rpm                                              183 kB/s |  40 kB     00:00    
+(59/338): docbook-style-xsl-1.79.2-14.fc34.noarch.rpm                                         1.5 MB/s | 1.2 MB     00:00    
+(60/338): flac-libs-1.3.3-7.fc34.x86_64.rpm                                                   1.1 MB/s | 220 kB     00:00    
+(61/338): fontconfig-2.13.93-6.fc34.x86_64.rpm                                                747 kB/s | 275 kB     00:00    
+(62/338): fonts-srpm-macros-2.0.5-5.fc34.noarch.rpm                                            69 kB/s |  27 kB     00:00    
+(63/338): fpc-srpm-macros-1.3-3.fc34.noarch.rpm                                                78 kB/s | 7.7 kB     00:00    
+(64/338): fribidi-1.0.10-4.fc34.x86_64.rpm                                                    558 kB/s |  86 kB     00:00    
+(65/338): freetype-2.10.4-3.fc34.x86_64.rpm                                                   1.3 MB/s | 394 kB     00:00    
+(66/338): gd-2.3.2-2.fc34.x86_64.rpm                                                          959 kB/s | 140 kB     00:00    
+(67/338): ghc-srpm-macros-1.5.0-4.fc34.noarch.rpm                                              39 kB/s | 7.8 kB     00:00    
+(68/338): gdk-pixbuf2-modules-2.42.4-2.fc34.x86_64.rpm                                        136 kB/s |  95 kB     00:00    
+(69/338): git-2.31.1-1.fc34.x86_64.rpm                                                        218 kB/s | 121 kB     00:00    
+(70/338): clang-libs-12.0.0-0.3.rc1.fc34.x86_64.rpm                                           2.6 MB/s |  21 MB     00:07    
+(71/338): git-core-doc-2.31.1-1.fc34.noarch.rpm                                               1.5 MB/s | 2.3 MB     00:01    
+(72/338): glib2-devel-2.68.1-1.fc34.x86_64.rpm                                                1.6 MB/s | 476 kB     00:00    
+(73/338): glibc-devel-2.33-5.fc34.i686.rpm                                                    332 kB/s | 128 kB     00:00    
+(74/338): glibc-devel-2.33-5.fc34.x86_64.rpm                                                  157 kB/s | 128 kB     00:00    
+(75/338): glibc-headers-x86-2.33-5.fc34.noarch.rpm                                            687 kB/s | 515 kB     00:00    
+(76/338): git-core-2.31.1-1.fc34.x86_64.rpm                                                   963 kB/s | 3.6 MB     00:03    
+(77/338): gnat-srpm-macros-4-13.fc34.noarch.rpm                                                46 kB/s | 8.3 kB     00:00    
+(78/338): glibc-2.33-5.fc34.i686.rpm                                                          1.4 MB/s | 3.3 MB     00:02    
+(79/338): graphite2-1.3.14-7.fc34.x86_64.rpm                                                  438 kB/s |  95 kB     00:00    
+(80/338): gsm-1.0.19-4.fc34.x86_64.rpm                                                        107 kB/s |  33 kB     00:00    
+(81/338): graphviz-2.44.0-17.fc34.x86_64.rpm                                                  2.0 MB/s | 3.4 MB     00:01    
+(82/338): gtk2-2.24.33-4.fc34.x86_64.rpm                                                      2.5 MB/s | 3.5 MB     00:01    
+(83/338): gts-0.7.6-39.20121130.fc34.x86_64.rpm                                               1.0 MB/s | 237 kB     00:00    
+(84/338): harfbuzz-2.7.4-3.fc34.x86_64.rpm                                                    1.5 MB/s | 634 kB     00:00    
+(85/338): hicolor-icon-theme-0.17-10.fc34.noarch.rpm                                          292 kB/s |  45 kB     00:00    
+(86/338): google-droid-sans-fonts-20200215-9.fc34.noarch.rpm                                  965 kB/s | 2.7 MB     00:02    
+(87/338): http-parser-2.9.4-4.fc34.x86_64.rpm                                                  42 kB/s |  38 kB     00:00    
+(88/338): jbig2dec-libs-0.19-4.fc34.x86_64.rpm                                                106 kB/s |  74 kB     00:00    
+(89/338): jbigkit-libs-2.1-21.fc34.x86_64.rpm                                                 467 kB/s |  53 kB     00:00    
+(90/338): jq-1.6-7.fc34.x86_64.rpm                                                            1.3 MB/s | 179 kB     00:00    
+(91/338): jose-10-9.fc34.x86_64.rpm                                                           200 kB/s |  57 kB     00:00    
+(92/338): kernel-srpm-macros-1.0-4.fc34.noarch.rpm                                            112 kB/s | 7.3 kB     00:00    
+(93/338): lasi-1.1.3-6.fc34.x86_64.rpm                                                        165 kB/s |  56 kB     00:00    
+(94/338): lcms2-2.12-1.fc34.x86_64.rpm                                                        482 kB/s | 171 kB     00:00    
+(95/338): libSM-1.2.3-8.fc34.x86_64.rpm                                                       364 kB/s |  42 kB     00:00    
+(96/338): libICE-1.0.10-6.fc34.x86_64.rpm                                                     415 kB/s |  71 kB     00:00    
+(97/338): guile22-2.2.7-2.fc34.x86_64.rpm                                                     2.5 MB/s | 6.5 MB     00:02    
+(98/338): libX11-common-1.7.0-3.fc34.noarch.rpm                                               564 kB/s | 153 kB     00:00    
+(99/338): libX11-1.7.0-3.fc34.x86_64.rpm                                                      2.0 MB/s | 661 kB     00:00    
+(100/338): libX11-xcb-1.7.0-3.fc34.x86_64.rpm                                                 169 kB/s |  12 kB     00:00    
+(101/338): libXau-1.0.9-6.fc34.x86_64.rpm                                                     474 kB/s |  31 kB     00:00    
+(102/338): libXaw-1.0.13-17.fc34.x86_64.rpm                                                   1.9 MB/s | 202 kB     00:00    
+(103/338): libXcursor-1.2.0-5.fc34.x86_64.rpm                                                 303 kB/s |  30 kB     00:00    
+(104/338): libXcomposite-0.4.5-5.fc34.x86_64.rpm                                              166 kB/s |  23 kB     00:00    
+(105/338): libXdamage-1.1.5-5.fc34.x86_64.rpm                                                 221 kB/s |  22 kB     00:00    
+(106/338): libXext-1.3.4-6.fc34.x86_64.rpm                                                    458 kB/s |  39 kB     00:00    
+(107/338): libXfixes-5.0.3-14.fc34.x86_64.rpm                                                 144 kB/s |  19 kB     00:00    
+(108/338): libXi-1.7.10-6.fc34.x86_64.rpm                                                     375 kB/s |  39 kB     00:00    
+(109/338): libXft-2.3.3-6.fc34.x86_64.rpm                                                     434 kB/s |  63 kB     00:00    
+(110/338): libXinerama-1.1.4-8.fc34.x86_64.rpm                                                141 kB/s |  14 kB     00:00    
+(111/338): libXpm-3.5.13-5.fc34.x86_64.rpm                                                    697 kB/s |  59 kB     00:00    
+(112/338): libXmu-1.1.3-6.fc34.x86_64.rpm                                                     667 kB/s |  75 kB     00:00    
+(113/338): libXrandr-1.5.2-6.fc34.x86_64.rpm                                                  463 kB/s |  28 kB     00:00    
+(114/338): libXrender-0.9.10-14.fc34.x86_64.rpm                                               267 kB/s |  27 kB     00:00    
+(115/338): libXtst-1.2.3-14.fc34.x86_64.rpm                                                   171 kB/s |  20 kB     00:00    
+(116/338): libXt-1.2.0-4.fc34.x86_64.rpm                                                      1.0 MB/s | 183 kB     00:00    
+(117/338): libasyncns-0.8-20.fc34.x86_64.rpm                                                  300 kB/s |  30 kB     00:00    
+(118/338): libavif-0.9.0-1.fc34.x86_64.rpm                                                    509 kB/s |  65 kB     00:00    
+(119/338): libblkid-devel-2.36.2-1.fc34.x86_64.rpm                                            125 kB/s |  14 kB     00:00    
+(120/338): libcanberra-0.30-24.fc34.x86_64.rpm                                                561 kB/s |  87 kB     00:00    
+(121/338): libcanberra-gtk2-0.30-24.fc34.x86_64.rpm                                           200 kB/s |  26 kB     00:00    
+(122/338): libcanberra-gtk3-0.30-24.fc34.x86_64.rpm                                           256 kB/s |  32 kB     00:00    
+(123/338): libaom-2.0.1-4.fc34.x86_64.rpm                                                     2.9 MB/s | 1.6 MB     00:00    
+(124/338): libcap-2.48-2.fc34.i686.rpm                                                        506 kB/s |  69 kB     00:00    
+(125/338): libcloudproviders-0.3.1-3.fc34.x86_64.rpm                                          475 kB/s |  46 kB     00:00    
+(126/338): libdatrie-0.2.13-1.fc34.x86_64.rpm                                                 228 kB/s |  32 kB     00:00    
+(127/338): libdav1d-0.8.2-1.fc34.x86_64.rpm                                                   2.1 MB/s | 391 kB     00:00    
+(128/338): libepoxy-1.5.5-2.fc34.x86_64.rpm                                                   1.7 MB/s | 253 kB     00:00    
+(129/338): libffi-3.1-28.fc34.i686.rpm                                                        298 kB/s |  32 kB     00:00    
+(130/338): libfontenc-1.1.3-15.fc34.x86_64.rpm                                                316 kB/s |  31 kB     00:00    
+(131/338): libffi-devel-3.1-28.fc34.x86_64.rpm                                                188 kB/s |  24 kB     00:00    
+(132/338): libedit-devel-3.1-35.20210216cvs.fc34.x86_64.rpm                                   101 kB/s |  40 kB     00:00    
+(133/338): libgcrypt-1.9.2-2.fc34.i686.rpm                                                    2.0 MB/s | 482 kB     00:00    
 (134/338): libgit2-1.1.0-4.fc34.x86_64.rpm                                                    1.5 MB/s | 470 kB     00:00    
-(135/338): libgcrypt-1.9.2-2.fc34.i686.rpm                                                    1.3 MB/s | 482 kB     00:00    
-(136/338): libijs-0.35-13.fc34.x86_64.rpm                                                     642 kB/s |  30 kB     00:00    
-(137/338): libimagequant-2.14.1-1.fc34.x86_64.rpm                                             930 kB/s |  62 kB     00:00    
-(138/338): libjose-10-9.fc34.x86_64.rpm                                                       1.0 MB/s |  64 kB     00:00    
-(139/338): libluksmeta-9-10.fc34.x86_64.rpm                                                   390 kB/s |  25 kB     00:00    
-(140/338): libjpeg-turbo-2.0.90-2.fc34.x86_64.rpm                                             1.9 MB/s | 176 kB     00:00    
-(141/338): libmount-devel-2.36.2-1.fc34.x86_64.rpm                                            161 kB/s |  15 kB     00:00    
-(142/338): libmpc-1.2.1-2.fc34.x86_64.rpm                                                     695 kB/s |  63 kB     00:00    
-(143/338): libogg-1.3.4-4.fc34.x86_64.rpm                                                     765 kB/s |  33 kB     00:00    
-(144/338): libomp-devel-12.0.0-0.2.rc1.fc34.x86_64.rpm                                        252 kB/s |  24 kB     00:00    
-(145/338): libomp-12.0.0-0.2.rc1.fc34.x86_64.rpm                                              1.8 MB/s | 355 kB     00:00    
-(146/338): libpaper-1.1.28-2.fc34.x86_64.rpm                                                  585 kB/s |  41 kB     00:00    
-(147/338): libraqm-0.7.0-7.fc34.x86_64.rpm                                                    180 kB/s |  19 kB     00:00    
-(148/338): libselinux-3.2-1.fc34.i686.rpm                                                     813 kB/s |  89 kB     00:00    
-(149/338): libselinux-devel-3.2-1.fc34.x86_64.rpm                                             1.1 MB/s | 113 kB     00:00    
-(150/338): libsepol-devel-3.2-1.fc34.x86_64.rpm                                               650 kB/s |  40 kB     00:00    
-(151/338): libsepol-3.2-1.fc34.i686.rpm                                                       1.7 MB/s | 307 kB     00:00    
-(152/338): libssh2-1.9.0-7.fc34.x86_64.rpm                                                    1.6 MB/s | 118 kB     00:00    
-(153/338): libsndfile-1.0.31-3.fc34.x86_64.rpm                                                1.8 MB/s | 210 kB     00:00    
-(154/338): libthai-0.1.28-6.fc34.x86_64.rpm                                                   1.7 MB/s | 213 kB     00:00    
-(155/338): libtiff-4.2.0-1.fc34.x86_64.rpm                                                    1.5 MB/s | 194 kB     00:00    
-(156/338): libunwind-1.4.0-5.fc34.x86_64.rpm                                                  1.1 MB/s |  65 kB     00:00    
-(157/338): libgs-9.53.3-5.fc34.x86_64.rpm                                                     2.7 MB/s | 3.1 MB     00:01    
-(158/338): libvmaf-1.5.3-2.fc34.x86_64.rpm                                                    1.9 MB/s | 347 kB     00:00    
-(159/338): libvorbis-1.3.7-3.fc34.x86_64.rpm                                                  1.3 MB/s | 199 kB     00:00    
-(160/338): libwayland-client-1.19.0-1.fc34.x86_64.rpm                                         586 kB/s |  32 kB     00:00    
-(161/338): libwayland-cursor-1.19.0-1.fc34.x86_64.rpm                                         696 kB/s |  19 kB     00:00    
-(162/338): libwayland-egl-1.19.0-1.fc34.x86_64.rpm                                            451 kB/s |  12 kB     00:00    
-(163/338): libxcrypt-4.4.18-1.fc34.i686.rpm                                                   1.4 MB/s | 124 kB     00:00    
-(164/338): libwebp-1.2.0-1.fc34.x86_64.rpm                                                    2.1 MB/s | 280 kB     00:00    
-(165/338): libxcb-1.13.1-7.fc34.x86_64.rpm                                                    1.7 MB/s | 230 kB     00:00    
-(166/338): libxcrypt-compat-4.4.18-1.fc34.x86_64.rpm                                          1.4 MB/s |  90 kB     00:00    
-(167/338): libxcrypt-devel-4.4.18-1.fc34.i686.rpm                                             612 kB/s |  29 kB     00:00    
-(168/338): libxcrypt-devel-4.4.18-1.fc34.x86_64.rpm                                           712 kB/s |  29 kB     00:00    
-(169/338): libxslt-1.1.34-5.fc34.x86_64.rpm                                                   1.8 MB/s | 244 kB     00:00    
-(170/338): libzstd-1.4.9-1.fc34.i686.rpm                                                      1.6 MB/s | 308 kB     00:00    
-(171/338): llvm-devel-12.0.0-0.1.rc1.fc34.x86_64.rpm                                          1.4 MB/s | 3.0 MB     00:02    
-(172/338): llvm-12.0.0-0.1.rc1.fc34.x86_64.rpm                                                1.9 MB/s |  14 MB     00:07    
-(173/338): llvm-libs-12.0.0-0.1.rc1.fc34.x86_64.rpm                                           1.6 MB/s |  23 MB     00:14    
-(174/338): llvm-static-12.0.0-0.1.rc1.fc34.x86_64.rpm                                         1.6 MB/s |  41 MB     00:25    
-(175/338): lua-srpm-macros-1-4.fc34.noarch.rpm                                                142 kB/s | 8.3 kB     00:00    
-(176/338): luksmeta-9-10.fc34.x86_64.rpm                                                      513 kB/s |  21 kB     00:00    
-(177/338): lz4-libs-1.9.3-2.fc34.i686.rpm                                                     632 kB/s |  70 kB     00:00    
-(178/338): make-4.3-5.fc34.x86_64.rpm                                                         1.4 MB/s | 539 kB     00:00    
-(179/338): mkfontscale-1.2.1-2.fc34.x86_64.rpm                                                509 kB/s |  31 kB     00:00    
-(180/338): mkpasswd-5.5.9-1.fc34.x86_64.rpm                                                   632 kB/s |  41 kB     00:00    
-(181/338): ncurses-c++-libs-6.2-4.20200222.fc34.x86_64.rpm                                    692 kB/s |  37 kB     00:00    
-(182/338): ncurses-devel-6.2-4.20200222.fc34.x86_64.rpm                                       1.5 MB/s | 510 kB     00:00    
-(183/338): netpbm-10.93.00-1.fc34.x86_64.rpm                                                  1.2 MB/s | 188 kB     00:00    
-(184/338): nim-srpm-macros-3-4.fc34.noarch.rpm                                                171 kB/s | 8.4 kB     00:00    
-(185/338): ocaml-srpm-macros-6-4.fc34.noarch.rpm                                              116 kB/s | 7.8 kB     00:00    
-(186/338): oniguruma-6.9.6-1.fc34.2.x86_64.rpm                                                1.3 MB/s | 226 kB     00:00    
-(187/338): openblas-srpm-macros-2-9.fc34.noarch.rpm                                           156 kB/s | 7.4 kB     00:00    
-(188/338): openjpeg2-2.4.0-2.fc34.x86_64.rpm                                                  1.2 MB/s | 165 kB     00:00    
-(189/338): llvm11-libs-11.1.0-1.fc34.x86_64.rpm                                               1.3 MB/s |  22 MB     00:16    
-(190/338): openssl-devel-1.1.1k-1.fc34.x86_64.rpm                                             1.7 MB/s | 2.2 MB     00:01    
-(191/338): openssl-pkcs11-0.4.11-2.fc34.i686.rpm                                              1.0 MB/s |  77 kB     00:00    
-(192/338): openssl-pkcs11-0.4.11-2.fc34.x86_64.rpm                                            447 kB/s |  74 kB     00:00    
-(193/338): opus-1.3.1-8.fc34.x86_64.rpm                                                       1.0 MB/s | 202 kB     00:00    
-(194/338): openssl-libs-1.1.1k-1.fc34.i686.rpm                                                1.9 MB/s | 1.4 MB     00:00    
-(195/338): p11-kit-0.23.22-3.fc34.i686.rpm                                                    1.4 MB/s | 345 kB     00:00    
-(196/338): pango-1.48.4-1.fc34.x86_64.rpm                                                     1.6 MB/s | 301 kB     00:00    
-(197/338): patch-2.7.6-14.fc34.x86_64.rpm                                                     915 kB/s | 130 kB     00:00    
-(198/338): pcre-cpp-8.44-3.fc34.1.x86_64.rpm                                                  400 kB/s |  26 kB     00:00    
-(199/338): pcre-utf16-8.44-3.fc34.1.x86_64.rpm                                                1.3 MB/s | 187 kB     00:00    
-(200/338): pcre-devel-8.44-3.fc34.1.x86_64.rpm                                                1.5 MB/s | 471 kB     00:00    
-(201/338): pcre-utf32-8.44-3.fc34.1.x86_64.rpm                                                1.2 MB/s | 177 kB     00:00    
-(202/338): pcre2-10.36-4.fc34.i686.rpm                                                        1.6 MB/s | 230 kB     00:00    
-(203/338): pcre2-devel-10.36-4.fc34.x86_64.rpm                                                2.0 MB/s | 477 kB     00:00    
-(204/338): pcre2-utf16-10.36-4.fc34.x86_64.rpm                                                1.5 MB/s | 213 kB     00:00    
-(205/338): perl-AutoLoader-5.74-474.fc34.noarch.rpm                                           493 kB/s |  33 kB     00:00    
-(206/338): pcre2-utf32-10.36-4.fc34.x86_64.rpm                                                2.0 MB/s | 203 kB     00:00    
-(207/338): perl-Carp-1.50-458.fc34.noarch.rpm                                                 558 kB/s |  29 kB     00:00    
-(208/338): perl-B-1.80-474.fc34.x86_64.rpm                                                    1.8 MB/s | 192 kB     00:00    
-(209/338): perl-Class-Struct-0.66-474.fc34.noarch.rpm                                         624 kB/s |  34 kB     00:00    
-(210/338): perl-Data-Dumper-2.174-460.fc34.x86_64.rpm                                         1.2 MB/s |  56 kB     00:00    
-(211/338): perl-Digest-1.19-2.fc34.noarch.rpm                                                 249 kB/s |  26 kB     00:00    
-(212/338): perl-Digest-MD5-2.58-2.fc34.x86_64.rpm                                             406 kB/s |  36 kB     00:00    
-(213/338): perl-DynaLoader-1.47-474.fc34.x86_64.rpm                                           934 kB/s |  38 kB     00:00    
-(214/338): perl-Errno-1.30-474.fc34.x86_64.rpm                                                425 kB/s |  27 kB     00:00    
-(215/338): perl-Error-0.17029-5.fc34.noarch.rpm                                               956 kB/s |  42 kB     00:00    
-(216/338): perl-Exporter-5.74-459.fc34.noarch.rpm                                             502 kB/s |  32 kB     00:00    
-(217/338): perl-Fcntl-1.13-474.fc34.x86_64.rpm                                                521 kB/s |  32 kB     00:00    
-(218/338): perl-File-Basename-2.85-474.fc34.noarch.rpm                                        492 kB/s |  29 kB     00:00    
-(219/338): perl-File-Find-1.37-474.fc34.noarch.rpm                                            476 kB/s |  37 kB     00:00    
-(220/338): perl-File-Path-2.18-2.fc34.noarch.rpm                                              706 kB/s |  36 kB     00:00    
-(221/338): perl-File-Temp-0.231.100-2.fc34.noarch.rpm                                         1.1 MB/s |  60 kB     00:00    
-(222/338): perl-File-stat-1.09-474.fc34.noarch.rpm                                            483 kB/s |  29 kB     00:00    
-(223/338): perl-FileHandle-2.03-474.fc34.noarch.rpm                                           424 kB/s |  27 kB     00:00    
-(224/338): perl-Getopt-Long-2.52-2.fc34.noarch.rpm                                            857 kB/s |  61 kB     00:00    
-(225/338): perl-Encode-3.08-459.fc34.x86_64.rpm                                               2.3 MB/s | 1.7 MB     00:00    
-(226/338): perl-Getopt-Std-1.12-474.fc34.noarch.rpm                                           369 kB/s |  27 kB     00:00    
-(227/338): perl-Git-2.31.1-1.fc34.noarch.rpm                                                  785 kB/s |  44 kB     00:00    
-(228/338): perl-HTTP-Tiny-0.076-458.fc34.noarch.rpm                                           930 kB/s |  55 kB     00:00    
-(229/338): perl-IO-1.43-474.fc34.x86_64.rpm                                                   1.6 MB/s |  99 kB     00:00    
-(230/338): perl-IO-Socket-IP-0.41-3.fc34.noarch.rpm                                           620 kB/s |  43 kB     00:00    
-(231/338): perl-IPC-Open3-1.21-474.fc34.noarch.rpm                                            509 kB/s |  34 kB     00:00    
-(232/338): perl-IO-Socket-SSL-2.070-2.fc34.noarch.rpm                                         2.0 MB/s | 214 kB     00:00    
-(233/338): perl-MIME-Base64-3.16-2.fc34.x86_64.rpm                                            633 kB/s |  30 kB     00:00    
-(234/338): perl-Mozilla-CA-20200520-4.fc34.noarch.rpm                                         281 kB/s |  12 kB     00:00    
-(235/338): perl-NDBM_File-1.15-474.fc34.x86_64.rpm                                            618 kB/s |  34 kB     00:00    
-(236/338): perl-POSIX-1.94-474.fc34.x86_64.rpm                                                1.4 MB/s | 111 kB     00:00    
-(237/338): perl-Net-SSLeay-1.90-2.fc34.x86_64.rpm                                             1.8 MB/s | 357 kB     00:00    
-(238/338): perl-PathTools-3.78-459.fc34.x86_64.rpm                                            1.0 MB/s |  86 kB     00:00    
-(239/338): perl-Pod-Escapes-1.07-458.fc34.noarch.rpm                                          444 kB/s |  20 kB     00:00    
-(240/338): perl-Pod-Perldoc-3.28.01-459.fc34.noarch.rpm                                       858 kB/s |  85 kB     00:00    
-(241/338): perl-Pod-Usage-2.01-2.fc34.noarch.rpm                                              609 kB/s |  41 kB     00:00    
-(242/338): perl-Pod-Simple-3.42-2.fc34.noarch.rpm                                             1.4 MB/s | 216 kB     00:00    
-(243/338): perl-Scalar-List-Utils-1.56-459.fc34.x86_64.rpm                                    1.2 MB/s |  72 kB     00:00    
-(244/338): perl-SelectSaver-1.02-474.fc34.noarch.rpm                                          133 kB/s |  23 kB     00:00    
-(245/338): perl-Socket-2.031-2.fc34.x86_64.rpm                                                189 kB/s |  56 kB     00:00    
-(246/338): perl-Storable-3.21-458.fc34.x86_64.rpm                                             207 kB/s |  97 kB     00:00    
-(247/338): perl-Symbol-1.08-474.fc34.noarch.rpm                                                66 kB/s |  26 kB     00:00    
-(248/338): perl-Term-ANSIColor-5.01-459.fc34.noarch.rpm                                       469 kB/s |  49 kB     00:00    
-(249/338): perl-Term-Cap-1.17-458.fc34.noarch.rpm                                             481 kB/s |  22 kB     00:00    
-(250/338): perl-Text-ParseWords-3.30-458.fc34.noarch.rpm                                       98 kB/s |  16 kB     00:00    
-(251/338): perl-Text-Tabs+Wrap-2013.0523-458.fc34.noarch.rpm                                  389 kB/s |  23 kB     00:00    
-(252/338): perl-TermReadKey-2.38-9.fc34.x86_64.rpm                                             84 kB/s |  36 kB     00:00    
-(253/338): perl-URI-5.09-1.fc34.noarch.rpm                                                    457 kB/s | 109 kB     00:00    
-(254/338): perl-base-2.27-474.fc34.noarch.rpm                                                  63 kB/s |  28 kB     00:00    
-(255/338): perl-Time-Local-1.300-5.fc34.noarch.rpm                                             39 kB/s |  34 kB     00:00    
-(256/338): perl-constant-1.33-459.fc34.noarch.rpm                                             552 kB/s |  23 kB     00:00    
-(257/338): perl-if-0.60.800-474.fc34.noarch.rpm                                               564 kB/s |  26 kB     00:00    
-(258/338): perl-lib-0.65-474.fc34.x86_64.rpm                                                  572 kB/s |  27 kB     00:00    
-(259/338): perl-interpreter-5.32.1-474.fc34.x86_64.rpm                                        932 kB/s |  83 kB     00:00    
-(260/338): perl-libnet-3.13-2.fc34.noarch.rpm                                                 344 kB/s | 127 kB     00:00    
-(261/338): perl-mro-1.23-474.fc34.x86_64.rpm                                                  426 kB/s |  40 kB     00:00    
-(262/338): perl-overload-1.31-474.fc34.noarch.rpm                                             289 kB/s |  57 kB     00:00    
-(263/338): perl-overloading-0.02-474.fc34.noarch.rpm                                          119 kB/s |  24 kB     00:00    
-(264/338): perl-parent-0.238-458.fc34.noarch.rpm                                               80 kB/s |  14 kB     00:00    
-(265/338): perl-podlators-4.14-458.fc34.noarch.rpm                                            394 kB/s | 113 kB     00:00    
-(266/338): perl-srpm-macros-1-39.fc34.noarch.rpm                                              195 kB/s | 8.5 kB     00:00    
-(267/338): perl-subs-1.03-474.fc34.noarch.rpm                                                 356 kB/s |  23 kB     00:00    
-(268/338): perl-vars-1.05-474.fc34.noarch.rpm                                                 312 kB/s |  25 kB     00:00    
-(269/338): pugixml-1.11.4-2.fc34.x86_64.rpm                                                   911 kB/s | 101 kB     00:00    
-(270/338): perl-libs-5.32.1-474.fc34.x86_64.rpm                                               1.0 MB/s | 2.1 MB     00:01    
-(271/338): pulseaudio-libs-14.2-3.fc34.x86_64.rpm                                             1.7 MB/s | 728 kB     00:00    
-(272/338): python3-attrs-20.3.0-2.fc34.noarch.rpm                                             1.2 MB/s |  78 kB     00:00    
-(273/338): python3-chardet-4.0.0-1.fc34.noarch.rpm                                            1.7 MB/s | 214 kB     00:00    
-(274/338): python3-coverage-5.5-1.fc34.x86_64.rpm                                             1.6 MB/s | 283 kB     00:00    
-(275/338): python3-dbus-client-gen-0.5-2.fc34.noarch.rpm                                      370 kB/s |  25 kB     00:00    
-(276/338): python3-dbus-python-client-gen-0.8-2.fc34.noarch.rpm                               580 kB/s |  27 kB     00:00    
-(277/338): python3-dbus-signature-pyparsing-0.04-2.fc34.noarch.rpm                            364 kB/s |  19 kB     00:00    
-(278/338): python3-iniconfig-1.1.1-2.fc34.noarch.rpm                                          352 kB/s |  16 kB     00:00    
-(279/338): python3-idna-2.10-3.fc34.noarch.rpm                                                1.4 MB/s |  99 kB     00:00    
-(280/338): python3-into-dbus-python-0.08-2.fc34.noarch.rpm                                    490 kB/s |  27 kB     00:00    
-(281/338): python3-justbases-0.15-3.fc34.noarch.rpm                                           810 kB/s |  45 kB     00:00    
-(282/338): python3-justbytes-0.15-3.fc34.noarch.rpm                                           834 kB/s |  42 kB     00:00    
-(283/338): python3-packaging-20.9-1.fc34.noarch.rpm                                           1.0 MB/s |  70 kB     00:00    
-(284/338): python3-lit-12.0.0-0.2.rc1.fc34.noarch.rpm                                         999 kB/s | 149 kB     00:00    
-(285/338): python3-pluggy-0.13.1-3.fc34.noarch.rpm                                            571 kB/s |  38 kB     00:00    
-(286/338): python3-progressbar2-3.52.1-2.fc34.noarch.rpm                                      424 kB/s |  55 kB     00:00    
-(287/338): python3-psutil-5.8.0-5.fc34.x86_64.rpm                                             1.3 MB/s | 400 kB     00:00    
-(288/338): python3-pip-21.0.1-2.fc34.noarch.rpm                                               2.3 MB/s | 1.8 MB     00:00    
-(289/338): python3-py-1.10.0-2.fc34.noarch.rpm                                                1.4 MB/s | 429 kB     00:00    
-(290/338): python3-pyparsing-2.4.7-5.fc34.noarch.rpm                                          2.0 MB/s | 150 kB     00:00    
-(291/338): python3-pysocks-1.7.1-8.fc34.noarch.rpm                                            619 kB/s |  35 kB     00:00    
-(292/338): python3-pyudev-0.22.0-4.fc34.noarch.rpm                                            822 kB/s |  77 kB     00:00    
-(293/338): python3-requests-2.25.1-1.fc34.noarch.rpm                                          806 kB/s | 114 kB     00:00    
-(294/338): python3-rpm-generators-12-4.fc34.noarch.rpm                                        360 kB/s |  30 kB     00:00    
-(295/338): python3-semantic_version-2.8.4-6.fc34.noarch.rpm                                   394 kB/s |  40 kB     00:00    
-(296/338): python3-pytest-6.2.2-1.fc34.noarch.rpm                                             3.0 MB/s | 1.6 MB     00:00    
-(297/338): python3-toml-0.10.2-2.fc34.noarch.rpm                                              472 kB/s |  39 kB     00:00    
-(298/338): python3-urllib3-1.25.10-4.fc34.noarch.rpm                                          1.5 MB/s | 175 kB     00:00    
-(299/338): python3-wcwidth-0.2.5-3.fc34.noarch.rpm                                             99 kB/s |  42 kB     00:00    
-(300/338): python3-utils-2.4.0-3.fc34.noarch.rpm                                              275 kB/s | 194 kB     00:00    
-(301/338): qt5-srpm-macros-5.15.2-2.fc34.noarch.rpm                                            46 kB/s | 8.4 kB     00:00    
-(302/338): redhat-rpm-config-182-1.fc34.noarch.rpm                                            1.1 MB/s |  65 kB     00:00    
-(303/338): rest-0.8.1-9.fc34.x86_64.rpm                                                       1.1 MB/s |  69 kB     00:00    
-(304/338): rpmdevtools-9.3-4.fc34.noarch.rpm                                                  427 kB/s |  92 kB     00:00    
-(305/338): rpm-build-4.16.1.3-1.fc34.x86_64.rpm                                               407 kB/s | 100 kB     00:00    
-(306/338): rust-srpm-macros-17-2.fc34.noarch.rpm                                               64 kB/s | 9.8 kB     00:00    
-(307/338): sgml-common-0.6.3-56.fc34.noarch.rpm                                               353 kB/s |  54 kB     00:00    
-(308/338): sound-theme-freedesktop-0.8-15.fc34.noarch.rpm                                     1.3 MB/s | 378 kB     00:00    
-(309/338): sysprof-capture-devel-3.40.1-1.fc34.x86_64.rpm                                     355 kB/s |  59 kB     00:00    
-(310/338): systemd-devel-248-2.fc34.x86_64.rpm                                                1.0 MB/s | 438 kB     00:00    
-(311/338): systemd-libs-248-2.fc34.i686.rpm                                                   985 kB/s | 620 kB     00:00    
-(312/338): tpm2-tools-5.0-2.fc34.x86_64.rpm                                                   1.1 MB/s | 727 kB     00:00    
-(313/338): urw-base35-bookman-fonts-20200910-4.fc34.noarch.rpm                                1.8 MB/s | 856 kB     00:00    
-(314/338): urw-base35-c059-fonts-20200910-4.fc34.noarch.rpm                                   2.0 MB/s | 884 kB     00:00    
-(315/338): urw-base35-d050000l-fonts-20200910-4.fc34.noarch.rpm                               1.2 MB/s |  77 kB     00:00    
-(316/338): urw-base35-fonts-20200910-4.fc34.noarch.rpm                                        174 kB/s | 9.8 kB     00:00    
-(317/338): urw-base35-fonts-common-20200910-4.fc34.noarch.rpm                                 509 kB/s |  21 kB     00:00    
-(318/338): urw-base35-gothic-fonts-20200910-4.fc34.noarch.rpm                                 2.2 MB/s | 652 kB     00:00    
-(319/338): urw-base35-nimbus-mono-ps-fonts-20200910-4.fc34.noarch.rpm                         2.1 MB/s | 802 kB     00:00    
-(320/338): svt-av1-libs-0.8.6-4.fc34.x86_64.rpm                                               1.1 MB/s | 4.6 MB     00:04    
-(321/338): urw-base35-nimbus-roman-fonts-20200910-4.fc34.noarch.rpm                           2.0 MB/s | 865 kB     00:00    
-(322/338): urw-base35-p052-fonts-20200910-4.fc34.noarch.rpm                                   2.1 MB/s | 983 kB     00:00    
-(323/338): urw-base35-nimbus-sans-fonts-20200910-4.fc34.noarch.rpm                            1.6 MB/s | 1.3 MB     00:00    
-(324/338): urw-base35-standard-symbols-ps-fonts-20200910-4.fc34.noarch.rpm                    576 kB/s |  42 kB     00:00    
-(325/338): whois-nls-5.5.9-1.fc34.noarch.rpm                                                  546 kB/s |  34 kB     00:00    
-(326/338): xemacs-filesystem-21.5.34-39.20200331hge2ac728aa576.fc34.noarch.rpm                202 kB/s | 9.5 kB     00:00    
-(327/338): urw-base35-z003-fonts-20200910-4.fc34.noarch.rpm                                   1.8 MB/s | 279 kB     00:00    
-(328/338): xml-common-0.6.3-56.fc34.noarch.rpm                                                584 kB/s |  31 kB     00:00    
-(329/338): xz-libs-5.2.5-5.fc34.i686.rpm                                                      1.1 MB/s | 100 kB     00:00    
-(330/338): zlib-1.2.11-26.fc34.i686.rpm                                                       776 kB/s |  94 kB     00:00    
-(331/338): zlib-devel-1.2.11-26.fc34.x86_64.rpm                                               265 kB/s |  44 kB     00:00    
-(332/338): libgcc-11.1.1-1.fc34.x86_64.rpm                                                    691 kB/s | 103 kB     00:00    
-(333/338): zstd-1.4.9-1.fc34.x86_64.rpm                                                       1.8 MB/s | 574 kB     00:00    
-(334/338): libgomp-11.1.1-1.fc34.x86_64.rpm                                                   1.4 MB/s | 276 kB     00:00    
-(335/338): python3-3.9.4-1.fc34.x86_64.rpm                                                    383 kB/s |  28 kB     00:00    
-(336/338): libstdc++-11.1.1-1.fc34.x86_64.rpm                                                 2.2 MB/s | 707 kB     00:00    
-(337/338): python3-libs-3.9.4-1.fc34.x86_64.rpm                                               2.6 MB/s | 7.4 MB     00:02    
-(338/338): llvm-test-12.0.0-0.1.rc1.fc34.x86_64.rpm                                           2.0 MB/s | 102 MB     00:51    
+(135/338): libgpg-error-1.42-1.fc34.i686.rpm                                                  639 kB/s | 220 kB     00:00    
+(136/338): libijs-0.35-13.fc34.x86_64.rpm                                                     177 kB/s |  30 kB     00:00    
+(137/338): libimagequant-2.14.1-1.fc34.x86_64.rpm                                             320 kB/s |  62 kB     00:00    
+(138/338): libjose-10-9.fc34.x86_64.rpm                                                       255 kB/s |  64 kB     00:00    
+(139/338): libjpeg-turbo-2.0.90-2.fc34.x86_64.rpm                                             967 kB/s | 176 kB     00:00    
+(140/338): libmount-devel-2.36.2-1.fc34.x86_64.rpm                                            116 kB/s |  15 kB     00:00    
+(141/338): libmpc-1.2.1-2.fc34.x86_64.rpm                                                     610 kB/s |  63 kB     00:00    
+(142/338): libluksmeta-9-10.fc34.x86_64.rpm                                                    75 kB/s |  25 kB     00:00    
+(143/338): libogg-1.3.4-4.fc34.x86_64.rpm                                                     165 kB/s |  33 kB     00:00    
+(144/338): libgs-9.53.3-5.fc34.x86_64.rpm                                                     3.0 MB/s | 3.1 MB     00:01    
+(145/338): libomp-devel-12.0.0-0.2.rc1.fc34.x86_64.rpm                                        257 kB/s |  24 kB     00:00    
+(146/338): libomp-12.0.0-0.2.rc1.fc34.x86_64.rpm                                              1.3 MB/s | 355 kB     00:00    
+(147/338): libpaper-1.1.28-2.fc34.x86_64.rpm                                                  435 kB/s |  41 kB     00:00    
+(148/338): libselinux-devel-3.2-1.fc34.x86_64.rpm                                             872 kB/s | 113 kB     00:00    
+(149/338): libselinux-3.2-1.fc34.i686.rpm                                                     557 kB/s |  89 kB     00:00    
+(150/338): libraqm-0.7.0-7.fc34.x86_64.rpm                                                     85 kB/s |  19 kB     00:00    
+(151/338): libsepol-devel-3.2-1.fc34.x86_64.rpm                                               374 kB/s |  40 kB     00:00    
+(152/338): libsepol-3.2-1.fc34.i686.rpm                                                       1.7 MB/s | 307 kB     00:00    
+(153/338): libsndfile-1.0.31-3.fc34.x86_64.rpm                                                1.2 MB/s | 210 kB     00:00    
+(154/338): libssh2-1.9.0-7.fc34.x86_64.rpm                                                    933 kB/s | 118 kB     00:00    
+(155/338): libthai-0.1.28-6.fc34.x86_64.rpm                                                   1.8 MB/s | 213 kB     00:00    
+(156/338): libunwind-1.4.0-5.fc34.x86_64.rpm                                                  687 kB/s |  65 kB     00:00    
+(157/338): libvmaf-1.5.3-2.fc34.x86_64.rpm                                                    1.9 MB/s | 347 kB     00:00    
+(158/338): libvorbis-1.3.7-3.fc34.x86_64.rpm                                                  1.4 MB/s | 199 kB     00:00    
+(159/338): libwayland-client-1.19.0-1.fc34.x86_64.rpm                                         307 kB/s |  32 kB     00:00    
+(160/338): libtiff-4.2.0-1.fc34.x86_64.rpm                                                    506 kB/s | 194 kB     00:00    
+(161/338): libwayland-cursor-1.19.0-1.fc34.x86_64.rpm                                         161 kB/s |  19 kB     00:00    
+(162/338): libwayland-egl-1.19.0-1.fc34.x86_64.rpm                                            118 kB/s |  12 kB     00:00    
+(163/338): libxcb-1.13.1-7.fc34.x86_64.rpm                                                    1.6 MB/s | 230 kB     00:00    
+(164/338): libwebp-1.2.0-1.fc34.x86_64.rpm                                                    971 kB/s | 280 kB     00:00    
+(165/338): libxcrypt-compat-4.4.18-1.fc34.x86_64.rpm                                          601 kB/s |  90 kB     00:00    
+(166/338): libxcrypt-4.4.18-1.fc34.i686.rpm                                                   490 kB/s | 124 kB     00:00    
+(167/338): libxcrypt-devel-4.4.18-1.fc34.i686.rpm                                             189 kB/s |  29 kB     00:00    
+(168/338): libxslt-1.1.34-5.fc34.x86_64.rpm                                                   1.4 MB/s | 244 kB     00:00    
+(169/338): libzstd-1.4.9-1.fc34.i686.rpm                                                      1.3 MB/s | 308 kB     00:00    
+(170/338): libxcrypt-devel-4.4.18-1.fc34.x86_64.rpm                                            40 kB/s |  29 kB     00:00    
+(171/338): llvm-devel-12.0.0-0.1.rc1.fc34.x86_64.rpm                                          958 kB/s | 3.0 MB     00:03    
+(172/338): llvm-12.0.0-0.1.rc1.fc34.x86_64.rpm                                                2.3 MB/s |  14 MB     00:06    
+(173/338): llvm-libs-12.0.0-0.1.rc1.fc34.x86_64.rpm                                           2.3 MB/s |  23 MB     00:10    
+(174/338): llvm11-libs-11.1.0-1.fc34.x86_64.rpm                                               1.7 MB/s |  22 MB     00:13    
+(175/338): lua-srpm-macros-1-4.fc34.noarch.rpm                                                 98 kB/s | 8.3 kB     00:00    
+(176/338): luksmeta-9-10.fc34.x86_64.rpm                                                       76 kB/s |  21 kB     00:00    
+(177/338): lz4-libs-1.9.3-2.fc34.i686.rpm                                                     225 kB/s |  70 kB     00:00    
+(178/338): make-4.3-5.fc34.x86_64.rpm                                                         889 kB/s | 539 kB     00:00    
+(179/338): mkfontscale-1.2.1-2.fc34.x86_64.rpm                                                204 kB/s |  31 kB     00:00    
+(180/338): mkpasswd-5.5.9-1.fc34.x86_64.rpm                                                   396 kB/s |  41 kB     00:00    
+(181/338): ncurses-c++-libs-6.2-4.20200222.fc34.x86_64.rpm                                    127 kB/s |  37 kB     00:00    
+(182/338): ncurses-devel-6.2-4.20200222.fc34.x86_64.rpm                                       1.0 MB/s | 510 kB     00:00    
+(183/338): netpbm-10.93.00-1.fc34.x86_64.rpm                                                  856 kB/s | 188 kB     00:00    
+(184/338): nim-srpm-macros-3-4.fc34.noarch.rpm                                                 77 kB/s | 8.4 kB     00:00    
+(185/338): ocaml-srpm-macros-6-4.fc34.noarch.rpm                                               71 kB/s | 7.8 kB     00:00    
+(186/338): oniguruma-6.9.6-1.fc34.2.x86_64.rpm                                                922 kB/s | 226 kB     00:00    
+(187/338): openblas-srpm-macros-2-9.fc34.noarch.rpm                                            56 kB/s | 7.4 kB     00:00    
+(188/338): openjpeg2-2.4.0-2.fc34.x86_64.rpm                                                  863 kB/s | 165 kB     00:00    
+(189/338): llvm-static-12.0.0-0.1.rc1.fc34.x86_64.rpm                                         1.7 MB/s |  41 MB     00:24    
+(190/338): openssl-devel-1.1.1k-1.fc34.x86_64.rpm                                             1.3 MB/s | 2.2 MB     00:01    
+(191/338): openssl-libs-1.1.1k-1.fc34.i686.rpm                                                1.5 MB/s | 1.4 MB     00:00    
+(192/338): openssl-pkcs11-0.4.11-2.fc34.i686.rpm                                              154 kB/s |  77 kB     00:00    
+(193/338): openssl-pkcs11-0.4.11-2.fc34.x86_64.rpm                                            567 kB/s |  74 kB     00:00    
+(194/338): opus-1.3.1-8.fc34.x86_64.rpm                                                       1.3 MB/s | 202 kB     00:00    
+(195/338): p11-kit-0.23.22-3.fc34.i686.rpm                                                    1.5 MB/s | 345 kB     00:00    
+(196/338): pango-1.48.4-1.fc34.x86_64.rpm                                                     1.2 MB/s | 301 kB     00:00    
+(197/338): patch-2.7.6-14.fc34.x86_64.rpm                                                     1.0 MB/s | 130 kB     00:00    
+(198/338): pcre-cpp-8.44-3.fc34.1.x86_64.rpm                                                  289 kB/s |  26 kB     00:00    
+(199/338): pcre-devel-8.44-3.fc34.1.x86_64.rpm                                                1.7 MB/s | 471 kB     00:00    
+(200/338): pcre-utf16-8.44-3.fc34.1.x86_64.rpm                                                680 kB/s | 187 kB     00:00    
+(201/338): pcre-utf32-8.44-3.fc34.1.x86_64.rpm                                                922 kB/s | 177 kB     00:00    
+(202/338): pcre2-10.36-4.fc34.i686.rpm                                                        1.0 MB/s | 230 kB     00:00    
+(203/338): pcre2-utf16-10.36-4.fc34.x86_64.rpm                                                839 kB/s | 213 kB     00:00    
+(204/338): pcre2-devel-10.36-4.fc34.x86_64.rpm                                                1.3 MB/s | 477 kB     00:00    
+(205/338): pcre2-utf32-10.36-4.fc34.x86_64.rpm                                                1.0 MB/s | 203 kB     00:00    
+(206/338): perl-AutoLoader-5.74-474.fc34.noarch.rpm                                           186 kB/s |  33 kB     00:00    
+(207/338): perl-B-1.80-474.fc34.x86_64.rpm                                                    969 kB/s | 192 kB     00:00    
+(208/338): perl-Carp-1.50-458.fc34.noarch.rpm                                                 106 kB/s |  29 kB     00:00    
+(209/338): perl-Class-Struct-0.66-474.fc34.noarch.rpm                                         216 kB/s |  34 kB     00:00    
+(210/338): perl-Digest-1.19-2.fc34.noarch.rpm                                                 284 kB/s |  26 kB     00:00    
+(211/338): perl-Data-Dumper-2.174-460.fc34.x86_64.rpm                                         357 kB/s |  56 kB     00:00    
+(212/338): perl-Digest-MD5-2.58-2.fc34.x86_64.rpm                                             467 kB/s |  36 kB     00:00    
+(213/338): perl-DynaLoader-1.47-474.fc34.x86_64.rpm                                           427 kB/s |  38 kB     00:00    
+(214/338): perl-Errno-1.30-474.fc34.x86_64.rpm                                                120 kB/s |  27 kB     00:00    
+(215/338): perl-Error-0.17029-5.fc34.noarch.rpm                                               383 kB/s |  42 kB     00:00    
+(216/338): perl-Exporter-5.74-459.fc34.noarch.rpm                                             290 kB/s |  32 kB     00:00    
+(217/338): perl-Fcntl-1.13-474.fc34.x86_64.rpm                                                146 kB/s |  32 kB     00:00    
+(218/338): perl-File-Basename-2.85-474.fc34.noarch.rpm                                         48 kB/s |  29 kB     00:00    
+(219/338): perl-File-Find-1.37-474.fc34.noarch.rpm                                             84 kB/s |  37 kB     00:00    
+(220/338): perl-File-Path-2.18-2.fc34.noarch.rpm                                               88 kB/s |  36 kB     00:00    
+(221/338): perl-File-Temp-0.231.100-2.fc34.noarch.rpm                                         132 kB/s |  60 kB     00:00    
+(222/338): perl-Encode-3.08-459.fc34.x86_64.rpm                                               637 kB/s | 1.7 MB     00:02    
+(223/338): perl-FileHandle-2.03-474.fc34.noarch.rpm                                           266 kB/s |  27 kB     00:00    
+(224/338): perl-File-stat-1.09-474.fc34.noarch.rpm                                             83 kB/s |  29 kB     00:00    
+(225/338): perl-Getopt-Std-1.12-474.fc34.noarch.rpm                                           261 kB/s |  27 kB     00:00    
+(226/338): perl-Getopt-Long-2.52-2.fc34.noarch.rpm                                            252 kB/s |  61 kB     00:00    
+(227/338): perl-Git-2.31.1-1.fc34.noarch.rpm                                                  357 kB/s |  44 kB     00:00    
+(228/338): perl-HTTP-Tiny-0.076-458.fc34.noarch.rpm                                           333 kB/s |  55 kB     00:00    
+(229/338): perl-IO-1.43-474.fc34.x86_64.rpm                                                   448 kB/s |  99 kB     00:00    
+(230/338): perl-IO-Socket-IP-0.41-3.fc34.noarch.rpm                                           354 kB/s |  43 kB     00:00    
+(231/338): perl-IPC-Open3-1.21-474.fc34.noarch.rpm                                            221 kB/s |  34 kB     00:00    
+(232/338): perl-MIME-Base64-3.16-2.fc34.x86_64.rpm                                             73 kB/s |  30 kB     00:00    
+(233/338): perl-IO-Socket-SSL-2.070-2.fc34.noarch.rpm                                         231 kB/s | 214 kB     00:00    
+(234/338): perl-Mozilla-CA-20200520-4.fc34.noarch.rpm                                          34 kB/s |  12 kB     00:00    
+(235/338): perl-NDBM_File-1.15-474.fc34.x86_64.rpm                                            156 kB/s |  34 kB     00:00    
+(236/338): perl-Net-SSLeay-1.90-2.fc34.x86_64.rpm                                             863 kB/s | 357 kB     00:00    
+(237/338): perl-POSIX-1.94-474.fc34.x86_64.rpm                                                469 kB/s | 111 kB     00:00    
+(238/338): perl-Pod-Escapes-1.07-458.fc34.noarch.rpm                                          120 kB/s |  20 kB     00:00    
+(239/338): perl-PathTools-3.78-459.fc34.x86_64.rpm                                            428 kB/s |  86 kB     00:00    
+(240/338): perl-Pod-Perldoc-3.28.01-459.fc34.noarch.rpm                                       408 kB/s |  85 kB     00:00    
+(241/338): perl-Pod-Usage-2.01-2.fc34.noarch.rpm                                              199 kB/s |  41 kB     00:00    
+(242/338): perl-Pod-Simple-3.42-2.fc34.noarch.rpm                                             551 kB/s | 216 kB     00:00    
+(243/338): perl-Scalar-List-Utils-1.56-459.fc34.x86_64.rpm                                    368 kB/s |  72 kB     00:00    
+(244/338): perl-SelectSaver-1.02-474.fc34.noarch.rpm                                          119 kB/s |  23 kB     00:00    
+(245/338): perl-Storable-3.21-458.fc34.x86_64.rpm                                             520 kB/s |  97 kB     00:00    
+(246/338): perl-Socket-2.031-2.fc34.x86_64.rpm                                                249 kB/s |  56 kB     00:00    
+(247/338): perl-Symbol-1.08-474.fc34.noarch.rpm                                               135 kB/s |  26 kB     00:00    
+(248/338): perl-Term-ANSIColor-5.01-459.fc34.noarch.rpm                                       255 kB/s |  49 kB     00:00    
+(249/338): perl-Term-Cap-1.17-458.fc34.noarch.rpm                                             102 kB/s |  22 kB     00:00    
+(250/338): perl-TermReadKey-2.38-9.fc34.x86_64.rpm                                            154 kB/s |  36 kB     00:00    
+(251/338): perl-Text-ParseWords-3.30-458.fc34.noarch.rpm                                       83 kB/s |  16 kB     00:00    
+(252/338): perl-Text-Tabs+Wrap-2013.0523-458.fc34.noarch.rpm                                   95 kB/s |  23 kB     00:00    
+(253/338): perl-Time-Local-1.300-5.fc34.noarch.rpm                                            164 kB/s |  34 kB     00:00    
+(254/338): perl-URI-5.09-1.fc34.noarch.rpm                                                    514 kB/s | 109 kB     00:00    
+(255/338): perl-constant-1.33-459.fc34.noarch.rpm                                             266 kB/s |  23 kB     00:00    
+(256/338): perl-base-2.27-474.fc34.noarch.rpm                                                 146 kB/s |  28 kB     00:00    
+(257/338): perl-if-0.60.800-474.fc34.noarch.rpm                                               334 kB/s |  26 kB     00:00    
+(258/338): perl-interpreter-5.32.1-474.fc34.x86_64.rpm                                        551 kB/s |  83 kB     00:00    
+(259/338): perl-lib-0.65-474.fc34.x86_64.rpm                                                  230 kB/s |  27 kB     00:00    
+(260/338): perl-libnet-3.13-2.fc34.noarch.rpm                                                 746 kB/s | 127 kB     00:00    
+(261/338): perl-mro-1.23-474.fc34.x86_64.rpm                                                  310 kB/s |  40 kB     00:00    
+(262/338): perl-overload-1.31-474.fc34.noarch.rpm                                             418 kB/s |  57 kB     00:00    
+(263/338): perl-overloading-0.02-474.fc34.noarch.rpm                                          232 kB/s |  24 kB     00:00    
+(264/338): perl-parent-0.238-458.fc34.noarch.rpm                                              136 kB/s |  14 kB     00:00    
+(265/338): perl-libs-5.32.1-474.fc34.x86_64.rpm                                               2.3 MB/s | 2.1 MB     00:00    
+(266/338): perl-podlators-4.14-458.fc34.noarch.rpm                                            324 kB/s | 113 kB     00:00    
+(267/338): perl-subs-1.03-474.fc34.noarch.rpm                                                 147 kB/s |  23 kB     00:00    
+(268/338): perl-srpm-macros-1-39.fc34.noarch.rpm                                               31 kB/s | 8.5 kB     00:00    
+(269/338): perl-vars-1.05-474.fc34.noarch.rpm                                                 258 kB/s |  25 kB     00:00    
+(270/338): pugixml-1.11.4-2.fc34.x86_64.rpm                                                   433 kB/s | 101 kB     00:00    
+(271/338): pulseaudio-libs-14.2-3.fc34.x86_64.rpm                                             1.0 MB/s | 728 kB     00:00    
+(272/338): python3-attrs-20.3.0-2.fc34.noarch.rpm                                             143 kB/s |  78 kB     00:00    
+(273/338): python3-chardet-4.0.0-1.fc34.noarch.rpm                                            816 kB/s | 214 kB     00:00    
+(274/338): python3-coverage-5.5-1.fc34.x86_64.rpm                                             821 kB/s | 283 kB     00:00    
+(275/338): python3-dbus-client-gen-0.5-2.fc34.noarch.rpm                                      111 kB/s |  25 kB     00:00    
+(276/338): python3-dbus-python-client-gen-0.8-2.fc34.noarch.rpm                               138 kB/s |  27 kB     00:00    
+(277/338): python3-dbus-signature-pyparsing-0.04-2.fc34.noarch.rpm                             82 kB/s |  19 kB     00:00    
+(278/338): python3-idna-2.10-3.fc34.noarch.rpm                                                393 kB/s |  99 kB     00:00    
+(279/338): python3-iniconfig-1.1.1-2.fc34.noarch.rpm                                           62 kB/s |  16 kB     00:00    
+(280/338): python3-into-dbus-python-0.08-2.fc34.noarch.rpm                                     98 kB/s |  27 kB     00:00    
+(281/338): python3-justbases-0.15-3.fc34.noarch.rpm                                           221 kB/s |  45 kB     00:00    
+(282/338): python3-justbytes-0.15-3.fc34.noarch.rpm                                           282 kB/s |  42 kB     00:00    
+(283/338): python3-packaging-20.9-1.fc34.noarch.rpm                                           409 kB/s |  70 kB     00:00    
+(284/338): python3-lit-12.0.0-0.2.rc1.fc34.noarch.rpm                                         499 kB/s | 149 kB     00:00    
+(285/338): python3-pluggy-0.13.1-3.fc34.noarch.rpm                                            207 kB/s |  38 kB     00:00    
+(286/338): python3-progressbar2-3.52.1-2.fc34.noarch.rpm                                      314 kB/s |  55 kB     00:00    
+(287/338): python3-psutil-5.8.0-5.fc34.x86_64.rpm                                             672 kB/s | 400 kB     00:00    
+(288/338): python3-pip-21.0.1-2.fc34.noarch.rpm                                               1.6 MB/s | 1.8 MB     00:01    
+(289/338): python3-pyparsing-2.4.7-5.fc34.noarch.rpm                                          633 kB/s | 150 kB     00:00    
+(290/338): python3-py-1.10.0-2.fc34.noarch.rpm                                                885 kB/s | 429 kB     00:00    
+(291/338): python3-pysocks-1.7.1-8.fc34.noarch.rpm                                            297 kB/s |  35 kB     00:00    
+(292/338): python3-pyudev-0.22.0-4.fc34.noarch.rpm                                            505 kB/s |  77 kB     00:00    
+(293/338): python3-requests-2.25.1-1.fc34.noarch.rpm                                          934 kB/s | 114 kB     00:00    
+(294/338): python3-rpm-generators-12-4.fc34.noarch.rpm                                        340 kB/s |  30 kB     00:00    
+(295/338): python3-semantic_version-2.8.4-6.fc34.noarch.rpm                                   143 kB/s |  40 kB     00:00    
+(296/338): python3-toml-0.10.2-2.fc34.noarch.rpm                                              236 kB/s |  39 kB     00:00    
+(297/338): python3-urllib3-1.25.10-4.fc34.noarch.rpm                                          443 kB/s | 175 kB     00:00    
+(298/338): python3-pytest-6.2.2-1.fc34.noarch.rpm                                             1.1 MB/s | 1.6 MB     00:01    
+(299/338): python3-utils-2.4.0-3.fc34.noarch.rpm                                              470 kB/s | 194 kB     00:00    
+(300/338): python3-wcwidth-0.2.5-3.fc34.noarch.rpm                                            140 kB/s |  42 kB     00:00    
+(301/338): qt5-srpm-macros-5.15.2-2.fc34.noarch.rpm                                            59 kB/s | 8.4 kB     00:00    
+(302/338): redhat-rpm-config-182-1.fc34.noarch.rpm                                            319 kB/s |  65 kB     00:00    
+(303/338): rest-0.8.1-9.fc34.x86_64.rpm                                                       437 kB/s |  69 kB     00:00    
+(304/338): rpm-build-4.16.1.3-1.fc34.x86_64.rpm                                               593 kB/s | 100 kB     00:00    
+(305/338): rpmdevtools-9.3-4.fc34.noarch.rpm                                                  629 kB/s |  92 kB     00:00    
+(306/338): rust-srpm-macros-17-2.fc34.noarch.rpm                                               84 kB/s | 9.8 kB     00:00    
+(307/338): llvm-test-12.0.0-0.1.rc1.fc34.x86_64.rpm                                           2.6 MB/s | 102 MB     00:39    
+(308/338): sgml-common-0.6.3-56.fc34.noarch.rpm                                                67 kB/s |  54 kB     00:00    
+(309/338): sound-theme-freedesktop-0.8-15.fc34.noarch.rpm                                     518 kB/s | 378 kB     00:00    
+(310/338): sysprof-capture-devel-3.40.1-1.fc34.x86_64.rpm                                     225 kB/s |  59 kB     00:00    
+(311/338): systemd-devel-248-2.fc34.x86_64.rpm                                                1.2 MB/s | 438 kB     00:00    
+(312/338): systemd-libs-248-2.fc34.i686.rpm                                                   2.3 MB/s | 620 kB     00:00    
+(313/338): urw-base35-bookman-fonts-20200910-4.fc34.noarch.rpm                                1.7 MB/s | 856 kB     00:00    
+(314/338): urw-base35-c059-fonts-20200910-4.fc34.noarch.rpm                                   1.8 MB/s | 884 kB     00:00    
+(315/338): tpm2-tools-5.0-2.fc34.x86_64.rpm                                                   648 kB/s | 727 kB     00:01    
+(316/338): urw-base35-d050000l-fonts-20200910-4.fc34.noarch.rpm                               447 kB/s |  77 kB     00:00    
+(317/338): urw-base35-fonts-20200910-4.fc34.noarch.rpm                                         55 kB/s | 9.8 kB     00:00    
+(318/338): svt-av1-libs-0.8.6-4.fc34.x86_64.rpm                                               2.5 MB/s | 4.6 MB     00:01    
+(319/338): urw-base35-fonts-common-20200910-4.fc34.noarch.rpm                                 132 kB/s |  21 kB     00:00    
+(320/338): urw-base35-gothic-fonts-20200910-4.fc34.noarch.rpm                                 2.2 MB/s | 652 kB     00:00    
+(321/338): urw-base35-nimbus-mono-ps-fonts-20200910-4.fc34.noarch.rpm                         2.4 MB/s | 802 kB     00:00    
+(322/338): urw-base35-nimbus-roman-fonts-20200910-4.fc34.noarch.rpm                           2.2 MB/s | 865 kB     00:00    
+(323/338): urw-base35-standard-symbols-ps-fonts-20200910-4.fc34.noarch.rpm                    238 kB/s |  42 kB     00:00    
+(324/338): urw-base35-p052-fonts-20200910-4.fc34.noarch.rpm                                   1.9 MB/s | 983 kB     00:00    
+(325/338): whois-nls-5.5.9-1.fc34.noarch.rpm                                                  440 kB/s |  34 kB     00:00    
+(326/338): urw-base35-z003-fonts-20200910-4.fc34.noarch.rpm                                   689 kB/s | 279 kB     00:00    
+(327/338): xemacs-filesystem-21.5.34-39.20200331hge2ac728aa576.fc34.noarch.rpm                 45 kB/s | 9.5 kB     00:00    
+(328/338): xml-common-0.6.3-56.fc34.noarch.rpm                                                154 kB/s |  31 kB     00:00    
+(329/338): urw-base35-nimbus-sans-fonts-20200910-4.fc34.noarch.rpm                            1.2 MB/s | 1.3 MB     00:01    
+(330/338): xz-libs-5.2.5-5.fc34.i686.rpm                                                      468 kB/s | 100 kB     00:00    
+(331/338): zlib-1.2.11-26.fc34.i686.rpm                                                       572 kB/s |  94 kB     00:00    
+(332/338): libgcc-11.1.1-1.fc34.x86_64.rpm                                                    646 kB/s | 103 kB     00:00    
+(333/338): zlib-devel-1.2.11-26.fc34.x86_64.rpm                                               145 kB/s |  44 kB     00:00    
+(334/338): zstd-1.4.9-1.fc34.x86_64.rpm                                                       2.0 MB/s | 574 kB     00:00    
+(335/338): libgomp-11.1.1-1.fc34.x86_64.rpm                                                   1.2 MB/s | 276 kB     00:00    
+(336/338): libstdc++-11.1.1-1.fc34.x86_64.rpm                                                 2.0 MB/s | 707 kB     00:00    
+(337/338): python3-3.9.4-1.fc34.x86_64.rpm                                                     52 kB/s |  28 kB     00:00    
+(338/338): python3-libs-3.9.4-1.fc34.x86_64.rpm                                               3.0 MB/s | 7.4 MB     00:02    
 ------------------------------------------------------------------------------------------------------------------------------
-Total                                                                                         3.5 MB/s | 468 MB     02:11     
+Total                                                                                         4.3 MB/s | 468 MB     01:49     
 Running transaction check
 Transaction check succeeded.
 Running transaction test
@@ -2470,14 +2640,14 @@ Running transaction
   Installing       : perl-interpreter-4:5.32.1-474.fc34.x86_64                                                        281/343 
   Installing       : clevis-pin-tpm2-0.3.0-1.fc34.x86_64                                                              282/343 
   Running scriptlet: clevis-18-1.fc34.x86_64                                                                          283/343 
-(2021-05-02 15:04:03:731976): [sss_cache] [confdb_get_enabled_domain_list] (0x0040): Failed to get [domains] from [sssd], error [2] (No such file or directory)
-(2021-05-02 15:04:03:732158): [sss_cache] [init_domains] (0x0020): Could not initialize domains
-(2021-05-02 15:04:03:741746): [sss_cache] [confdb_get_enabled_domain_list] (0x0040): Failed to get [domains] from [sssd], error [2] (No such file or directory)
-(2021-05-02 15:04:03:741807): [sss_cache] [init_domains] (0x0020): Could not initialize domains
-(2021-05-02 15:04:03:841050): [sss_cache] [confdb_get_enabled_domain_list] (0x0040): Failed to get [domains] from [sssd], error [2] (No such file or directory)
-(2021-05-02 15:04:03:841167): [sss_cache] [init_domains] (0x0020): Could not initialize domains
-(2021-05-02 15:04:03:855661): [sss_cache] [confdb_get_enabled_domain_list] (0x0040): Failed to get [domains] from [sssd], error [2] (No such file or directory)
-(2021-05-02 15:04:03:855738): [sss_cache] [init_domains] (0x0020): Could not initialize domains
+(2021-05-04  6:12:46:528768): [sss_cache] [confdb_get_enabled_domain_list] (0x0040): Failed to get [domains] from [sssd], error [2] (No such file or directory)
+(2021-05-04  6:12:46:529022): [sss_cache] [init_domains] (0x0020): Could not initialize domains
+(2021-05-04  6:12:46:535801): [sss_cache] [confdb_get_enabled_domain_list] (0x0040): Failed to get [domains] from [sssd], error [2] (No such file or directory)
+(2021-05-04  6:12:46:535837): [sss_cache] [init_domains] (0x0020): Could not initialize domains
+(2021-05-04  6:12:46:624617): [sss_cache] [confdb_get_enabled_domain_list] (0x0040): Failed to get [domains] from [sssd], error [2] (No such file or directory)
+(2021-05-04  6:12:46:624661): [sss_cache] [init_domains] (0x0020): Could not initialize domains
+(2021-05-04  6:12:46:633085): [sss_cache] [confdb_get_enabled_domain_list] (0x0040): Failed to get [domains] from [sssd], error [2] (No such file or directory)
+(2021-05-04  6:12:46:633132): [sss_cache] [init_domains] (0x0020): Could not initialize domains
 
   Installing       : clevis-18-1.fc34.x86_64                                                                          283/343 
   Installing       : libxcrypt-4.4.18-1.fc34.i686                                                                     284/343 
@@ -2487,9 +2657,9 @@ Running transaction
   Installing       : gcc-c++-11.1.1-1.fc34.x86_64                                                                     288/343 
   Installing       : rust-1.51.0-3.fc34.x86_64                                                                        289/343 
   Installing       : annobin-9.65-2.fc34.x86_64                                                                       290/343 
-  Installing       : python-srpm-macros-3.9-36.fc34.noarch                                                            291/343 
-  Installing       : fonts-srpm-macros-1:2.0.5-5.fc34.noarch                                                          292/343 
-  Installing       : go-srpm-macros-3.0.9-3.fc34.noarch                                                               293/343 
+  Installing       : go-srpm-macros-3.0.10-1.fc34.noarch                                                              291/343 
+  Installing       : python-srpm-macros-3.9-36.fc34.noarch                                                            292/343 
+  Installing       : fonts-srpm-macros-1:2.0.5-5.fc34.noarch                                                          293/343 
   Installing       : redhat-rpm-config-182-1.fc34.noarch                                                              294/343 
   Installing       : python-rpm-macros-3.9-36.fc34.noarch                                                             295/343 
   Installing       : python3-rpm-macros-3.9-36.fc34.noarch                                                            296/343 
@@ -2569,75 +2739,75 @@ Running in chroot, ignoring command 'reload-or-restart'
   Verifying        : dconf-0.40.0-3.fc34.x86_64                                                                         7/343 
   Verifying        : gcc-11.1.1-1.fc34.x86_64                                                                           8/343 
   Verifying        : gcc-c++-11.1.1-1.fc34.x86_64                                                                       9/343 
-  Verifying        : gstreamer1-1.18.4-2.fc34.x86_64                                                                   10/343 
-  Verifying        : gtk-update-icon-cache-3.24.29-1.fc34.x86_64                                                       11/343 
-  Verifying        : gtk3-3.24.29-1.fc34.x86_64                                                                        12/343 
-  Verifying        : kernel-headers-5.11.16-300.fc34.x86_64                                                            13/343 
-  Verifying        : libgcc-11.1.1-1.fc34.i686                                                                         14/343 
-  Verifying        : librsvg2-2.50.4-1.fc34.x86_64                                                                     15/343 
-  Verifying        : libstdc++-devel-11.1.1-1.fc34.x86_64                                                              16/343 
-  Verifying        : python-rpm-macros-3.9-36.fc34.noarch                                                              17/343 
-  Verifying        : python-srpm-macros-3.9-36.fc34.noarch                                                             18/343 
-  Verifying        : python-unversioned-command-3.9.4-1.fc34.noarch                                                    19/343 
-  Verifying        : python3-devel-3.9.4-1.fc34.x86_64                                                                 20/343 
-  Verifying        : python3-rpm-macros-3.9-36.fc34.noarch                                                             21/343 
-  Verifying        : rav1e-libs-0.4.1-1.fc34.x86_64                                                                    22/343 
-  Verifying        : rust-1.51.0-3.fc34.x86_64                                                                         23/343 
-  Verifying        : rust-std-static-1.51.0-3.fc34.x86_64                                                              24/343 
-  Verifying        : xorg-x11-fonts-ISO8859-1-100dpi-7.5-31.fc34.noarch                                                25/343 
-  Verifying        : adobe-mappings-cmap-20171205-10.fc34.noarch                                                       26/343 
-  Verifying        : adobe-mappings-cmap-deprecated-20171205-10.fc34.noarch                                            27/343 
-  Verifying        : adobe-mappings-pdf-20180407-8.fc34.noarch                                                         28/343 
-  Verifying        : alsa-lib-1.2.4-5.fc34.x86_64                                                                      29/343 
-  Verifying        : annobin-9.65-2.fc34.x86_64                                                                        30/343 
-  Verifying        : asciidoc-9.1.0-1.fc34.noarch                                                                      31/343 
-  Verifying        : at-spi2-atk-2.38.0-2.fc34.x86_64                                                                  32/343 
-  Verifying        : at-spi2-core-2.40.0-2.fc34.x86_64                                                                 33/343 
-  Verifying        : atk-2.36.0-3.fc34.x86_64                                                                          34/343 
-  Verifying        : binutils-2.35.1-41.fc34.x86_64                                                                    35/343 
-  Verifying        : binutils-gold-2.35.1-41.fc34.x86_64                                                               36/343 
-  Verifying        : cairo-1.17.4-3.fc34.x86_64                                                                        37/343 
-  Verifying        : cairo-gobject-1.17.4-3.fc34.x86_64                                                                38/343 
-  Verifying        : clang-12.0.0-0.3.rc1.fc34.x86_64                                                                  39/343 
-  Verifying        : clang-libs-12.0.0-0.3.rc1.fc34.x86_64                                                             40/343 
-  Verifying        : clang-resource-filesystem-12.0.0-0.3.rc1.fc34.x86_64                                              41/343 
-  Verifying        : clevis-pin-tpm2-0.3.0-1.fc34.x86_64                                                               42/343 
-  Verifying        : cmake-filesystem-3.19.7-1.fc34.i686                                                               43/343 
-  Verifying        : cmake-filesystem-3.19.7-1.fc34.x86_64                                                             44/343 
-  Verifying        : colord-libs-1.4.5-2.fc34.x86_64                                                                   45/343 
-  Verifying        : compiler-rt-12.0.0-0.1.rc1.fc34.x86_64                                                            46/343 
-  Verifying        : cryptsetup-devel-2.3.5-2.fc34.x86_64                                                              47/343 
-  Verifying        : dbus-devel-1:1.12.20-3.fc34.i686                                                                  48/343 
-  Verifying        : dbus-devel-1:1.12.20-3.fc34.x86_64                                                                49/343 
-  Verifying        : dbus-glib-0.110-11.fc34.x86_64                                                                    50/343 
-  Verifying        : dbus-glib-devel-0.110-11.fc34.x86_64                                                              51/343 
-  Verifying        : dbus-libs-1:1.12.20-3.fc34.i686                                                                   52/343 
-  Verifying        : dbus-python-devel-1.2.16-4.fc34.x86_64                                                            53/343 
-  Verifying        : docbook-dtds-1.0-77.fc34.noarch                                                                   54/343 
-  Verifying        : docbook-style-xsl-1.79.2-14.fc34.noarch                                                           55/343 
-  Verifying        : dwz-0.14-1.fc34.x86_64                                                                            56/343 
-  Verifying        : efi-srpm-macros-5-2.fc34.noarch                                                                   57/343 
-  Verifying        : fakeroot-1.25.3-2.fc34.x86_64                                                                     58/343 
-  Verifying        : fakeroot-libs-1.25.3-2.fc34.x86_64                                                                59/343 
-  Verifying        : flac-libs-1.3.3-7.fc34.x86_64                                                                     60/343 
-  Verifying        : fontconfig-2.13.93-6.fc34.x86_64                                                                  61/343 
-  Verifying        : fonts-srpm-macros-1:2.0.5-5.fc34.noarch                                                           62/343 
-  Verifying        : fpc-srpm-macros-1.3-3.fc34.noarch                                                                 63/343 
-  Verifying        : freetype-2.10.4-3.fc34.x86_64                                                                     64/343 
-  Verifying        : fribidi-1.0.10-4.fc34.x86_64                                                                      65/343 
-  Verifying        : gd-2.3.2-2.fc34.x86_64                                                                            66/343 
-  Verifying        : gdk-pixbuf2-modules-2.42.4-2.fc34.x86_64                                                          67/343 
-  Verifying        : ghc-srpm-macros-1.5.0-4.fc34.noarch                                                               68/343 
-  Verifying        : git-2.31.1-1.fc34.x86_64                                                                          69/343 
-  Verifying        : git-core-2.31.1-1.fc34.x86_64                                                                     70/343 
-  Verifying        : git-core-doc-2.31.1-1.fc34.noarch                                                                 71/343 
-  Verifying        : glib2-devel-2.68.1-1.fc34.x86_64                                                                  72/343 
-  Verifying        : glibc-2.33-5.fc34.i686                                                                            73/343 
-  Verifying        : glibc-devel-2.33-5.fc34.i686                                                                      74/343 
-  Verifying        : glibc-devel-2.33-5.fc34.x86_64                                                                    75/343 
-  Verifying        : glibc-headers-x86-2.33-5.fc34.noarch                                                              76/343 
-  Verifying        : gnat-srpm-macros-4-13.fc34.noarch                                                                 77/343 
-  Verifying        : go-srpm-macros-3.0.9-3.fc34.noarch                                                                78/343 
+  Verifying        : go-srpm-macros-3.0.10-1.fc34.noarch                                                               10/343 
+  Verifying        : gstreamer1-1.18.4-2.fc34.x86_64                                                                   11/343 
+  Verifying        : gtk-update-icon-cache-3.24.29-1.fc34.x86_64                                                       12/343 
+  Verifying        : gtk3-3.24.29-1.fc34.x86_64                                                                        13/343 
+  Verifying        : kernel-headers-5.11.16-300.fc34.x86_64                                                            14/343 
+  Verifying        : libgcc-11.1.1-1.fc34.i686                                                                         15/343 
+  Verifying        : librsvg2-2.50.4-1.fc34.x86_64                                                                     16/343 
+  Verifying        : libstdc++-devel-11.1.1-1.fc34.x86_64                                                              17/343 
+  Verifying        : python-rpm-macros-3.9-36.fc34.noarch                                                              18/343 
+  Verifying        : python-srpm-macros-3.9-36.fc34.noarch                                                             19/343 
+  Verifying        : python-unversioned-command-3.9.4-1.fc34.noarch                                                    20/343 
+  Verifying        : python3-devel-3.9.4-1.fc34.x86_64                                                                 21/343 
+  Verifying        : python3-rpm-macros-3.9-36.fc34.noarch                                                             22/343 
+  Verifying        : rav1e-libs-0.4.1-1.fc34.x86_64                                                                    23/343 
+  Verifying        : rust-1.51.0-3.fc34.x86_64                                                                         24/343 
+  Verifying        : rust-std-static-1.51.0-3.fc34.x86_64                                                              25/343 
+  Verifying        : xorg-x11-fonts-ISO8859-1-100dpi-7.5-31.fc34.noarch                                                26/343 
+  Verifying        : adobe-mappings-cmap-20171205-10.fc34.noarch                                                       27/343 
+  Verifying        : adobe-mappings-cmap-deprecated-20171205-10.fc34.noarch                                            28/343 
+  Verifying        : adobe-mappings-pdf-20180407-8.fc34.noarch                                                         29/343 
+  Verifying        : alsa-lib-1.2.4-5.fc34.x86_64                                                                      30/343 
+  Verifying        : annobin-9.65-2.fc34.x86_64                                                                        31/343 
+  Verifying        : asciidoc-9.1.0-1.fc34.noarch                                                                      32/343 
+  Verifying        : at-spi2-atk-2.38.0-2.fc34.x86_64                                                                  33/343 
+  Verifying        : at-spi2-core-2.40.0-2.fc34.x86_64                                                                 34/343 
+  Verifying        : atk-2.36.0-3.fc34.x86_64                                                                          35/343 
+  Verifying        : binutils-2.35.1-41.fc34.x86_64                                                                    36/343 
+  Verifying        : binutils-gold-2.35.1-41.fc34.x86_64                                                               37/343 
+  Verifying        : cairo-1.17.4-3.fc34.x86_64                                                                        38/343 
+  Verifying        : cairo-gobject-1.17.4-3.fc34.x86_64                                                                39/343 
+  Verifying        : clang-12.0.0-0.3.rc1.fc34.x86_64                                                                  40/343 
+  Verifying        : clang-libs-12.0.0-0.3.rc1.fc34.x86_64                                                             41/343 
+  Verifying        : clang-resource-filesystem-12.0.0-0.3.rc1.fc34.x86_64                                              42/343 
+  Verifying        : clevis-pin-tpm2-0.3.0-1.fc34.x86_64                                                               43/343 
+  Verifying        : cmake-filesystem-3.19.7-1.fc34.i686                                                               44/343 
+  Verifying        : cmake-filesystem-3.19.7-1.fc34.x86_64                                                             45/343 
+  Verifying        : colord-libs-1.4.5-2.fc34.x86_64                                                                   46/343 
+  Verifying        : compiler-rt-12.0.0-0.1.rc1.fc34.x86_64                                                            47/343 
+  Verifying        : cryptsetup-devel-2.3.5-2.fc34.x86_64                                                              48/343 
+  Verifying        : dbus-devel-1:1.12.20-3.fc34.i686                                                                  49/343 
+  Verifying        : dbus-devel-1:1.12.20-3.fc34.x86_64                                                                50/343 
+  Verifying        : dbus-glib-0.110-11.fc34.x86_64                                                                    51/343 
+  Verifying        : dbus-glib-devel-0.110-11.fc34.x86_64                                                              52/343 
+  Verifying        : dbus-libs-1:1.12.20-3.fc34.i686                                                                   53/343 
+  Verifying        : dbus-python-devel-1.2.16-4.fc34.x86_64                                                            54/343 
+  Verifying        : docbook-dtds-1.0-77.fc34.noarch                                                                   55/343 
+  Verifying        : docbook-style-xsl-1.79.2-14.fc34.noarch                                                           56/343 
+  Verifying        : dwz-0.14-1.fc34.x86_64                                                                            57/343 
+  Verifying        : efi-srpm-macros-5-2.fc34.noarch                                                                   58/343 
+  Verifying        : fakeroot-1.25.3-2.fc34.x86_64                                                                     59/343 
+  Verifying        : fakeroot-libs-1.25.3-2.fc34.x86_64                                                                60/343 
+  Verifying        : flac-libs-1.3.3-7.fc34.x86_64                                                                     61/343 
+  Verifying        : fontconfig-2.13.93-6.fc34.x86_64                                                                  62/343 
+  Verifying        : fonts-srpm-macros-1:2.0.5-5.fc34.noarch                                                           63/343 
+  Verifying        : fpc-srpm-macros-1.3-3.fc34.noarch                                                                 64/343 
+  Verifying        : freetype-2.10.4-3.fc34.x86_64                                                                     65/343 
+  Verifying        : fribidi-1.0.10-4.fc34.x86_64                                                                      66/343 
+  Verifying        : gd-2.3.2-2.fc34.x86_64                                                                            67/343 
+  Verifying        : gdk-pixbuf2-modules-2.42.4-2.fc34.x86_64                                                          68/343 
+  Verifying        : ghc-srpm-macros-1.5.0-4.fc34.noarch                                                               69/343 
+  Verifying        : git-2.31.1-1.fc34.x86_64                                                                          70/343 
+  Verifying        : git-core-2.31.1-1.fc34.x86_64                                                                     71/343 
+  Verifying        : git-core-doc-2.31.1-1.fc34.noarch                                                                 72/343 
+  Verifying        : glib2-devel-2.68.1-1.fc34.x86_64                                                                  73/343 
+  Verifying        : glibc-2.33-5.fc34.i686                                                                            74/343 
+  Verifying        : glibc-devel-2.33-5.fc34.i686                                                                      75/343 
+  Verifying        : glibc-devel-2.33-5.fc34.x86_64                                                                    76/343 
+  Verifying        : glibc-headers-x86-2.33-5.fc34.noarch                                                              77/343 
+  Verifying        : gnat-srpm-macros-4-13.fc34.noarch                                                                 78/343 
   Verifying        : google-droid-sans-fonts-20200215-9.fc34.noarch                                                    79/343 
   Verifying        : graphite2-1.3.14-7.fc34.x86_64                                                                    80/343 
   Verifying        : graphviz-2.44.0-17.fc34.x86_64                                                                    81/343 
@@ -2938,7 +3108,7 @@ Installed:
   git-core-doc-2.31.1-1.fc34.noarch                               glib2-devel-2.68.1-1.fc34.x86_64                           
   glibc-2.33-5.fc34.i686                                          glibc-devel-2.33-5.fc34.i686                               
   glibc-devel-2.33-5.fc34.x86_64                                  glibc-headers-x86-2.33-5.fc34.noarch                       
-  gnat-srpm-macros-4-13.fc34.noarch                               go-srpm-macros-3.0.9-3.fc34.noarch                         
+  gnat-srpm-macros-4-13.fc34.noarch                               go-srpm-macros-3.0.10-1.fc34.noarch                        
   google-droid-sans-fonts-20200215-9.fc34.noarch                  graphite2-1.3.14-7.fc34.x86_64                             
   graphviz-2.44.0-17.fc34.x86_64                                  gsm-1.0.19-4.fc34.x86_64                                   
   gstreamer1-1.18.4-2.fc34.x86_64                                 gtk-update-icon-cache-3.24.29-1.fc34.x86_64                
@@ -3081,199 +3251,199 @@ INFO - Creating git directory /mnt/stratisroot/root/git
 INFO - Cloning git repository https://github.com/stratis-storage/stratisd into /mnt/stratisroot/root/git
 Cloning into 'stratisd'...
 remote: Enumerating objects: 22767, done.
-remote: Counting objects: 100% (510/510), done.
-remote: Compressing objects: 100% (284/284), done.
-remote: Total 22767 (delta 236), reused 386 (delta 215), pack-reused 22257
-Receiving objects: 100% (22767/22767), 6.06 MiB | 4.01 MiB/s, done.
-Resolving deltas: 100% (15883/15883), done.
+remote: Counting objects: 100% (728/728), done.
+remote: Compressing objects: 100% (385/385), done.
+remote: Total 22767 (delta 362), reused 568 (delta 322), pack-reused 22039
+Receiving objects: 100% (22767/22767), 6.06 MiB | 5.18 MiB/s, done.
+Resolving deltas: 100% (15866/15866), done.
 INFO - Installing from develop-2.3.0 (make install)
 RUSTFLAGS="-D warnings -D future-incompatible -D unused -D bare-trait-objects -D ellipsis-inclusive-range-patterns" cargo build --release
     Updating crates.io index
-  Downloaded futures-io v0.3.14
-  Downloaded build_const v0.2.2
-  Downloaded futures-task v0.3.14
-  Downloaded env_logger v0.8.3
-  Downloaded futures-macro v0.3.14
-  Downloaded futures-channel v0.3.14
   Downloaded block-buffer v0.9.0
   Downloaded humantime v2.1.0
-  Downloaded lazy_static v1.4.0
-  Downloaded proc-macro-hack v0.5.19
-  Downloaded glob v0.3.0
-  Downloaded generic-array v0.14.4
-  Downloaded gimli v0.23.0
-  Downloaded remove_dir_all v0.5.3
-  Downloaded num_cpus v1.13.0
-  Downloaded futures-core v0.3.14
-  Downloaded proc-macro-nested v0.1.7
-  Downloaded futures-util v0.3.14
-  Downloaded nix v0.14.1
-  Downloaded aho-corasick v0.7.15
-  Downloaded lazycell v1.3.0
-  Downloaded bitflags v1.2.1
-  Downloaded num-integer v0.1.44
-  Downloaded backtrace v0.3.57
-  Downloaded bindgen v0.57.0
-  Downloaded strsim v0.8.0
+  Downloaded env_logger v0.8.3
   Downloaded futures v0.3.14
-  Downloaded autocfg v1.0.1
-  Downloaded unicode-xid v0.2.1
-  Downloaded ucd-trie v0.1.3
-  Downloaded rand_chacha v0.3.0
-  Downloaded opaque-debug v0.3.0
-  Downloaded termios v0.3.3
-  Downloaded memchr v2.3.4
-  Downloaded atty v0.2.14
-  Downloaded base64 v0.13.0
-  Downloaded error-chain v0.12.4
-  Downloaded ansi_term v0.11.0
-  Downloaded adler v1.0.2
-  Downloaded addr2line v0.14.1
-  Downloaded byteorder v1.4.3
-  Downloaded getrandom v0.2.2
+  Downloaded futures-macro v0.3.14
+  Downloaded generic-array v0.14.4
   Downloaded itoa v0.4.7
-  Downloaded tokio-macros v1.1.0
-  Downloaded timerfd v1.2.0
-  Downloaded vec_map v0.8.2
-  Downloaded libmount v0.1.15
-  Downloaded pest v2.1.3
-  Downloaded libc v0.2.93
-  Downloaded semver v0.11.0
-  Downloaded rustc-demangle v0.1.18
-  Downloaded libcryptsetup-rs-sys v0.1.5
-  Downloaded semver-parser v0.10.2
-  Downloaded itertools v0.10.0
-  Downloaded quick-error v1.2.3
-  Downloaded futures-executor v0.3.14
-  Downloaded syn v1.0.70
-  Downloaded textwrap v0.11.0
-  Downloaded signal-hook-registry v1.3.0
-  Downloaded regex-syntax v0.6.23
-  Downloaded futures-sink v0.3.14
-  Downloaded rustc-hash v1.1.0
-  Downloaded num-traits v0.2.14
-  Downloaded ryu v1.0.5
-  Downloaded tempfile v3.2.0
-  Downloaded sha-1 v0.9.4
-  Downloaded libudev v0.2.0
-  Downloaded regex v1.4.6
-  Downloaded termcolor v1.1.2
-  Downloaded pin-project-lite v0.2.6
-  Downloaded uuid v0.8.2
-  Downloaded libudev-sys v0.1.4
-  Downloaded log v0.4.14
-  Downloaded cfg-if v0.1.10
-  Downloaded data-encoding v2.3.2
-  Downloaded time v0.1.43
-  Downloaded either v1.6.1
-  Downloaded mio v0.7.11
-  Downloaded rand_core v0.6.2
-  Downloaded pkg-config v0.3.19
-  Downloaded ppv-lite86 v0.2.10
-  Downloaded chrono v0.4.19
-  Downloaded unicode-width v0.1.8
-  Downloaded rand v0.8.3
-  Downloaded typenum v1.13.0
+  Downloaded lazycell v1.3.0
   Downloaded slab v0.4.3
-  Downloaded serde_json v1.0.64
-  Downloaded object v0.23.0
-  Downloaded proc-macro2 v1.0.26
-  Downloaded void v1.0.2
-  Downloaded miniz_oxide v0.4.4
-  Downloaded version_check v0.9.3
-  Downloaded pin-utils v0.1.0
-  Downloaded serde v1.0.125
-  Downloaded peeking_take_while v0.1.2
-  Downloaded digest v0.9.0
-  Downloaded nom v5.1.2
-  Downloaded libloading v0.7.0
   Downloaded libdbus-sys v0.2.1
-  Downloaded dbus-tokio v0.7.3
+  Downloaded unicode-width v0.1.8
+  Downloaded strsim v0.8.0
+  Downloaded ucd-trie v0.1.3
+  Downloaded addr2line v0.14.1
+  Downloaded tempfile v3.2.0
   Downloaded libcryptsetup-rs v0.4.4
-  Downloaded nix v0.20.0
-  Downloaded once_cell v1.7.2
-  Downloaded cpuid-bool v0.1.2
-  Downloaded dbus-tree v0.9.1
-  Downloaded which v3.1.1
-  Downloaded cfg-if v1.0.0
-  Downloaded dbus v0.9.2
-  Downloaded serde_derive v1.0.125
-  Downloaded crc v1.8.1
   Downloaded cexpr v0.4.0
-  Downloaded clap v2.33.3
-  Downloaded quote v1.0.9
+  Downloaded lazy_static v1.4.0
+  Downloaded unicode-xid v0.2.1
+  Downloaded adler v1.0.2
+  Downloaded libmount v0.1.15
+  Downloaded ansi_term v0.11.0
+  Downloaded atty v0.2.14
+  Downloaded textwrap v0.11.0
+  Downloaded futures-channel v0.3.14
+  Downloaded byteorder v1.4.3
+  Downloaded bitflags v1.2.1
+  Downloaded autocfg v1.0.1
+  Downloaded bindgen v0.57.0
+  Downloaded futures-core v0.3.14
+  Downloaded futures-task v0.3.14
+  Downloaded futures-sink v0.3.14
+  Downloaded version_check v0.9.3
+  Downloaded futures-io v0.3.14
+  Downloaded backtrace v0.3.57
+  Downloaded getrandom v0.2.2
+  Downloaded futures-util v0.3.14
+  Downloaded dbus-tokio v0.7.3
+  Downloaded data-encoding v2.3.2
+  Downloaded futures-executor v0.3.14
+  Downloaded cpuid-bool v0.1.2
+  Downloaded chrono v0.4.19
+  Downloaded error-chain v0.12.4
+  Downloaded base64 v0.13.0
+  Downloaded itertools v0.10.0
+  Downloaded log v0.4.14
+  Downloaded libudev-sys v0.1.4
+  Downloaded libudev v0.2.0
+  Downloaded glob v0.3.0
+  Downloaded nix v0.20.0
   Downloaded clang-sys v1.2.0
-  Downloaded tokio v1.5.0
-  Downloaded devicemapper v0.29.1
-  Downloaded cc v1.0.67
+  Downloaded nom v5.1.2
+  Downloaded miniz_oxide v0.4.4
+  Downloaded libloading v0.7.0
+  Downloaded num-integer v0.1.44
+  Downloaded memchr v2.3.4
+  Downloaded num_cpus v1.13.0
+  Downloaded num-traits v0.2.14
+  Downloaded once_cell v1.7.2
+  Downloaded digest v0.9.0
+  Downloaded peeking_take_while v0.1.2
+  Downloaded object v0.23.0
+  Downloaded pest v2.1.3
+  Downloaded proc-macro-nested v0.1.7
+  Downloaded pin-project-lite v0.2.6
+  Downloaded quick-error v1.2.3
+  Downloaded proc-macro2 v1.0.26
+  Downloaded rand v0.8.3
+  Downloaded rand_chacha v0.3.0
+  Downloaded regex v1.4.6
+  Downloaded rustc-hash v1.1.0
+  Downloaded rand_core v0.6.2
+  Downloaded serde v1.0.125
+  Downloaded remove_dir_all v0.5.3
+  Downloaded libcryptsetup-rs-sys v0.1.5
   Downloaded shlex v0.1.1
-  Downloaded 118 crates (6.6 MB) in 1.94s
+  Downloaded serde_json v1.0.64
+  Downloaded termcolor v1.1.2
+  Downloaded semver v0.11.0
+  Downloaded syn v1.0.70
+  Downloaded signal-hook-registry v1.3.0
+  Downloaded termios v0.3.3
+  Downloaded sha-1 v0.9.4
+  Downloaded semver-parser v0.10.2
+  Downloaded which v3.1.1
+  Downloaded timerfd v1.2.0
+  Downloaded void v1.0.2
+  Downloaded vec_map v0.8.2
+  Downloaded typenum v1.13.0
+  Downloaded aho-corasick v0.7.15
+  Downloaded tokio-macros v1.1.0
+  Downloaded cc v1.0.67
+  Downloaded ppv-lite86 v0.2.10
+  Downloaded pkg-config v0.3.19
+  Downloaded quote v1.0.9
+  Downloaded rustc-demangle v0.1.18
+  Downloaded serde_derive v1.0.125
+  Downloaded pin-utils v0.1.0
+  Downloaded opaque-debug v0.3.0
+  Downloaded mio v0.7.11
+  Downloaded uuid v0.8.2
+  Downloaded cfg-if v0.1.10
+  Downloaded build_const v0.2.2
+  Downloaded time v0.1.43
+  Downloaded proc-macro-hack v0.5.19
+  Downloaded dbus v0.9.2
+  Downloaded devicemapper v0.29.1
+  Downloaded ryu v1.0.5
+  Downloaded clap v2.33.3
+  Downloaded nix v0.14.1
+  Downloaded either v1.6.1
+  Downloaded crc v1.8.1
+  Downloaded cfg-if v1.0.0
+  Downloaded tokio v1.5.0
+  Downloaded regex-syntax v0.6.23
+  Downloaded libc v0.2.93
+  Downloaded dbus-tree v0.9.1
+  Downloaded gimli v0.23.0
+  Downloaded 118 crates (6.6 MB) in 2.74s
   Downloaded loopdev v0.2.1
-  Downloaded 1 crate (5.6 KB) in 0.29s
+  Downloaded 1 crate (5.6 KB) in 0.17s
   Downloaded matches v0.1.8
-  Downloaded 1 crate (2.2 KB) in 0.29s
+  Downloaded 1 crate (2.2 KB) in 0.15s
   Downloaded proptest v0.10.1
-  Downloaded 1 crate (189.7 KB) in 0.36s
+  Downloaded 1 crate (189.7 KB) in 0.19s
    Compiling libc v0.2.93
    Compiling memchr v2.3.4
    Compiling version_check v0.9.3
    Compiling proc-macro2 v1.0.26
    Compiling unicode-xid v0.2.1
    Compiling pkg-config v0.3.19
-   Compiling cfg-if v1.0.0
    Compiling autocfg v1.0.1
+   Compiling cfg-if v1.0.0
    Compiling bitflags v1.2.1
    Compiling log v0.4.14
    Compiling syn v1.0.70
-   Compiling glob v0.3.0
-   Compiling ucd-trie v0.1.3
    Compiling proc-macro-hack v0.5.19
+   Compiling ucd-trie v0.1.3
+   Compiling glob v0.3.0
    Compiling proc-macro-nested v0.1.7
    Compiling getrandom v0.2.2
    Compiling regex-syntax v0.6.23
-   Compiling pin-project-lite v0.2.6
-   Compiling futures-core v0.3.14
-   Compiling futures-sink v0.3.14
    Compiling unicode-width v0.1.8
-   Compiling futures-task v0.3.14
-   Compiling typenum v1.13.0
-   Compiling ansi_term v0.11.0
-   Compiling strsim v0.8.0
-   Compiling pin-utils v0.1.0
-   Compiling vec_map v0.8.2
+   Compiling pin-project-lite v0.2.6
+   Compiling futures-sink v0.3.14
+   Compiling futures-core v0.3.14
+   Compiling serde v1.0.125
+   Compiling termcolor v1.1.2
+   Compiling humantime v2.1.0
    Compiling futures-io v0.3.14
    Compiling slab v0.4.3
-   Compiling humantime v2.1.0
-   Compiling serde v1.0.125
+   Compiling futures-task v0.3.14
    Compiling bindgen v0.57.0
-   Compiling termcolor v1.1.2
+   Compiling ansi_term v0.11.0
+   Compiling strsim v0.8.0
+   Compiling typenum v1.13.0
+   Compiling pin-utils v0.1.0
+   Compiling vec_map v0.8.2
    Compiling lazycell v1.3.0
+   Compiling lazy_static v1.4.0
+   Compiling rustc-hash v1.1.0
    Compiling peeking_take_while v0.1.2
    Compiling shlex v0.1.1
-   Compiling rustc-hash v1.1.0
-   Compiling lazy_static v1.4.0
+   Compiling cc v1.0.67
    Compiling gimli v0.23.0
    Compiling adler v1.0.2
    Compiling ryu v1.0.5
-   Compiling cc v1.0.67
-   Compiling rustc-demangle v0.1.18
-   Compiling object v0.23.0
    Compiling ppv-lite86 v0.2.10
    Compiling serde_json v1.0.64
+   Compiling rustc-demangle v0.1.18
    Compiling nix v0.14.1
+   Compiling object v0.23.0
    Compiling build_const v0.2.2
+   Compiling void v1.0.2
+   Compiling once_cell v1.7.2
    Compiling cfg-if v0.1.10
    Compiling serde_derive v1.0.125
-   Compiling either v1.6.1
    Compiling itoa v0.4.7
-   Compiling once_cell v1.7.2
-   Compiling void v1.0.2
+   Compiling either v1.6.1
    Compiling cpuid-bool v0.1.2
-   Compiling opaque-debug v0.3.0
    Compiling remove_dir_all v0.5.3
    Compiling quick-error v1.2.3
-   Compiling byteorder v1.4.3
+   Compiling opaque-debug v0.3.0
    Compiling base64 v0.13.0
+   Compiling byteorder v1.4.3
    Compiling data-encoding v2.3.2
    Compiling nom v5.1.2
    Compiling generic-array v0.14.4
@@ -3285,18 +3455,18 @@ RUSTFLAGS="-D warnings -D future-incompatible -D unused -D bare-trait-objects -D
    Compiling libdbus-sys v0.2.1
    Compiling libudev-sys v0.1.4
    Compiling libstratis v2.4.0 (/root/git/stratisd)
+   Compiling libloading v0.7.0
    Compiling pest v2.1.3
    Compiling clang-sys v1.2.0
-   Compiling libloading v0.7.0
-   Compiling futures-channel v0.3.14
    Compiling textwrap v0.11.0
+   Compiling futures-channel v0.3.14
    Compiling addr2line v0.14.1
    Compiling crc v1.8.1
    Compiling itertools v0.10.0
    Compiling semver-parser v0.10.2
    Compiling aho-corasick v0.7.15
-   Compiling signal-hook-registry v1.3.0
    Compiling atty v0.2.14
+   Compiling signal-hook-registry v1.3.0
    Compiling num_cpus v1.13.0
    Compiling time v0.1.43
    Compiling timerfd v1.2.0
@@ -3315,8 +3485,8 @@ RUSTFLAGS="-D warnings -D future-incompatible -D unused -D bare-trait-objects -D
    Compiling libmount v0.1.15
    Compiling libudev v0.2.0
    Compiling libcryptsetup-rs v0.4.4
-   Compiling digest v0.9.0
    Compiling block-buffer v0.9.0
+   Compiling digest v0.9.0
    Compiling env_logger v0.8.3
    Compiling rand_chacha v0.3.0
    Compiling futures-macro v0.3.14
@@ -3333,13 +3503,13 @@ RUSTFLAGS="-D warnings -D future-incompatible -D unused -D bare-trait-objects -D
    Compiling dbus-tree v0.9.1
    Compiling dbus-tokio v0.7.3
    Compiling futures v0.3.14
-    Finished release [optimized] target(s) in 4m 29s
+    Finished release [optimized] target(s) in 5m 15s
 PKG_CONFIG_ALLOW_CROSS=1 \
 RUSTFLAGS="-D warnings -D future-incompatible -D unused -D bare-trait-objects -D ellipsis-inclusive-range-patterns" \
 cargo build --release --bin=stratis-min --bin=stratisd-min \
 --bin=stratis-utils --no-default-features --features min,systemd_compat 
   Downloaded rpassword v5.0.1
-  Downloaded 1 crate (11.1 KB) in 0.78s
+  Downloaded 1 crate (11.1 KB) in 0.67s
    Compiling tokio v1.5.0
    Compiling futures-channel v0.3.14
    Compiling rpassword v5.0.1
@@ -3347,7 +3517,7 @@ cargo build --release --bin=stratis-min --bin=stratisd-min \
    Compiling libstratis v2.4.0 (/root/git/stratisd)
    Compiling futures-executor v0.3.14
    Compiling futures v0.3.14
-    Finished release [optimized] target(s) in 1m 04s
+    Finished release [optimized] target(s) in 1m 20s
 a2x -f manpage docs/stratisd.txt
 install -Dpm0644 -t /usr/share/dbus-1/system.d stratisd.conf
 install -Dpm0644 -t /usr/share/man/man8 docs/stratisd.8
@@ -3385,7 +3555,7 @@ remote: Enumerating objects: 6268, done.
 remote: Counting objects: 100% (247/247), done.
 remote: Compressing objects: 100% (97/97), done.
 remote: Total 6268 (delta 125), reused 205 (delta 120), pack-reused 6021
-Receiving objects: 100% (6268/6268), 1.18 MiB | 4.23 MiB/s, done.
+Receiving objects: 100% (6268/6268), 1.18 MiB | 3.13 MiB/s, done.
 Resolving deltas: 100% (3681/3681), done.
 INFO - Installing from develop-2.3.0 (python setup.py install)
 running install
@@ -3588,6 +3758,7 @@ Adding pyparsing 2.4.7 to easy-install.pth file
 
 Using /usr/lib/python3.9/site-packages
 Finished processing dependencies for stratis-cli==2.3.0
+INFO - Enabling unit=stratisd.service for sysinit.target.wants in /mnt/stratisroot
 INFO - Creating dracut initramfs
 dracut: Executing: /usr/bin/dracut --force --verbose
 dracut: dracut module 'busybox' will not be installed, because command 'busybox' could not be found!
@@ -3655,8 +3826,8 @@ dracut: *** Stripping files ***
 dracut: *** Stripping files done ***
 dracut: *** Creating image file '/boot/initramfs-5.11.12-300.fc34.x86_64.img' ***
 dracut: *** Creating initramfs image file '/boot/initramfs-5.11.12-300.fc34.x86_64.img' done ***
-INFO - Installing boot dependencies
-Last metadata expiration check: 0:09:24 ago on Sun 02 May 2021 03:00:53 PM EDT.
+INFO - Installing boot dependencies in chroot
+Last metadata expiration check: 0:10:18 ago on Tue 04 May 2021 06:09:50 AM EDT.
 Dependencies resolved.
 ==============================================================================================================================
  Package                             Architecture           Version                             Repository               Size
@@ -3684,19 +3855,19 @@ Upgrade  3 Packages
 
 Total download size: 6.2 M
 Downloading Packages:
-(1/11): grub2-pc-2.06~rc1-4.fc34.x86_64.rpm                                                    65 kB/s |  19 kB     00:00    
-(2/11): grub2-tools-efi-2.06~rc1-4.fc34.x86_64.rpm                                            655 kB/s | 552 kB     00:00    
-(3/11): boom-boot-1.3-1.fc34.noarch.rpm                                                       715 kB/s |  34 kB     00:00    
-(4/11): boom-boot-conf-1.3-1.fc34.noarch.rpm                                                  155 kB/s |  25 kB     00:00    
-(5/11): boom-boot-grub2-1.3-1.fc34.noarch.rpm                                                 154 kB/s |  24 kB     00:00    
-(6/11): python3-boom-1.3-1.fc34.noarch.rpm                                                    912 kB/s | 509 kB     00:00    
-(7/11): grub2-tools-extra-2.06~rc1-4.fc34.x86_64.rpm                                          572 kB/s | 855 kB     00:01    
-(8/11): grub2-pc-modules-2.06~rc1-4.fc34.noarch.rpm                                           482 kB/s | 912 kB     00:01    
-(9/11): grub2-common-2.06~rc1-4.fc34.noarch.rpm                                               1.3 MB/s | 934 kB     00:00    
-(10/11): grub2-tools-2.06~rc1-4.fc34.x86_64.rpm                                               2.7 MB/s | 1.9 MB     00:00    
-(11/11): grub2-tools-minimal-2.06~rc1-4.fc34.x86_64.rpm                                       770 kB/s | 612 kB     00:00    
+(1/11): grub2-pc-2.06~rc1-4.fc34.x86_64.rpm                                                    75 kB/s |  19 kB     00:00    
+(2/11): grub2-tools-efi-2.06~rc1-4.fc34.x86_64.rpm                                            516 kB/s | 552 kB     00:01    
+(3/11): grub2-pc-modules-2.06~rc1-4.fc34.noarch.rpm                                           728 kB/s | 912 kB     00:01    
+(4/11): grub2-tools-extra-2.06~rc1-4.fc34.x86_64.rpm                                          843 kB/s | 855 kB     00:01    
+(5/11): boom-boot-1.3-1.fc34.noarch.rpm                                                       172 kB/s |  34 kB     00:00    
+(6/11): boom-boot-conf-1.3-1.fc34.noarch.rpm                                                  204 kB/s |  25 kB     00:00    
+(7/11): boom-boot-grub2-1.3-1.fc34.noarch.rpm                                                 105 kB/s |  24 kB     00:00    
+(8/11): python3-boom-1.3-1.fc34.noarch.rpm                                                    950 kB/s | 509 kB     00:00    
+(9/11): grub2-common-2.06~rc1-4.fc34.noarch.rpm                                               1.9 MB/s | 934 kB     00:00    
+(10/11): grub2-tools-minimal-2.06~rc1-4.fc34.x86_64.rpm                                       1.2 MB/s | 612 kB     00:00    
+(11/11): grub2-tools-2.06~rc1-4.fc34.x86_64.rpm                                               1.7 MB/s | 1.9 MB     00:01    
 ------------------------------------------------------------------------------------------------------------------------------
-Total                                                                                         710 kB/s | 6.2 MB     00:08     
+Total                                                                                         1.4 MB/s | 6.2 MB     00:04     
 Running transaction check
 Transaction check succeeded.
 Running transaction test
@@ -3756,11 +3927,11 @@ Installation finished. No error reported.
 INFO - Installing grub2 bootloader
 INFO - Generating grub2 bootloader configuration
 Generating grub configuration file ...
-WARNING - Options for BootEntry(boot_id=94ad673) do not match OsProfile: marking read-only
-WARNING - Options for BootEntry(boot_id=7db0380) do not match OsProfile: marking read-only
+WARNING - Options for BootEntry(boot_id=5de9104) do not match OsProfile: marking read-only
+WARNING - Options for BootEntry(boot_id=5f3a8f9) do not match OsProfile: marking read-only
 done
-INFO - Removing non-stratis boot entries from
-INFO - Configuring boom OsProfile for pool_uuid=95723c78-33fc-46d8-a2b5-a85b1dc33dfe
+INFO - Removing non-stratis boot entries from /mnt/stratisroot/boot
+INFO - Configuring boom OsProfile for pool_uuid=b4074ec0-c526-4342-9129-8812e714b962
 INFO - Creating boom OsProfile for Stratis boot
 Created profile with os_id 45e80bd:
   OS ID: "45e80bda816da4b8979b0bcf6e4411fab304dbe4",
@@ -3769,22 +3940,21 @@ Created profile with os_id 45e80bd:
   Kernel pattern: "/vmlinuz-%{version}", Initramfs pattern: "/initramfs-%{version}.img",
   Root options (LVM2): "rd.lvm.lv=%{lvm_root_lv}",
   Root options (BTRFS): "rootflags=%{btrfs_subvolume}",
-  Options: "root=%{root_device} ro %{root_opts} stratis.rootfs.pool_uuid=95723c78-33fc-46d8-a2b5-a85b1dc33dfe",
+  Options: "root=%{root_device} ro %{root_opts} stratis.rootfs.pool_uuid=b4074ec0-c526-4342-9129-8812e714b962",
   Title: "%{os_name} %{os_version_id} (%{version})",
   Optional keys: "grub_users grub_arg grub_class id", UTS release pattern: "fc34"
 INFO - Creating stratis root fs boot entry
 INFO - Creating boom boot entry
-Created entry with boot_id 8821846:
+Created entry with boot_id 512a46b:
   title Fedora 34 (5.11.12-300.fc34.x86_64)
-  machine-id 3433c23420aa45b7bab03b3d641c30cf
+  machine-id 36c722726658462a96691048ec9a3d3c
   version 5.11.12-300.fc34.x86_64
   linux /vmlinuz-5.11.12-300.fc34.x86_64
   initrd /initramfs-5.11.12-300.fc34.x86_64.img
-  options root=/dev/stratis/p1/fs1 ro stratis.rootfs.pool_uuid=95723c78-33fc-46d8-a2b5-a85b1dc33dfe
+  options root=/dev/stratis/p1/fs1 ro stratis.rootfs.pool_uuid=b4074ec0-c526-4342-9129-8812e714b962
   grub_users $grub_users
   grub_arg --unrestricted
   grub_class kernel
 INFO - Unmounting /mnt/stratisroot chroot layout
 INFO - Stratis root fs installation complete.
-[root@localhost-live ~]# 
 
