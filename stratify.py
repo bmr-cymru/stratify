@@ -330,7 +330,7 @@ def create_fs(pool, name):
 
 def dir_install(dest_dir, repo_url, text=False, kickstart=None):
     """Run an anaconda --dirinstall to the partition layout configured
-    in ``dest_dir`` from the repository at ``repo_url`` and optinally
+    in ``dest_dir`` from the repository at ``repo_url`` and optionally
     using the local kickstart file at the absolute path ``kickstart``.
 
     Force Anaconda to start in text mode if ``text`` is ``True``.
