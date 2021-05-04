@@ -354,8 +354,12 @@ def dir_install(dest_dir, repo_url, text=False, kickstart=None):
         install_cmd.append("--text")
     if kickstart:
         install_cmd.extend(["--kickstart", kickstart])
+        cmd_input = "\n".encode('utf8')
+    else:
+        cmd_input = None
+
     _log_info("Running anaconda: %s" % " ".join(install_cmd))
-    install_run = run(unshare_cmd + install_cmd)
+    install_run = run(unshare_cmd + install_cmd, input=cmd_input)
     if install_run.returncode != 0:
         _log_error("Anaconda installation failed: %s" % install_run.returncode)
         fail(1)
