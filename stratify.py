@@ -498,9 +498,11 @@ def prepare_chroot(root, bind_mounts):
     """
     for mnt in bind_mounts:
         mount(join("/", mnt), join(root, mnt), bind=True)
+    mount("none", join(root, "sys/fs/selinux"), fstype="selinuxfs")
 
 
 def teardown_chroot(root, bind_mounts):
+    umount(join(root, "sys/fs/selinux"))
     for mount in bind_mounts:
         umount(join(root, mount))
 
