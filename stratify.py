@@ -746,7 +746,7 @@ def main(argv):
     install_deps(boot_deps_pc, "boot", chroot=root)
     install_bootloader(root, target)
 
-    _log_info("Removing non-stratis boot entries from")
+    _log_info("Removing non-stratis boot entries from %s/boot" % root)
     unlink_bootentries(root)
 
     stratis_pool_uuid = get_stratis_pool_uuid(pool)
