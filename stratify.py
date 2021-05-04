@@ -8,8 +8,8 @@ from os import mkdir, chmod, chroot, chdir, listdir, unlink, symlink
 import traceback
 import logging
 
-_version = "0.2"
-_date = "2021-05-03"
+_version = "0.3"
+_date = "2021-05-04"
 
 _debug = False
 
