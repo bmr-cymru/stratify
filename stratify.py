@@ -221,13 +221,15 @@ def install_deps(deps, deptype, chroot=None):
         fail(1)
 
 
-def mount(what, where, options=None, bind=False):
+def mount(what, where, options=None, bind=False, fstype=None):
     """Mount ``what`` onto ``where``, optionally passing ``options`` to
     the mount program, and creating a bind mount if ``bind`` is ``True``.
     """
     mount_cmd = ["mount"]
     if bind:
         mount_cmd.extend(["--bind"])
+    if fstype:
+        mount_cmd.extend(["-t", fstype])
     if options:
         mount_cmd.extend(["-o", options])
     mount_cmd.extend([what, where])
