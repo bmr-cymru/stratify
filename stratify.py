@@ -663,6 +663,23 @@ def create_boot_entry(root, root_dev, title=None):
     boom_run = runat(boom_cmd, root, "/")
 
 
+def restorecon(root, path, recursive=False):
+    """Call the ``restorecon`` command to restore SELinux contexts to
+    ``path``. If ``root`` is not ``None`` the command is executed using
+    this value as the root directory. If ``recursive`` is ``True``
+    contexts will be restored recursively beginning at ``path``.
+    """
+    restorecon_cmd = ["restorecon"]
+    if recursive:
+        restorecon_cmd.extend(["-R"])
+    restorecon_cmd.extend([path])
+    restorecon_run = runat(restorecon_cmd, root)
+    if restorecon_run.returncode != 0:
+        _log_error("Failed to run '%s' in %s" %
+                   (" ".join(restorecon_cmd), root))
+        fail(1)
+
+
 def main(argv):
     parser = ArgumentParser(prog=basename(argv[0]), description="Fedora 34 "
                             "Stratis Root Install Script")
@@ -788,6 +805,9 @@ def main(argv):
 
     _log_info("Creating stratis root fs boot entry")
     create_boot_entry(root, "/dev/stratis/%s/%s" % (pool, fs), title=None)
+
+    _log_info("Restoring SELinux contexts to %s" % join(root, "etc"))
+    restorecon(root, "/etc", recursive=True)
 
     _log_info("Unmounting %s chroot layout" % root)
     teardown_chroot(root, chroot_bind_mounts)
