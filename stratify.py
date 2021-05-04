@@ -721,7 +721,7 @@ def main(argv):
 
         _log_info("Creating pool %s with %s" % (pool, stratis_dev))
         create_pool(pool, [stratis_dev])
-        _log_info("Creating file system %s in pool %s" % (pool, fs))
+        _log_info("Creating file system %s in pool %s" % (fs, pool))
         create_fs(pool, fs)
     else:
         _log_info("Starting Stratis daemon")
