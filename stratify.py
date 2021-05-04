@@ -4,7 +4,7 @@ from subprocess import run as run
 from sys import exit, argv
 from argparse import ArgumentParser
 from os.path import basename, join, exists, isabs
-from os import mkdir, chmod, chroot, chdir, listdir, unlink
+from os import mkdir, chmod, chroot, chdir, listdir, unlink, symlink
 import traceback
 import logging
 
@@ -106,6 +106,10 @@ chroot_bind_mounts = [
     "proc",
     "run",
     "sys"
+]
+
+enable_units = [
+    "stratisd.service"
 ]
 
 # Module logging configuration
@@ -535,6 +539,26 @@ def install_from_git(root):
         runat(build_cmd, root, join(git_chrootdir, git_dir))
 
 
+def enable_service(root, unit):
+    """Enable the systemd service ``unit`` in the chroot layout specified
+    by ``root``. The given ``unit`` must be present in the systemd path
+    `/usr/lib/systemd/system`.
+    """
+    _log_info("Enabling unit=%s for sysinit.target.wants in %s" %
+              (unit, root))
+    etc_path = "/etc/systemd/system/sysinit.target.wants"
+    usr_path = "/usr/lib/systemd/system"
+    if not exists(join(root, usr_path[1:])):
+        _log_warn("systemd unit path %s not found in %s" % (usr_path, root))
+    if not exists(join(root, etc_path[1:])):
+        _log_error("systemd target directory %s not found in %s" %
+                   (etc_path, root))
+        fail(1)
+    etc_path = join(etc_path, unit)
+    usr_path = join(usr_path, unit)
+    symlink(usr_path, join(root, etc_path[1:]))
+
+
 def write_fstab(root, pool, fs, boot_dev, swap_dev=None):
     """Write an fstab for stratis root to the root file system at ``root``,
     using the stratis ``pool`` and ``fs``, ``boot_dev`` and optionally
@@ -739,6 +763,10 @@ def main(argv):
     install_deps(build_deps, "build", chroot=root)
 
     install_from_git(root)
+
+    for unit in enable_units:
+        enable_service(root, unit)
+
     write_fstab(root, pool, fs, boot_dev)
     mk_dracut_initramfs(root)
 
