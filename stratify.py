@@ -631,6 +631,19 @@ def install_bootloader(root, target):
         fail(1)
 
 
+def get_fs_uuid(device):
+    """Return the file system UUID for ``device``, as reported by ``blkid``.
+    """
+    lsblk_cmd = ["lsblk", "--noheadings", "--fs", "--output", "uuid"]
+    lsblk_cmd.extend(["/dev/%s" % device])
+    lsblk_run = run(lsblk_cmd, capture_output=True)
+    if lsblk_run.returncode != 0:
+        _log_error("Failed to get file system UUID for %s" % device)
+        fail(1)
+    lsblk_out = lsblk_run.stdout.decode('utf8')
+    return lsblk_out.strip()
+
+
 def unlink_bootentries(root):
     """Clean up Anaconda generated boot entries.
     """
