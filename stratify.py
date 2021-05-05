@@ -529,7 +529,14 @@ def prepare_chroot(root, bind_mounts):
 
 
 def teardown_chroot(root, bind_mounts):
-    umount(join(root, "sys/fs/selinux"))
+    """Unmount selinuxfs and remove bind mounts specified in ``bind_mounts``
+    from the chroot environment at ``root``.
+    """
+    selinux_path = join(root, "sys/fs/selinux")
+    _log_info("Unmounting selinuxfs at %s" % selinux_path)
+    umount(selinux_path)
+
+    _log_info("Removing bind mounts from chroot %s (%s)" % (root, bind_mounts))
     for mount in bind_mounts:
         umount(join(root, mount))
 
