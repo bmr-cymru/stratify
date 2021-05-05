@@ -911,7 +911,9 @@ def main(argv):
         # Clean up any stray boot file system
         umount(join(args.sys_root, "boot"), check=False)
 
-    _log_info("Installing for %s" % ("EFI" if efi else "BIOS"))
+    _log_info("%s for %s" %
+              ("Installing" if not rescue else "Rescuing",
+               ("EFI" if efi else "BIOS")))
 
     # Available partition numbers
     parts = list(range(4, 0, -1))
