@@ -377,6 +377,8 @@ def dir_install(dest_dir, repo_url, text=False, kickstart=None):
     if install_run.returncode != 0:
         _log_error("Anaconda installation failed: %s" % install_run.returncode)
         fail(1)
+    if cmd_input:
+        print()
 
 
 def stratisd_running():
