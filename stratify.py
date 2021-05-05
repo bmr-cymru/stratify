@@ -4,7 +4,7 @@ from subprocess import run as run
 from sys import exit, argv
 from argparse import ArgumentParser
 from os.path import basename, join, exists, isabs
-from os import mkdir, chmod, chroot, chdir, listdir, unlink, symlink
+from os import mkdir, chmod, chroot, chdir, listdir, unlink, symlink, fdatasync
 import traceback
 import logging
 
@@ -656,6 +656,24 @@ def get_fs_uuid(device):
         fail(1)
     lsblk_out = lsblk_run.stdout.decode('utf8')
     return lsblk_out.strip()
+
+
+def configure_bootloader_stub(root, boot_dev):
+    """Configure the EFI grub.cfg stub to redirect to the configuration
+    in /boot/grub2/grub.cfg.
+    """
+    grub_stub = (
+        "search --no-floppy --fs-uuid --set=dev %s\n"
+        "set prefix=($dev)/grub2\n"
+        "export $prefix\n"
+        "configfile $prefix/grub.cfg\n"
+    )
+    boot_uuid = get_fs_uuid(boot_dev)
+    stub_path = join(root, "boot/efi/EFI/fedora/grub.cfg")
+    with open(stub_path, "w") as stub:
+        stub.write(grub_stub % boot_uuid)
+        stub.flush()
+        fdatasync(stub.fileno())
 
 
 def unlink_bootentries(root):
