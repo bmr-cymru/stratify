@@ -470,13 +470,14 @@ def wipe_partitions(target):
     wipe_device(target)
 
 
-def create_partitions(target, mbr=False):
+def create_partitions(target, mbr=False, efi=False):
     """Create a default partition layout on ``target``.
     """
     _log_info("Creating partition table on %s" % target)
     mk_parttable(target, mbr=mbr)
 
-    part_sizes = [BOOT_PART_SIZE, 0]
+    part_sizes = [EFI_PART_SIZE] if efi else []
+    part_sizes.extend([BOOT_PART_SIZE, 0])
     _log_info("Partitioning target device %s %s" % (target, part_sizes))
     mk_partitions(target, part_sizes)
 
