@@ -742,6 +742,13 @@ def restorecon(root, path, recursive=False):
         fail(1)
 
 
+def is_bios():
+    """Return ``True`` if this system is using BIOS firmware or ``False``
+    if EFI is present. Assumes x86_64 platform.
+    """
+    return not exists("/sys/firmware/efi")
+
+
 def main(argv):
     parser = ArgumentParser(prog=basename(argv[0]), description="Fedora 34 "
                             "Stratis Root Install Script")
