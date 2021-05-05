@@ -964,7 +964,7 @@ def main(argv):
 
     if rescue:
         _log_info("System chroot is mounted at %s" % root)
-        paths("Exit the shell to clean up chroot")
+        _log_info("Exit the shell to clean up chroot")
         runat(["/bin/bash"], root, cwd="/root", shell=True)
         cleanup(root, efi, chroot_bind_mounts)
         exit(0)
