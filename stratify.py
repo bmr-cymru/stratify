@@ -523,11 +523,16 @@ def mount_boot_efi(efi_dev, root):
 
 def prepare_chroot(root, bind_mounts):
     """Create bind mounts for the chroot environment for the mount
-    points specified in ``chroot_bind_mounts``.
+    points specified in ``bind_mounts``, and mount selinuxfs at
+    sys/fs/selinux.
     """
+    _log_info("Creating bind mounts in chroot %s (%s)" % (root, bind_mounts))
     for mnt in bind_mounts:
         mount(join("/", mnt), join(root, mnt), bind=True)
-    mount("none", join(root, "sys/fs/selinux"), fstype="selinuxfs")
+
+    selinux_path = join(root, "sys/fs/selinux")
+    _log_info("Mounting selinuxfs at %s" % selinux_path)
+    mount("none", selinux_path, fstype="selinuxfs")
 
 
 def teardown_chroot(root, bind_mounts):
