@@ -814,6 +814,8 @@ def main(argv):
                         "to use", default="vda")
     parser.add_argument("-b", "--bios", action="store_true", help="Assume the"
                         "system is using BIOS firmware")
+    parser.add_argument("-c", "--cleanup", action="store_true", help="Clean "
+                        "up and unmount a rescue chroot")
     parser.add_argument("-e", "--efi", action="store_true", help="Assue the"
                         "system is using EFI firmware")
     parser.add_argument("-f", "--fs-name", type=str, help="Set the file "
@@ -826,6 +828,8 @@ def main(argv):
                         help="Do not partition disks or create Stratis fs")
     parser.add_argument("-p", "--pool-name", type=str, help="Set the pool "
                         "name", default=pool_name)
+    parser.add_argument("-r", "--rescue", action="store_true", help="Rescue "
+                        "a Stratis root installation.")
     parser.add_argument("-s", "--sys-root", type=str, help="Set the path to"
                         " the system root directory", default=sys_root)
     parser.add_argument("-t", "--text", action="store_true", help="Use text "
@@ -846,6 +850,19 @@ def main(argv):
 
     _log_info("stratify.py %s - %s" % (_version, _date))
 
+    if args.rescue or args.cleanup:
+        args.nopartition = True
+
+    if args.rescue:
+        if args.cleanup:
+            _log_error("Cannot use --rescue and --cleanup")
+            fail(1)
+
+    if args.wipe:
+        if args.rescue or args.cleanup:
+            _log_error("Cannot use --wipe with --rescue or --cleanup")
+            fail(1)
+
     if args.wipe and args.nopartition:
         _log_error("Cannot use --wipe with --nopartition")
         fail(1)
@@ -865,9 +882,6 @@ def main(argv):
         _log_error("No target device given!")
         fail(1)
 
-    # Clean up any stray boot file system
-    umount(join(args.sys_root, "boot"), check=False)
-
     if args.wipe:
         # Remove pre-existing stratis pools
         destroy_pools()
@@ -880,6 +894,7 @@ def main(argv):
     pool = args.pool_name
     fs = args.fs_name
     root = args.sys_root
+    rescue = args.rescue
 
     if args.bios:
         efi = False
@@ -887,6 +902,13 @@ def main(argv):
         efi = True
     else:
         efi = not is_bios()
+
+    if args.cleanup:
+        cleanup(root, efi, chroot_bind_mounts)
+        exit(0)
+    else:
+        # Clean up any stray boot file system
+        umount(join(args.sys_root, "boot"), check=False)
 
     _log_info("Installing for %s" % ("EFI" if efi else "BIOS"))
 
@@ -933,10 +955,18 @@ def main(argv):
     if efi:
         mount_boot_efi(efi_dev, root)
 
-    # Call Anaconda to create an installation
-    dir_install(root, repo, text=args.text, kickstart=args.kickstart)
+    if not rescue:
+        # Call Anaconda to create an installation
+        dir_install(root, repo, text=args.text, kickstart=args.kickstart)
 
     prepare_chroot(root, chroot_bind_mounts)
+
+    if rescue:
+        _log_info("System chroot is mounted at %s" % root)
+        paths("Exit the shell to clean up chroot")
+        runat(["/bin/bash"], root, cwd="/root", shell=True)
+        cleanup(root, efi, chroot_bind_mounts)
+        exit(0)
 
     install_deps(build_deps, "build", chroot=root)
 
