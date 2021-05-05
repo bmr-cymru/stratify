@@ -26,6 +26,9 @@ sys_root = "/mnt/stratisroot"
 # Path to the fstab
 etc_fstab = "etc/fstab"
 
+# Default size of the /boot/efi partition
+EFI_PART_SIZE = 600
+
 # Default size of the /boot partition
 BOOT_PART_SIZE = 1000
 
