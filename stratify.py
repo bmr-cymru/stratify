@@ -89,10 +89,23 @@ build_deps = [
     "clevis-luks"
 ]
 
+boot_deps = [
+    "boom-boot"
+]
+
 boot_deps_pc = [
-        "grub2-pc",
-        "grub2-pc-modules",
-        "boom-boot"
+    "grub2-pc",
+    "grub2-pc-modules",
+]
+
+boot_deps_efi = [
+    "shim-x64",
+    "grub2-efi-x64",
+    "grub2-efi-x64-modules",
+    "shim-ia32",
+    "grub2-efi-ia32",
+    "grub2-efi-ia32-modules",
+    "grub2-tools-efi"
 ]
 
 # Packages that must be built from a git repository. Each entry is a 3-tuple:
@@ -180,16 +193,28 @@ def get_partition_device(name, partnum):
         return "%s%d" % (name, partnum)
 
 
-def get_boot_device(name):
-    """Return a partition name to use for the /boot file system.
+def _next_device(name, parts):
+    """Return the next partition available from the list ``parts``.
     """
-    return get_partition_device(name, 1)
+    return get_partition_device(name, parts.pop())
 
 
-def get_stratis_device(name):
-    """Return a partition name to use for the Stratis pool.
+def get_efi_device(name, parts):
+    """Allocate a partition name to use for the /boot/efi file system.
     """
-    return get_partition_device(name, 2)
+    return _next_device(name, parts)
+
+
+def get_boot_device(name, parts):
+    """Allocate a partition name to use for the /boot file system.
+    """
+    return _next_device(name, parts)
+
+
+def get_stratis_device(name, parts):
+    """Allocate a partition name to use for the Stratis pool.
+    """
+    return _next_device(name, parts)
 
 
 def check_target(target):
@@ -644,13 +669,18 @@ def install_bootloader(root, target):
     """Install and configure the grub2 boot loader in the chroot.
     """
     grub2_install_cmd = ["grub2-install", "/dev/%s" % target]
-    grub2_mkconfig_cmd = ["grub2-mkconfig > /boot/grub2/grub.cfg"]
 
     grub2_install_run = runat(grub2_install_cmd, root, "/")
     _log_info("Installing grub2 bootloader")
     if grub2_install_run.returncode != 0:
         _log_error("Failed to install boot loader")
         fail(1)
+
+
+def configure_bootloader(root):
+    """Configure the grub2 boot loader in the chroot.
+    """
+    grub2_mkconfig_cmd = ["grub2-mkconfig > /boot/grub2/grub.cfg"]
 
     _log_info("Generating grub2 bootloader configuration")
     grub2_mkconfig_run = runat(grub2_mkconfig_cmd, root, "/", shell=True)
@@ -756,6 +786,20 @@ def restorecon(root, path, recursive=False):
         fail(1)
 
 
+def cleanup(root, efi, bind_mounts):
+    _log_info("Unmounting %s %s chroot layout" % ("EFI" if efi else "BIOS", root))
+    teardown_chroot(root, bind_mounts)
+    boot = join(root, "boot")
+    if efi:
+        boot_efi = join(boot, "efi")
+        _log_info("Unmounting %s from %s" % (boot_efi, root))
+        umount(boot_efi)
+    _log_info("Unmounting %s from %s" % (boot, root))
+    umount(boot)
+    _log_info("Unmounting %s" % root)
+    umount(root)
+
+
 def is_bios():
     """Return ``True`` if this system is using BIOS firmware or ``False``
     if EFI is present. Assumes x86_64 platform.
@@ -768,6 +812,10 @@ def main(argv):
                             "Stratis Root Install Script")
     parser.add_argument("-d", "--target", type=str, help="Specify the device "
                         "to use", default="vda")
+    parser.add_argument("-b", "--bios", action="store_true", help="Assume the"
+                        "system is using BIOS firmware")
+    parser.add_argument("-e", "--efi", action="store_true", help="Assue the"
+                        "system is using EFI firmware")
     parser.add_argument("-f", "--fs-name", type=str, help="Set the file "
                         "system name", default=fs_name)
     parser.add_argument("-k", "--kickstart", type=str, help="Path to a local "
@@ -806,6 +854,10 @@ def main(argv):
         _log_error("--kickstart argument must be an absolute path")
         fail(1)
 
+    if args.bios and args.efi:
+        _log_error("Cannot use --bios with --efi")
+        fail(1)
+
     # Install dependencies in the live host
     install_deps(package_deps, "host")
 
@@ -829,16 +881,36 @@ def main(argv):
     fs = args.fs_name
     root = args.sys_root
 
-    boot_dev = get_boot_device(target)
+    if args.bios:
+        efi = False
+    elif args.efi:
+        efi = True
+    else:
+        efi = not is_bios()
+
+    _log_info("Installing for %s" % ("EFI" if efi else "BIOS"))
+
+    # Available partition numbers
+    parts = list(range(4, 0, -1))
+
+    if efi:
+        efi_dev = get_efi_device(target, parts)
+        _log_info("Using %s as EFI device" % efi_dev)
+
+    boot_dev = get_boot_device(target, parts)
     _log_info("Using %s as boot device" % boot_dev)
-    stratis_dev = get_stratis_device(target)
+
+    stratis_dev = get_stratis_device(target, parts)
     _log_info("Using %s as Stratis pool device" % stratis_dev)
 
     if not args.nopartition:
         if args.wipe:
             wipe_partitions(target)
 
-        create_partitions(target)
+        create_partitions(target, efi=efi)
+
+        if efi:
+            mkfs_vfat(efi_dev)
 
         mkfs_xfs(boot_dev)
 
@@ -858,6 +930,8 @@ def main(argv):
 
     mount_stratis_root(pool, fs, root)
     mount_boot(boot_dev, root)
+    if efi:
+        mount_boot_efi(efi_dev, root)
 
     # Call Anaconda to create an installation
     dir_install(root, repo, text=args.text, kickstart=args.kickstart)
@@ -874,9 +948,16 @@ def main(argv):
     write_fstab(root, pool, fs, boot_dev)
     mk_dracut_initramfs(root)
 
-    # Install grub2 dependencies for PC/BIOS
-    install_deps(boot_deps_pc, "boot", chroot=root)
-    install_bootloader(root, target)
+    if efi:
+        # Install grub2 dependencies for EFI
+        install_deps(boot_deps + boot_deps_efi, "boot", chroot=root)
+        configure_bootloader_stub(root, boot_dev)
+    else:
+        # Install grub2 dependencies for PC/BIOS
+        install_deps(boot_deps + boot_deps_pc, "boot", chroot=root)
+        install_bootloader(root, target)
+
+    configure_bootloader(root)
 
     _log_info("Removing non-stratis boot entries from %s/boot" % root)
     unlink_bootentries(root)
@@ -892,12 +973,9 @@ def main(argv):
     _log_info("Restoring SELinux contexts to %s" % join(root, "etc"))
     restorecon(root, "/etc", recursive=True)
 
-    _log_info("Unmounting %s chroot layout" % root)
-    teardown_chroot(root, chroot_bind_mounts)
-    umount(join(root, "boot"))
-    umount(root)
-    _log_info("Stratis root fs installation complete.")
+    cleanup(root, efi, chroot_bind_mounts)
 
+    _log_info("Stratis root fs installation complete.")
 
 if __name__ == '__main__':
     main(argv)
