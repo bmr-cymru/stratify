@@ -8,6 +8,7 @@ F34 Stratis rootfs with stratify.py
   5. Installation using Live media
   6. Installation using host system
   7. If something goes wrong
+      7.1 Rescuing a stratis system with stratify
   8. stratify.py options
   9. Hacking stratify.py
 
@@ -196,6 +197,7 @@ menu will also include entries to allow booting the original host installation
 (the Stratis entry should be the default).
 
 # 7 If something goes wrong
+---------------------------
 
 If the installation fails (e.g. to to a kickstart error) use `--wipe` to
 erase the disk contents before repeating.
@@ -204,6 +206,29 @@ The disk partitioning and file system creation can be skipped by using
 `--nopartition`. This assumes a /boot file system exists at the first
 partition of the target device and that the second partition contains
 a pool and file system with the correct names.
+
+## 7.1 Rescuing a stratis system with stratify
+----------------------------------------------
+
+If a Startis root file system installation fails to boot the stratify script
+can be used to install dependencies and re-create the chroot layout for
+debugging purposes.
+
+As with installation this can be done from either a host system installed
+with Fedora 34, or from the Fedora 34 Live Media.
+
+To rescue a system, start the system and download stratify.py and then as
+root run run:
+
+```
+# python stratify --target <device> --rescue
+```
+
+This will mount the file systems from the target device and set up the
+chroot before starting a shell in the stratis rootfs system.
+
+Exiting the shell will tear down the chroot and leave the system ready
+to reboot.
 
 # 8. stratify.py options
 ------------------------
