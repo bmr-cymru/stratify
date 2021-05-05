@@ -209,7 +209,7 @@ a pool and file system with the correct names.
 ------------------------
 
 ```
-usage: stratify.py [-h] [-d TARGET] [-f FS_NAME] [-k KICKSTART] [-m] [-n] [-p POOL_NAME] [-s SYS_ROOT] [-t] [-w]
+usage: stratify.py [-h] [-d TARGET] [-b] [-c] [-e] [-f FS_NAME] [-k KICKSTART] [-m] [-n] [-p POOL_NAME] [-r] [-s SYS_ROOT] [-t] [-w]
 
 Fedora 34 Stratis Root Install Script
 
@@ -217,6 +217,9 @@ optional arguments:
   -h, --help            show this help message and exit
   -d TARGET, --target TARGET
                         Specify the device to use
+  -b, --bios            Assume thesystem is using BIOS firmware
+  -c, --cleanup         Clean up and unmount a rescue chroot
+  -e, --efi             Assue thesystem is using EFI firmware
   -f FS_NAME, --fs-name FS_NAME
                         Set the file system name
   -k KICKSTART, --kickstart KICKSTART
@@ -225,6 +228,7 @@ optional arguments:
   -n, --nopartition     Do not partition disks or create Stratis fs
   -p POOL_NAME, --pool-name POOL_NAME
                         Set the pool name
+  -r, --rescue          Rescue a Stratis root installation.
   -s SYS_ROOT, --sys-root SYS_ROOT
                         Set the path to the system root directory
   -t, --text            Use text mode for Anaconda
