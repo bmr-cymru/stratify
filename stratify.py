@@ -505,6 +505,20 @@ def mount_boot(boot_dev, root):
     chmod(boot_path, 0o555)
 
 
+def mount_boot_efi(efi_dev, root):
+    """Mount the /boot/efi file system on ``efi_dev`` at ``root``/boot/efi.
+    """
+    efi_path = join(root, "boot", "efi")
+    try:
+        mkdir(efi_path)
+    except OSError:
+        pass
+
+    _log_info("Mounting %s on %s" % (efi_dev, efi_path))
+    mount("/dev/%s" % efi_dev, efi_path)
+    chmod(efi_path, 0o700)
+
+
 def prepare_chroot(root, bind_mounts):
     """Create bind mounts for the chroot environment for the mount
     points specified in ``chroot_bind_mounts``.
