@@ -714,6 +714,7 @@ def configure_bootloader_stub(root, boot_dev):
     )
     boot_uuid = get_fs_uuid(boot_dev)
     stub_path = join(root, "boot/efi/EFI/fedora/grub.cfg")
+    _log_info("Generating grub.cfg EFI stub at %s" % stub_path)
     with open(stub_path, "w") as stub:
         stub.write(grub_stub % boot_uuid)
         stub.flush()
