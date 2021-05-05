@@ -230,6 +230,12 @@ chroot before starting a shell in the stratis rootfs system.
 Exiting the shell will tear down the chroot and leave the system ready
 to reboot.
 
+To clean up chroot mounts left by a failed installation use `--cleanup`:
+
+```
+# python stratify --target <device> --cleanup
+```
+
 # 8. stratify.py options
 ------------------------
 
