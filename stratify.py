@@ -144,7 +144,7 @@ def fail(rc):
 
 
 def whole_disk(name):
-    """Return ``True`` if the string ``dev`` corresponds two a whole disk
+    """Return ``True`` if the string ``dev`` corresponds to a whole disk
     device, or ``False`` otherwise.
     """
     if name.startswith("vd") or name.startswith("sd"):
