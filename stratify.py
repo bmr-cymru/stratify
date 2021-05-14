@@ -291,7 +291,7 @@ def wipe_device(name):
 
 def mk_parttable(name, mbr=False):
     """Create a partition table on device ``name``. A GPT partition table is
-    created unless the ``mbr`` argument is ``False``.
+    created unless the ``mbr`` argument is ``True``.
     """
     part_cmd = ["fdisk", "/dev/%s" % name]
     part_input = ("%s\nw\n" % 'o' if mbr else 'g').encode('utf8')
