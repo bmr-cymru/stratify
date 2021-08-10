@@ -872,6 +872,10 @@ def main(argv):
         _log_error("--kickstart argument must be an absolute path")
         fail(1)
 
+    if args.mbr and args.efi:
+        _log_error("Cannot use MBR partitions with --efi")
+        fail(1)
+
     if args.bios and args.efi:
         _log_error("Cannot use --bios with --efi")
         fail(1)
