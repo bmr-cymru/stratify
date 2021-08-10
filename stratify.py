@@ -645,13 +645,13 @@ def write_fstab(root, pool, fs, boot_dev, swap_dev=None):
     else:
         swap_entry = ""
     fstab_path = join(root, etc_fstab)
-    fstab = open(fstab_path, "w")
-    fstab.write(root_entry + "\n")
-    fstab.write(boot_entry + "\n")
-    if swap_entry:
-        fstab.write(swap_entry)
-    fstab.flush()
-    fstab.close()
+    with open(fstab_path, "w") as fstab:
+        fstab.write(root_entry + "\n")
+        fstab.write(boot_entry + "\n")
+        if swap_entry:
+            fstab.write(swap_entry)
+        fstab.flush()
+        fdatasync(fstab.fileno())
 
 
 def mk_dracut_initramfs(root):
