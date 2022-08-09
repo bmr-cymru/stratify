@@ -112,9 +112,9 @@ boot_deps_efi = [
 # (CLONE_URL, BRANCH, INSTALL_CMD).
 git_deps = [
     ("https://github.com/stratis-storage/stratisd",
-     "develop-2.3.0", "make install"),
+     "master", "make install"),
     ("https://github.com/stratis-storage/stratis-cli",
-     "develop-2.3.0", "python setup.py install")
+     "master", "python setup.py install")
 ]
 
 chroot_bind_mounts = [
