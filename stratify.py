@@ -18,7 +18,7 @@ pool_name = "p1"
 fs_name = "fs1"
 
 # Default Fedora repository URL
-repo = "http://mirrors.mit.edu/fedora/linux/development/34/Server/x86_64/os/"
+repo = "https://mirrors.mit.edu/fedora/linux/releases/36/Server/x86_64/os/"
 
 # Default location of the target system root directory
 sys_root = "/mnt/stratisroot"
