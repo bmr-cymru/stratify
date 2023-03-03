@@ -8,8 +8,8 @@ from os import mkdir, chmod, chroot, chdir, listdir, unlink, symlink, fdatasync
 import traceback
 import logging
 
-_version = "0.6"
-_date = "2022-08-09"
+_version = "0.7"
+_date = "2023-03-03"
 
 _debug = False
 
@@ -18,7 +18,7 @@ pool_name = "p1"
 fs_name = "fs1"
 
 # Default Fedora repository URL
-repo = "https://mirrors.mit.edu/fedora/linux/releases/36/Server/x86_64/os/"
+repo = "https://mirrors.mit.edu/fedora/linux/releases/37/Server/x86_64/os/"
 
 # Default location of the target system root directory
 sys_root = "/mnt/stratisroot"
@@ -54,6 +54,7 @@ build_deps = [
     "dbus-devel.x86_64",
     "dbus-glib-devel",
     "dbus-python-devel",
+    "device-mapper-devel",
     "device-mapper-persistent-data",
     "gcc",
     "git",
