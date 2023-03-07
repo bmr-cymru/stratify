@@ -33,7 +33,7 @@ EFI_PART_SIZE = 600
 BOOT_PART_SIZE = 1000
 
 # Packages needed in the live host
-package_deps = [
+host_package_deps = [
     "git",
     "anaconda",
     "stratisd",
@@ -116,6 +116,12 @@ git_deps = [
      "master", "make install"),
     ("https://github.com/stratis-storage/stratis-cli",
      "master", "python3 setup.py install")
+]
+
+package_deps = [
+    "stratisd",
+    "stratisd-dracut",
+    "stratis-cli"
 ]
 
 chroot_bind_mounts = [
@@ -631,7 +637,10 @@ def enable_service(root, unit):
         fail(1)
     etc_path = join(etc_path, unit)
     usr_path = join(usr_path, unit)
-    symlink(usr_path, join(root, etc_path[1:]))
+    try:
+        symlink(usr_path, join(root, etc_path[1:]))
+    except FileExistsError:
+        pass
 
 
 def write_fstab(root, pool, fs, boot_dev, swap_dev=None):
@@ -822,6 +831,8 @@ def main(argv):
                         "system is using EFI firmware")
     parser.add_argument("-f", "--fs-name", type=str, help="Set the file "
                         "system name", default=fs_name)
+    parser.add_argument("-g", "--git", action="store_true", help="Perform a "
+                        "build from git master branch instead of packages")
     parser.add_argument("-k", "--kickstart", type=str, help="Path to a local "
                         "kickstart file")
     parser.add_argument("-m", "--mbr", action="store_true", help="Use MBR "
@@ -882,7 +893,7 @@ def main(argv):
         fail(1)
 
     # Install dependencies in the live host
-    install_deps(package_deps, "host")
+    install_deps(host_package_deps, "host")
 
     if not check_target(args.target):
         _log_error("No target device given!")
@@ -901,6 +912,7 @@ def main(argv):
     fs = args.fs_name
     root = args.sys_root
     rescue = args.rescue
+    git_build = args.git
 
     if args.bios:
         efi = False
@@ -976,9 +988,12 @@ def main(argv):
         cleanup(root, efi, chroot_bind_mounts)
         exit(0)
 
-    install_deps(build_deps, "build", chroot=root)
 
-    install_from_git(root)
+    if git_build:
+        install_deps(build_deps, "build", chroot=root)
+        install_from_git(root)
+    else:
+        install_deps(package_deps, "packages", chroot=root)
 
     for unit in enable_units:
         enable_service(root, unit)
