@@ -115,7 +115,7 @@ git_deps = [
     ("https://github.com/stratis-storage/stratisd",
      "master", "make install"),
     ("https://github.com/stratis-storage/stratis-cli",
-     "master", "python setup.py install")
+     "master", "python3 setup.py install")
 ]
 
 chroot_bind_mounts = [
