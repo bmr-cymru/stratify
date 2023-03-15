@@ -1,4 +1,4 @@
-F34 Stratis rootfs with stratify.py
+F37 Stratis rootfs with stratify.py
 ===================================
 
   1. Overview & Requirements
@@ -23,15 +23,15 @@ To create virtual machines with a Stratis root file system using `stratify.py`
 you will need:
  
 * The URL for the `stratify.py` script
-* An `x86_64` virtual machine using BIOS or EFI firmware and running Fedora 34,
+* An `x86_64` virtual machine using BIOS or EFI firmware and running Fedora 37,
   either:
-   * A VM running the F34 Workstation Live media (recommended)
-   * A VM installed with any F34 media with additional storage for Stratis
+   * A VM running the F37 Workstation Live media (recommended)
+   * A VM installed with any F37 media with additional storage for Stratis
 * (Optional) a kickstart file to automate installation settings
 
 The script can be run in either a live environment using the Fedora
 Workstation Live ISO image, or in a "host" virtual machine previously
-installed with Fedora 34 and configured with additional storage for
+installed with Fedora 37 and configured with additional storage for
 a stratis root file system to be installed.
 
 The quickest method is to use the Live media, since this does not
@@ -52,7 +52,7 @@ fully automatic. An example is available at [1].
 # 2.1 Configuring the live environment
 --------------------------------------
 
-* Create a new virtual machine instance using the Fedora Workstation 34 Live
+* Create a new virtual machine instance using the Fedora Workstation 37 Live
 image.
 
 * Allocate at least 10GiB of storage as a single VirtIO disk (e.g. vda)
@@ -66,10 +66,10 @@ and allow at least 2048MiB of guest memory.
 # 2.2. Configuring a host virtual machine
 -----------------------------------------
 
-The host VM's role is to provide a Fedora 34 environment where stratify can
+The host VM's role is to provide a Fedora 37 environment where stratify can
 run that provides the ability to install software packages with dnf and to
 call the command line anaconda installer program. A minimal install using any
-F34 media is acceptable - the host environment is only needed for the duration
+F37 media is acceptable - the host environment is only needed for the duration
 of the installation.
 
 * Boot the host VM with the installation media and any kickstart or other
@@ -219,7 +219,7 @@ can be used to install dependencies and re-create the chroot layout for
 debugging purposes.
 
 As with installation this can be done from either a host system installed
-with Fedora 34, or from the Fedora 34 Live Media.
+with Fedora 37, or from the Fedora 37 Live Media.
 
 To rescue a system, start the system and download `stratify.py` and then as
 root run run:
@@ -246,7 +246,7 @@ To clean up chroot mounts left by a failed installation use `--cleanup`:
 ```
 usage: stratify.py [-h] [-d TARGET] [-b] [-c] [-e] [-f FS_NAME] [-k KICKSTART] [-m] [-n] [-p POOL_NAME] [-r] [-s SYS_ROOT] [-t] [-w]
 
-Fedora 34 Stratis Root Install Script
+Fedora 37 Stratis Root Install Script
 
 optional arguments:
   -h, --help            show this help message and exit
