@@ -7,6 +7,7 @@ from os.path import basename, join, exists, isabs
 from os import mkdir, chmod, chroot, chdir, listdir, unlink, symlink, fdatasync
 import traceback
 import logging
+import re
 
 _version = "0.7"
 _date = "2023-03-03"
