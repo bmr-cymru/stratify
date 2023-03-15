@@ -125,7 +125,10 @@ git_deps = [
 package_deps = [
     "stratisd",
     "stratisd-dracut",
-    "stratis-cli"
+    "stratis-cli",
+    "cryptsetup-libs",
+    "clevis-luks",
+    "keyutils"
 ]
 
 chroot_bind_mounts = [
