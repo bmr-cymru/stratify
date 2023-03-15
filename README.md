@@ -1,6 +1,7 @@
 F37 Stratis rootfs with stratify.py
 ===================================
 
+  0. Versions & Changes
   1. Overview & Requirements
   2. Configuring virtual machines
   3. Enable sshd (optional)
@@ -10,6 +11,19 @@ F37 Stratis rootfs with stratify.py
   7. If something goes wrong
   8. stratify.py options
   9. Hacking stratify.py
+
+# 0. Versions & Changes
+
+The script is tested with the current released Fedora media (currently Fedora
+37). The script may work with older releases but these are not routinely
+tested. In particular releases that ship with Stratis versions prior to 2.4.0
+do not include packaged support for stratis as the root file system: it is
+necessary to use the `--git` option on these releases to build Stratis from
+source.
+
+Due to the overheads of running both the graphical Live media environment and
+the Anaconda installer the minimum recommended guest memory for Live media
+installations is now 3GiB.
 
 
 # 1. Overview & Requirements
@@ -29,18 +43,17 @@ you will need:
    * A VM installed with any F37 media with additional storage for Stratis
 * (Optional) a kickstart file to automate installation settings
 
-The script can be run in either a live environment using the Fedora
-Workstation Live ISO image, or in a "host" virtual machine previously
-installed with Fedora 37 and configured with additional storage for
-a stratis root file system to be installed.
+The script can be run in either a live environment using the Fedora Workstation
+Live ISO image, or in a "host" virtual machine previously installed with Fedora
+37 and configured with additional storage for a stratis root file system to be
+installed.
 
-The quickest method is to use the Live media, since this does not
-require an instllation to be carried out before starting.
+The quickest method is to use the Live media, since this does not require an
+instllation to be carried out before starting.
 
-Using the Workstation live media does not affect the installed system:
-the installation uses whatever Fedora variant is specified in the `--repo`
-argument to `stratify.py` (or the repo command in the kickstart file if
-given).
+Using the Workstation live media does not affect the installed system: the
+installation uses whatever Fedora variant is specified in the `--repo` argument
+to `stratify.py` (or the repo command in the kickstart file if given).
 
 A kickstart file can be given on the command line to make the installation
 fully automatic. An example is available at [1].
@@ -53,10 +66,10 @@ fully automatic. An example is available at [1].
 --------------------------------------
 
 * Create a new virtual machine instance using the Fedora Workstation 37 Live
-image.
+  image.
 
-* Allocate at least 10GiB of storage as a single VirtIO disk (e.g. vda)
-and allow at least 2048MiB of guest memory.
+* Allocate at least 10GiB of storage as a single VirtIO disk (e.g. vda) and
+  allow at least 3GiB of guest memory.
 
 * Boot the Live image and wait for the Live desktop to load.
 
@@ -155,17 +168,22 @@ This will download required packages, partition vda and create a boot file
 system on `vda1`. A stratis pool named `p1` and a file system named `fs1` will
 be created and mounted at `/mnt/stratisroot`.
 
-Stratify will then run the anaconda installer. A kickstart file may be given
-by passing `--kickstart /root/ks.cfg` (the path must be absolute).
+Stratify will then run the anaconda installer. A kickstart file may be given by
+passing `--kickstart /root/ks.cfg` (the path must be absolute).
 
-One the system has been installed the script will install build dependencies,
-clone the stratis git repositories and initiate a build. Once the build is
-complete the script configures grub2 and creates a boot entry for the Stratis
-system.
+Once the system has been installed the script will install packages required
+for stratis root file system support from the distribution repositories.
 
-Once the script logs "Stratis root fs installation complete." the target
-system is fully installed and unmounted and the system can be safely rebooted.
-The only boot entry in the grub menu corresponds to the Stratis installation.
+If the `--git` option is given then the script will install build dependencies,
+clone the stratis git repositories and initiate a build.
+
+Once the build is complete the script configures grub2 and creates a boot entry
+for the Stratis system.
+
+Once the script logs "Stratis root fs installation complete." the target system
+is fully installed and unmounted and the system can be safely rebooted.  The
+only boot entry in the grub menu corresponds to the Stratis installation.
+
 
 # 6. Installation using host system
 -----------------------------------
@@ -186,9 +204,8 @@ Stratify will then run the anaconda installer. A kickstart file may be given
 by passing `--kickstart /root/ks.cfg` (the path must be absolute).
 
 One the system has been installed hit "enter" and the script will install
-build dependencies, clone the stratis git repositories and initiate a build.
-Once the build is complete the script configures grub2 and creates a boot
-entry for the Stratis system.
+stratis with root file system support either from the distribution repositories
+or by building from the upstream source repositories if `--git` is given.
 
 Once the script logs "Stratis root fs installation complete." the target
 system is fully installed and unmounted and the system can be safely rebooted.
@@ -214,7 +231,7 @@ expected names.
 ## 7.1 Rescuing a stratis system with stratify
 ----------------------------------------------
 
-If a Startis root file system installation fails to boot the stratify script
+If a Stratis root file system installation fails to boot the stratify script
 can be used to install dependencies and re-create the chroot layout for
 debugging purposes.
 
@@ -254,7 +271,7 @@ optional arguments:
                         Specify the device to use
   -b, --bios            Assume thesystem is using BIOS firmware
   -c, --cleanup         Clean up and unmount a rescue chroot
-  -e, --efi             Assue thesystem is using EFI firmware
+  -e, --efi             Assue the system is using EFI firmware
   -f FS_NAME, --fs-name FS_NAME
                         Set the file system name
   -k KICKSTART, --kickstart KICKSTART
