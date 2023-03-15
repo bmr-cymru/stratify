@@ -121,6 +121,40 @@ passwd
 # 4. Download stratify.py
 -------------------------
 
+The stratify script can be downloaded manually from GitLab or installed
+automatically using the bootstrap.sh script.
+
+
+# 4.1 Automatic download with bootstrap.sh
+------------------------------------------
+
+The bootstrap script will configure the environment to allow root login over
+ssh using a well-known password ("redhat") and download the python script and
+optional kickstart file:
+
+```
+# curl --insecure https://gitlab.cee.redhat.com/breeves/stratify/-/raw/main/bootstrap.sh | sh
+Enabling ssh root login with password...
+Changing password for user root.
+passwd: all authentication tokens updated successfully.
+Starting ssh daemon...
+Downloading stratify.py...
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100 32606  100 32606    0     0  60210      0 --:--:-- --:--:-- --:--:-- 60269
+Downloading ks.cfg...
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100   803  100   803    0     0   1938      0 --:--:-- --:--:-- --:--:--  1934
+
+Host IP addresses:
+    inet 192.168.122.19/24 brd 192.168.122.255 scope global dynamic noprefixroute enp1s0
+```
+
+
+# 4.2 Manual download with wget or curl
+---------------------------------------
+
 Download the script using wget or curl:
 
 ```
