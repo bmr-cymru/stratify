@@ -64,6 +64,7 @@ build_deps = [
     "git",
     "glibc-devel.i686",
     "glibc-devel.x86_64",
+    "glibc-static",
     "keyutils",
     "libblkid-devel",
     "llvm",
