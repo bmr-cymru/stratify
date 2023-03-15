@@ -118,6 +118,9 @@ ssh keys):
 passwd
 ```
 
+This step is automated when using the provided bootstrap.sh script (4.1).
+
+
 # 4. Download stratify.py
 -------------------------
 
