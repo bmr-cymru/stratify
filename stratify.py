@@ -117,9 +117,9 @@ boot_deps_efi = [
 # (CLONE_URL, BRANCH, INSTALL_CMD).
 git_deps = [
     ("https://github.com/stratis-storage/stratisd",
-     "master", "make install"),
+     "master", ["make build-all", "make install"]),
     ("https://github.com/stratis-storage/stratis-cli",
-     "master", "python3 setup.py install")
+     "master", ["python3 setup.py install"])
 ]
 
 package_deps = [
@@ -623,8 +623,9 @@ def install_from_git(root):
                   (git_dep[0], git_basedir))
         git_dir = git_clone(git_basedir, git_dep[0], git_dep[1])
         _log_info("Installing from %s (%s)" % (git_dep[1], git_dep[2]))
-        build_cmd = git_dep[2].split()
-        runat(build_cmd, root, join(git_chrootdir, git_dir))
+        for build_cmd in git_dep[2]:
+            build_cmd = build_cmd.split()
+            runat(build_cmd, root, join(git_chrootdir, git_dir))
 
 
 def enable_service(root, unit):
