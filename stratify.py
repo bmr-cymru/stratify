@@ -827,7 +827,7 @@ def main(argv):
                         "system is using BIOS firmware")
     parser.add_argument("-c", "--cleanup", action="store_true", help="Clean "
                         "up and unmount a rescue chroot")
-    parser.add_argument("-e", "--efi", action="store_true", help="Assue the"
+    parser.add_argument("-e", "--efi", action="store_true", help="Assue the "
                         "system is using EFI firmware")
     parser.add_argument("-f", "--fs-name", type=str, help="Set the file "
                         "system name", default=fs_name)
