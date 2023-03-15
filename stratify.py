@@ -32,6 +32,9 @@ EFI_PART_SIZE = 600
 # Default size of the /boot partition
 BOOT_PART_SIZE = 1000
 
+# Regular expression to match UUID
+UUID_REGEX = "\S{8}-\S{4}-\S{4}-\S{4}-\S{12}"
+
 # Packages needed in the live host
 host_package_deps = [
     "git",
@@ -751,10 +754,12 @@ def get_stratis_pool_uuid(pool):
             continue
         fields = line.split()
         if fields[0] == pool:
-            return fields[-1]
+            for field in fields:
+                match = re.match(UUID_REGEX, field)
+                if match:
+                    return match.string
     _log_error("Failed to get stratis pool uuid")
     fail(1)
-
 
 def configure_boom(root, pool_uuid):
     """Create a boom OsProfile with the necessary kernel arguments to
