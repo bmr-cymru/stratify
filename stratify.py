@@ -9,8 +9,8 @@ import traceback
 import logging
 import re
 
-_version = "0.7"
-_date = "2023-03-03"
+_version = "0.8"
+_date = "2023-03-15"
 
 _debug = False
 
