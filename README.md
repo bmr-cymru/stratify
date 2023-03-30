@@ -150,6 +150,12 @@ and optional kickstart file:
 
 ```
 # curl https://raw.githubusercontent.com/bmr-cymru/stratify/main/bootstrap.sh | sh
+```
+
+For example:
+
+```
+# curl https://raw.githubusercontent.com/bmr-cymru/stratify/main/bootstrap.sh | sh
 Enabling ssh root login with password...
 Changing password for user root.
 passwd: all authentication tokens updated successfully.
