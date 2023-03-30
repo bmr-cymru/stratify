@@ -201,7 +201,7 @@ Optionally download the [example kickstart][2]:
 or
 
 ```
-curl -o ks.cfg https://raw.githubusercontent.com/bmr-cymru/stratify/main/ks.cfg
+# curl -o ks.cfg https://raw.githubusercontent.com/bmr-cymru/stratify/main/ks.cfg
 ```
 
 The [kickstart file][2] contains a hashed password for the root user: to
