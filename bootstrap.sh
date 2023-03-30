@@ -13,9 +13,9 @@ sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd
 echo "Starting ssh daemon..."
 systemctl start sshd
 echo "Downloading stratify.py..."
-curl --insecure -o stratify.py https://gitlab.cee.redhat.com/breeves/stratify/-/raw/main/stratify.py
+curl -o stratify.py https://raw.githubusercontent.com/bmr-cymru/stratify/main/stratify.py
 echo "Downloading ks.cfg..."
-curl --insecure -o ks.cfg https://gitlab.cee.redhat.com/breeves/stratify/-/raw/main/ks.cfg
+curl -o ks.cfg https://raw.githubusercontent.com/bmr-cymru/stratify/main/ks.cfg
 echo
 echo "Host IP addresses:"
 ip addr show | grep 'inet\>' | grep -v '127\.0\.0\.1'
