@@ -56,7 +56,7 @@ installation uses whatever Fedora variant is specified in the `--repo` argument
 to `stratify.py` (or the repo command in the kickstart file if given).
 
 A kickstart file can be given on the command line to make the installation
-fully automatic. An example is available at [1].
+fully automatic. An [example][1] is available in the Stratify repository.
 
 
 # 2. Configuring virtual machines
@@ -129,18 +129,18 @@ These steps are automated when using the provided bootstrap.sh script (see 4.1).
 -------------------------
 
 The stratify script can be downloaded manually from GitLab or installed
-automatically using the bootstrap.sh script.
+automatically using the [bootstrap.sh][2] script.
 
 
 # 4.1 Automatic download with bootstrap.sh
 ------------------------------------------
 
-The bootstrap script will configure the environment to allow root login over
-ssh using a well-known password ("redhat") and download the python script and
-optional kickstart file:
+The [bootstrap script][2] will configure the environment to allow root login
+over ssh using a well-known password ("redhat") and download the python script
+and optional kickstart file:
 
 ```
-# curl --insecure https://gitlab.cee.redhat.com/breeves/stratify/-/raw/main/bootstrap.sh | sh
+# curl https://raw.githubusercontent.com/bmr-cymru/stratify/main/bootstrap.sh | sh
 Enabling ssh root login with password...
 Changing password for user root.
 passwd: all authentication tokens updated successfully.
@@ -165,32 +165,32 @@ secure password manually.
 # 4.2 Manual download with wget or curl
 ---------------------------------------
 
-Download the script using wget or curl:
+Download the [Stratify script][3] using wget or curl:
 
 ```
-# wget --no-check-certificate -O stratify.py https://gitlab.cee.redhat.com/breeves/stratify/-/raw/main/stratify.py
+# wget https://raw.githubusercontent.com/bmr-cymru/stratify/main/stratify.py
 ```
 
 or:
 
 ```
-# curl --insecure -o stratify.py https://gitlab.cee.redhat.com/breeves/stratify/-/raw/main/stratify.py
+# curl -o stratify.py https://raw.githubusercontent.com/bmr-cymru/stratify/main/stratify.py
 ```
 
-Optionally download the example kickstart:
+Optionally download the [example kickstart][2]:
 
 ```
-# wget --no-check-certificate -O ks.cfg https://gitlab.cee.redhat.com/breeves/stratify/-/raw/main/ks.cfg
+# wget https://raw.githubusercontent.com/bmr-cymru/stratify/main/ks.cfg
 ```
 
 or
 
 ```
-curl --insecure -o ks.cfg https://gitlab.cee.redhat.com/breeves/stratify/-/raw/main/ks.cfg
+curl -o ks.cfg https://raw.githubusercontent.com/bmr-cymru/stratify/main/ks.cfg
 ```
 
-The kickstart file contains a hashed password for the root user: to generate a
-hash for a new password use the openssl passwd command:
+The [kickstart file][2] contains a hashed password for the root user: to
+generate a hash for a new password use the openssl passwd command:
 
 ```
 $ openssl passwd -6 "password"
@@ -354,3 +354,8 @@ affecting the root namespace (this may prevent unmounting and erasing the
 Stratis pool when carrying out repeated installations, see comments in
 `_dir_install()`).
 
+# 10. References & Links
+
+[1]: https://raw.githubusercontent.com/bmr-cymru/stratify/main/ks.cfg
+[2]: https://raw.githubusercontent.com/bmr-cymru/stratify/main/bootstrap.sh
+[3]: https://raw.githubusercontent.com/bmr-cymru/stratify/main/stratify.py
