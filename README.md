@@ -137,7 +137,7 @@ These steps are automated when using the provided bootstrap.sh script (see
 # 4. Download stratify.py
 -------------------------
 
-The stratify script can be downloaded manually from GitLab or installed
+The stratify script can be downloaded manually from GitHub or installed
 automatically using the [bootstrap.sh][2] script.
 
 
