@@ -189,8 +189,8 @@ or
 curl --insecure -o ks.cfg https://gitlab.cee.redhat.com/breeves/stratify/-/raw/main/ks.cfg
 ```
 
-The kickstart file contains two hashed passwords: to replace them use the
-openssl passwd command:
+The kickstart file contains a hashed password for the root user: to generate a
+hash for a new password use the openssl passwd command:
 
 ```
 $ openssl passwd -6 "password"
