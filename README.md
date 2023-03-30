@@ -36,7 +36,7 @@ system.
 To create virtual machines with a Stratis root file system using `stratify.py`
 you will need:
  
-* The URL for the `stratify.py` script
+* The `stratify.py` script or the URL of the `bootstrap.sh` script
 * An `x86_64` virtual machine using BIOS or EFI firmware and running Fedora 37,
   either:
    * A VM running the F37 Workstation Live media (recommended)
@@ -45,10 +45,10 @@ you will need:
 
 The script can be run in either a live environment using the Fedora Workstation
 Live ISO image, or in a "host" virtual machine previously installed with Fedora
-37 and configured with additional storage for a stratis root file system to be
-installed.
+37 and configured with an additional storage device for a stratis root file
+system to be installed to.
 
-The quickest method is to use the Live media, since this does not require an
+The quickest method is to use the Live media since this does not require an
 instllation to be carried out before starting.
 
 Using the Workstation live media does not affect the installed system: the
@@ -79,18 +79,21 @@ fully automatic. An example is available at [1].
 # 2.2. Configuring a host virtual machine
 -----------------------------------------
 
-The host VM's role is to provide a Fedora 37 environment where stratify can
-run that provides the ability to install software packages with dnf and to
-call the command line anaconda installer program. A minimal install using any
-F37 media is acceptable - the host environment is only needed for the duration
-of the installation.
+The host VM's role is to provide a Fedora 37 environment where stratify can run
+that has the ability to install necessary software packages from the Fedora
+repos with dnf and to call the command line anaconda installer program. A
+minimal install using any F37 media is acceptable - the host environment is
+only needed for the duration of the installation. This option is suitable for
+running `stratify.py` in "headless" environments using only the console or SSH
+to interact with the system.
 
 * Boot the host VM with the installation media and any kickstart or other
 options.
 
 * The guest should have sufficient storage for the host install and
 will require one additional disk of at least 10GiB for the Stratis root
-install.
+install. The target device must be separate from the disk containing the host
+installation as it will be re-partitioned during the installation.
 
 * The additional storage can either be ignored during the initial host
 installation (using manual partitioning) or it can be added to the guest after
@@ -104,7 +107,8 @@ the initial host installation has been carried out.
 # 3. Enable sshd (optional)
 ---------------------------
 
-Optionally enable the sshd daemon for root logins with a password:
+Optionally enable the sshd daemon for root logins with a password, either in
+the installer/kickstart script, or by executing the following commands:
 
 ```
 sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
@@ -153,6 +157,9 @@ Downloading ks.cfg...
 Host IP addresses:
     inet 192.168.122.19/24 brd 192.168.122.255 scope global dynamic noprefixroute enp1s0
 ```
+
+Users in untrusted network environments should modify the script or set a more
+secure password manually.
 
 
 # 4.2 Manual download with wget or curl
@@ -263,7 +270,7 @@ If the installation fails (e.g. due to a kickstart error or anaconda crash) use
 The disk partitioning and file system creation can be skipped by using
 `--nopartition`. This assumes a partition layout appropriate to the system
 firmware exists and that the device contains a pool and file system with the
-expected names.
+expected names: pool `p1` and root file system `fs1`.
 
 ## 7.1 Rescuing a stratis system with stratify
 ----------------------------------------------
@@ -298,11 +305,11 @@ To clean up chroot mounts left by a failed installation use `--cleanup`:
 ------------------------
 
 ```
-usage: stratify.py [-h] [-d TARGET] [-b] [-c] [-e] [-f FS_NAME] [-k KICKSTART] [-m] [-n] [-p POOL_NAME] [-r] [-s SYS_ROOT] [-t] [-w]
+usage: stratify.py [-h] [-d TARGET] [-b] [-c] [-e] [-f FS_NAME] [-g] [-k KICKSTART] [-m] [-n] [-p POOL_NAME] [-r] [-s SYS_ROOT] [-t] [-w]
 
 Fedora 37 Stratis Root Install Script
 
-optional arguments:
+options:
   -h, --help            show this help message and exit
   -d TARGET, --target TARGET
                         Specify the device to use
@@ -311,6 +318,7 @@ optional arguments:
   -e, --efi             Assue the system is using EFI firmware
   -f FS_NAME, --fs-name FS_NAME
                         Set the file system name
+  -g, --git             Perform a build from git master branch instead of packages
   -k KICKSTART, --kickstart KICKSTART
                         Path to a local kickstart file
   -m, --mbr             Use MBR disk labels
@@ -338,11 +346,11 @@ To add additional software packages to the build dependencies, modify the
 `build_deps` list.
 
 To clone and install from additional git repositories, extend the `git_deps`
-table. Each entry is a 3-tuple (GIT URL, BRANCH, INSTALL COMMAND).
+table. Each entry is a 3-tuple (GIT URL, BRANCH, [BUILD AND INSTALL COMMANDS]).
 
 If running anaconda manually, consider using the unshare program with the
 arguments "--mount --propagate private" to prevent anaconda mount operations
-affecting the root namespace (may prevent unmounting and erasing the Stratis
-pool when carrying out repeated installations, see comments in
+affecting the root namespace (this may prevent unmounting and erasing the
+Stratis pool when carrying out repeated installations, see comments in
 `_dir_install()`).
 
