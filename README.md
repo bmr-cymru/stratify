@@ -1,19 +1,26 @@
 F37 Stratis rootfs with stratify.py
 ===================================
 
-  0. Versions & Changes
-  1. Overview & Requirements
-  2. Configuring virtual machines
-  3. Enable sshd (optional)
-  4. Download stratify.py
-  5. Installation using Live media
-  6. Installation using host system
-  7. If something goes wrong
-  8. stratify.py options
-  9. Hacking stratify.py
- 10. References & Links
+  0. [Versions & Changes](https://github.com/bmr-cymru/stratify#f37-stratis-rootfs-with-stratifypy)
+  1. [Overview & Requirements](https://github.com/bmr-cymru/stratify#1-overview--requirements)
+  2. [Configuring virtual machines](https://github.com/bmr-cymru/stratify#2-configuring-virtual-machines)
+      1. [Configuring the Live environment](https://github.com/bmr-cymru/stratify#21-configuring-the-live-environment)
+      2. [Configuring a host virtual machine](https://github.com/bmr-cymru/stratify#22-configuring-a-host-virtual-machine)
+  3. [Enable sshd (optional)](https://github.com/bmr-cymru/stratify#3-enable-sshd-optional)
+  4. [Download stratify.py](https://github.com/bmr-cymru/stratify#4-download-stratifypy)
+      1. [Automatic download with bootstrap.sh](https://github.com/bmr-cymru/stratify#41-automatic-download-with-bootstrapsh)
+      2. [Manual download with wget or curl](https://github.com/bmr-cymru/stratify#42-manual-download-with-wget-or-curl)
+  5. [Installation using Live media](https://github.com/bmr-cymru/stratify#5-installation-using-live-media)
+  6. [Installation using host system](https://github.com/bmr-cymru/stratify#6-installation-using-host-system)
+  7. [If something goes wrong](https://github.com/bmr-cymru/stratify#7-if-something-goes-wrong)
+  8. [stratify.py options](https://github.com/bmr-cymru/stratify#8-stratifypy-options)
+  9. [Hacking stratify.py](https://github.com/bmr-cymru/stratify#9-hacking-stratifypy)
+ 10. [References & Links](https://github.com/bmr-cymru/stratify#10-references--links)
 
 # 0. Versions & Changes
+
+This script allows users to easily deploy systems with [Stratis][4] as the root
+file system.
 
 The script is tested with the current released Fedora media (currently Fedora
 37). The script may work with older releases but these are not routinely
@@ -31,8 +38,7 @@ installations is now 3GiB.
 ----------------------------
 
 tl;dr: run `stratify --text --target vda --kickstart /root/ks.cfg` in a root
-terminal on a live VM to install a system with Stratis as the root file
-system.
+terminal on a live VM to install a system with Stratis as the root file system.
 
 To create virtual machines with a Stratis root file system using `stratify.py`
 you will need:
@@ -42,6 +48,7 @@ you will need:
   either:
    * A VM running the F37 Workstation Live media (recommended)
    * A VM installed with any F37 media with additional storage for Stratis
+* Sufficient storage available to the VM to contain the Stratis installation
 * (Optional) a kickstart file to automate installation settings
 
 The script can be run in either a live environment using the Fedora Workstation
@@ -89,16 +96,16 @@ running `stratify.py` in "headless" environments using only the console or SSH
 to interact with the system.
 
 * Boot the host VM with the installation media and any kickstart or other
-options.
+  options.
 
-* The guest should have sufficient storage for the host install and
-will require one additional disk of at least 10GiB for the Stratis root
-install. The target device must be separate from the disk containing the host
-installation as it will be re-partitioned during the installation.
+* The guest should have sufficient storage for the host install and will
+  require one additional disk of at least 10GiB for the Stratis root install.
+  The target device must be separate from the disk containing the host
+  installation as it will be re-partitioned during the installation.
 
 * The additional storage can either be ignored during the initial host
-installation (using manual partitioning) or it can be added to the guest after
-the initial host installation has been carried out.
+  installation (using manual partitioning) or it can be added to the guest
+  after the initial host installation has been carried out.
 
 * Set a root password and allow the installation to complete normally.
 
@@ -123,7 +130,8 @@ ssh keys):
 passwd
 ```
 
-These steps are automated when using the provided bootstrap.sh script (see 4.1).
+These steps are automated when using the provided bootstrap.sh script (see
+4.1).
 
 
 # 4. Download stratify.py
@@ -245,15 +253,15 @@ This will download required packages, partition `vda` and create a `/boot` file
 system on vda1. A stratis pool named `p1` and a file system named `fs1` will be
 created and mounted at `/mnt/stratisroot`.
 
-Stratify will then run the anaconda installer. A kickstart file may be given
-by passing `--kickstart /root/ks.cfg` (the path must be absolute).
+Stratify will then run the anaconda installer. A kickstart file may be given by
+passing `--kickstart /root/ks.cfg` (the path must be absolute).
 
 One the system has been installed hit "enter" and the script will install
 stratis with root file system support either from the distribution repositories
 or by building from the upstream source repositories if `--git` is given.
 
-Once the script logs "Stratis root fs installation complete." the target
-system is fully installed and unmounted and the system can be safely rebooted.
+Once the script logs "Stratis root fs installation complete." the target system
+is fully installed and unmounted and the system can be safely rebooted.
 
 Before the Stratis system can be booted the VM must be reconfigured to boot
 from the device given to `--target` in order to use the correct bootloader.
@@ -280,8 +288,8 @@ If a Stratis root file system installation fails to boot the stratify script
 can be used to install dependencies and re-create the chroot layout for
 debugging purposes.
 
-As with installation this can be done from either a host system installed
-with Fedora 37, or from the Fedora 37 Live Media.
+As with installation this can be done from either a host system installed with
+Fedora 37, or from the Fedora 37 Live Media.
 
 To rescue a system, start the system and download `stratify.py` and then as
 root run run:
@@ -290,11 +298,11 @@ root run run:
 # python stratify --target <device> --rescue
 ```
 
-This will mount the file systems from the target device and set up the
-chroot before starting a shell in the stratis rootfs system.
+This will mount the file systems from the target device and set up the chroot
+before starting a shell in the stratis rootfs system.
 
-Exiting the shell will tear down the chroot and leave the system ready
-to reboot.
+Exiting the shell will tear down the chroot and leave the system ready to
+reboot.
 
 To clean up chroot mounts left by a failed installation use `--cleanup`:
 
@@ -337,17 +345,18 @@ options:
 -----------------------
 
 The script is very simple and should be easy to modify for local requirements:
-most of the high level logic is driven directly from the `main()` function using
-helper functions to install software, clone git repositories etc.
+most of the high level logic is driven directly from the `main()` function
+using helper functions to install software, clone git repositories etc.
 
-To add additional software packages to the host or Live environment, modify
-the `package_deps` list.
+To add additional software packages to the host or Live environment, modify the
+`package_deps` list.
 
 To add additional software packages to the build dependencies, modify the
 `build_deps` list.
 
 To clone and install from additional git repositories, extend the `git_deps`
-table. Each entry is a 3-tuple (GIT URL, BRANCH, [BUILD AND INSTALL COMMANDS]).
+table. Each entry is a 3-tuple (GIT URL, BRANCH, [BUILD, AND INSTALL
+COMMANDS]).
 
 If running anaconda manually, consider using the unshare program with the
 arguments "--mount --propagate private" to prevent anaconda mount operations
@@ -357,6 +366,12 @@ Stratis pool when carrying out repeated installations, see comments in
 
 # 10. References & Links
 
+* [Stratis project][4]
+* [stratify.py script][3]
+* [bootstrap script][2]
+* [example kickstart][1]
+
 [1]: https://raw.githubusercontent.com/bmr-cymru/stratify/main/ks.cfg
 [2]: https://raw.githubusercontent.com/bmr-cymru/stratify/main/bootstrap.sh
 [3]: https://raw.githubusercontent.com/bmr-cymru/stratify/main/stratify.py
+[4]: https://stratis-storage.github.io/
