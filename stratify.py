@@ -385,12 +385,10 @@ def create_fs(pool, name):
         fail(1)
 
 
-def dir_install(dest_dir, repo_url, text=False, kickstart=None):
+def dir_install(dest_dir, repo_url, kickstart=None):
     """Run an anaconda --dirinstall to the partition layout configured
     in ``dest_dir`` from the repository at ``repo_url`` and optionally
     using the local kickstart file at the absolute path ``kickstart``.
-
-    Force Anaconda to start in text mode if ``text`` is ``True``.
     """
 
     # Run anaconda in its own namespace, see lorax:src/pylorax/installer.py
@@ -406,9 +404,11 @@ def dir_install(dest_dir, repo_url, text=False, kickstart=None):
             "unshare", "--pid", "--kill-child", "--mount",
             "--propagation", "private"
     ]
-    install_cmd = ["anaconda", "--dirinstall", dest_dir, "--repo", repo_url]
-    if text:
-        install_cmd.append("--text")
+
+    install_cmd = [
+        "anaconda", "--text", "--dirinstall", dest_dir, "--repo", repo_url
+    ]
+
     if kickstart:
         install_cmd.extend(["--kickstart", kickstart])
         cmd_input = "\n".encode('utf8')
@@ -859,8 +859,6 @@ def main(argv):
                         "a Stratis root installation.")
     parser.add_argument("-s", "--sys-root", type=str, help="Set the path to"
                         " the system root directory", default=sys_root)
-    parser.add_argument("-t", "--text", action="store_true", help="Use text "
-                        "mode for Anaconda")
     parser.add_argument("-w", "--wipe", action="store_true", help="Wipe all "
                         "devices before initialising")
     args = parser.parse_args(argv[1:])
@@ -991,7 +989,7 @@ def main(argv):
 
     if not rescue:
         # Call Anaconda to create an installation
-        dir_install(root, repo, text=args.text, kickstart=args.kickstart)
+        dir_install(root, repo, kickstart=args.kickstart)
 
     prepare_chroot(root, chroot_bind_mounts)
 
