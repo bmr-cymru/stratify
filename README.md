@@ -11,6 +11,7 @@ F37 Stratis rootfs with stratify.py
   7. If something goes wrong
   8. stratify.py options
   9. Hacking stratify.py
+ 10. References & Links
 
 # 0. Versions & Changes
 
@@ -62,7 +63,7 @@ fully automatic. An [example][1] is available in the Stratify repository.
 # 2. Configuring virtual machines
 ---------------------------------
 
-# 2.1 Configuring the live environment
+# 2.1. Configuring the live environment
 --------------------------------------
 
 * Create a new virtual machine instance using the Fedora Workstation 37 Live
@@ -132,7 +133,7 @@ The stratify script can be downloaded manually from GitLab or installed
 automatically using the [bootstrap.sh][2] script.
 
 
-# 4.1 Automatic download with bootstrap.sh
+# 4.1. Automatic download with bootstrap.sh
 ------------------------------------------
 
 The [bootstrap script][2] will configure the environment to allow root login
@@ -162,7 +163,7 @@ Users in untrusted network environments should modify the script or set a more
 secure password manually.
 
 
-# 4.2 Manual download with wget or curl
+# 4.2. Manual download with wget or curl
 ---------------------------------------
 
 Download the [Stratify script][3] using wget or curl:
@@ -261,7 +262,7 @@ The first boot entry will correspond to the Stratis installation but the grub
 menu will also include entries to allow booting the original host installation
 (the Stratis entry should be the default).
 
-# 7 If something goes wrong
+# 7. If something goes wrong
 ---------------------------
 
 If the installation fails (e.g. due to a kickstart error or anaconda crash) use
@@ -272,7 +273,7 @@ The disk partitioning and file system creation can be skipped by using
 firmware exists and that the device contains a pool and file system with the
 expected names: pool `p1` and root file system `fs1`.
 
-## 7.1 Rescuing a stratis system with stratify
+## 7.1. Rescuing a stratis system with stratify
 ----------------------------------------------
 
 If a Stratis root file system installation fails to boot the stratify script
