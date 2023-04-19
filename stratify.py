@@ -22,7 +22,7 @@ pool_name = "p1"
 fs_name = "fs1"
 
 # Default Fedora repository URL
-repo = "https://mirrors.mit.edu/fedora/linux/releases/37/Server/x86_64/os/"
+repo_fmt = "https://mirrors.mit.edu/fedora/linux/releases/%s/Server/x86_64/os/"
 
 # Default location of the target system root directory
 sys_root = "/mnt/stratisroot"
@@ -842,6 +842,13 @@ def is_bios():
     return not exists("/sys/firmware/efi")
 
 
+def get_fedora_version():
+    with open("/etc/os-release") as f:
+        for line in f.read().splitlines():
+            if line.startswith("VERSION_ID="):
+                return line.split("=")[1]
+
+
 def main(argv):
     parser = ArgumentParser(prog=basename(argv[0]), description="Fedora 37 "
                             "Stratis Root Install Script")
@@ -996,6 +1003,8 @@ def main(argv):
     mount_boot(boot_dev, root)
     if efi:
         mount_boot_efi(efi_dev, root)
+
+    repo = repo_fmt % get_fedora_version()
 
     if not rescue:
         # Call Anaconda to create an installation
