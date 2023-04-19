@@ -1054,8 +1054,10 @@ def main(argv):
     _log_info("Creating stratis root fs boot entry")
     create_boot_entry(root, "/dev/stratis/%s/%s" % (pool, fs), title=None)
 
-    _log_info("Restoring SELinux contexts to %s" % join(root, "etc"))
+    _log_info("Restoring SELinux contexts...")
     restorecon(root, "/etc", recursive=True)
+    restorecon(root, "/usr", recursive=True)
+    restorecon(root, "/var", recursive=True)
 
     cleanup(root, efi, chroot_bind_mounts)
 
