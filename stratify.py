@@ -604,13 +604,14 @@ def git_clone(into, url, branch):
     return url.rsplit('/')[-1]
 
 
-def runat(cmd, root_dir, cwd="/", shell=False):
+def runat(cmd, root_dir, cwd="/", shell=False, capture_output=False):
     """Change root to ``root_dir`` and run ``cmd`` in directory ``cwd``.
     """
     def _chroot_fn():
         chroot(root_dir)
         chdir(cwd)
-    return run(cmd, preexec_fn=_chroot_fn, shell=shell)
+    return run(cmd, preexec_fn=_chroot_fn, shell=shell,
+               capture_output=capture_output)
 
 
 def install_from_git(root):
@@ -677,14 +678,23 @@ def write_fstab(root, pool, fs, boot_dev, swap_dev=None):
 
 
 def mk_dracut_initramfs(root):
-    """Create a dracut initramfs for the kernel installed in the chroot.
+    """Create a dracut initramfs for the kernel(s) installed in the chroot.
     """
-    dracut_cmd = ["dracut", "--force", "--verbose"]
-    _log_info("Creating dracut initramfs")
-    dracut_run = runat(dracut_cmd, root, "/")
-    if dracut_run.returncode != 0:
-        _log_error("Failed to generate initramfs")
+    rpm_cmd = ["rpm", "-q", "--queryformat", "%{VERSION}-%{RELEASE}.%{ARCH}\n",
+               "kernel"]
+    rpm_run = runat(rpm_cmd, root, "/", capture_output=True)
+    if rpm_run.returncode != 0:
+        _log_error("Failed to list kernel versions: %s" % rpm_run.stderr)
         fail(1)
+    for version in rpm_run.stdout.splitlines():
+        version = version.decode('utf8')
+        dracut_cmd = ["dracut", "--force", "--verbose",
+                      "/boot/initramfs-%s.img" % version, version]
+        _log_info("Creating dracut initramfs")
+        dracut_run = runat(dracut_cmd, root, "/")
+        if dracut_run.returncode != 0:
+            _log_error("Failed to generate initramfs")
+            fail(1)
 
 
 def install_bootloader(root, target):
