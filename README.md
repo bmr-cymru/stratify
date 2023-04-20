@@ -81,7 +81,7 @@ Stratify repository.
 
 * Boot the Live image and wait for the Live desktop to load.
 
-* Open a terminal and run "su -" to gain root privileges.
+* Open a terminal and run `su -` to gain root privileges.
 
 
 # 2.2. Configuring a host virtual machine
