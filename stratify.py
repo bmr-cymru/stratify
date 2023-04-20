@@ -874,6 +874,8 @@ def main(argv):
                         "name", default=pool_name)
     parser.add_argument("-r", "--rescue", action="store_true", help="Rescue "
                         "a Stratis root installation.")
+    parser.add_argument("--repo", type=str, help="Set the repository URL to "
+                        "use for the installation", default=None)
     parser.add_argument("-s", "--sys-root", type=str, help="Set the path to"
                         " the system root directory", default=sys_root)
     parser.add_argument("-w", "--wipe", action="store_true", help="Wipe all "
@@ -1004,7 +1006,7 @@ def main(argv):
     if efi:
         mount_boot_efi(efi_dev, root)
 
-    repo = repo_fmt % get_fedora_version()
+    repo = args.repo if args.repo else repo_fmt % get_fedora_version()
 
     if not rescue:
         # Call Anaconda to create an installation
