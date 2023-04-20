@@ -49,7 +49,7 @@ you will need:
    * A VM running the F38 Workstation Live media (recommended)
    * A VM installed with any F38 media with additional storage for Stratis
 * Sufficient storage available to the VM to contain the Stratis installation
-* (Optional) a kickstart file to automate installation settings
+* A kickstart file to set installation options
 
 The script can be run in either a live environment using the Fedora Workstation
 Live ISO image, or in a "host" virtual machine previously installed with Fedora
@@ -57,14 +57,15 @@ and configured with an additional storage device for a stratis root file system
 to be installed to.
 
 The quickest method is to use the Live media since this does not require an
-instllation to be carried out before starting.
+installation to be carried out before starting.
 
 Using the Workstation live media does not affect the installed system: the
 installation uses whatever Fedora variant is specified in the `--repo` argument
 to `stratify.py` (or the repo command in the kickstart file if given).
 
-A kickstart file can be given on the command line to make the installation
-fully automatic. An [example][1] is available in the Stratify repository.
+A kickstart file must be given on the command line to configure the
+installation, including the root password. An [example][1] is available in the
+Stratify repository.
 
 
 # 2. Configuring virtual machines
@@ -146,7 +147,7 @@ automatically using the [bootstrap.sh][2] script.
 
 The [bootstrap script][2] will configure the environment to allow root login
 over ssh using a well-known password ("redhat") and download the python script
-and optional kickstart file:
+and kickstart file:
 
 ```
 # curl https://raw.githubusercontent.com/bmr-cymru/stratify/main/bootstrap.sh | sh
@@ -192,7 +193,7 @@ or:
 # curl -o stratify.py https://raw.githubusercontent.com/bmr-cymru/stratify/main/stratify.py
 ```
 
-Optionally download the [example kickstart][2]:
+Download the [example kickstart][1]:
 
 ```
 # wget https://raw.githubusercontent.com/bmr-cymru/stratify/main/ks.cfg
@@ -211,6 +212,8 @@ generate a hash for a new password use the openssl passwd command:
 $ openssl passwd -6 "password"
 $6$VvxJNYbsqtX66EjI$24HCGhwKOn8lkNMxglZZb90utAc66Jgy3oM6T5DhIdErbpElbviCyikPpRpmERG69O/SyVpZ9YPRuaM22A52G.
 ```
+And then edit the kickstart file to set the new password value.
+
 
 # 5. Installation using Live media
 ----------------------------------
@@ -220,14 +223,14 @@ either in a terminal running in the Live desktop or an ssh terminal run the
 following command:
 
 ```
-# python stratify.py --text --target vda
+# python stratify.py --target vda --kickstart /root/ks.cfg
 ```
 
 This will download required packages, partition vda and create a boot file
 system on `vda1`. A stratis pool named `p1` and a file system named `fs1` will
 be created and mounted at `/mnt/stratisroot`.
 
-Stratify will then run the anaconda installer. A kickstart file may be given by
+Stratify will then run the anaconda installer. A kickstart file must be given by
 passing `--kickstart /root/ks.cfg` (the path must be absolute).
 
 Once the system has been installed the script will install packages required
@@ -252,14 +255,14 @@ the storage available for Stratis to use is on VirtIO device `vdb`, run the
 following command:
 
 ```
-# python stratify.py --text --target vdb
+# python stratify.py --target vdb --kickstart /root/ks.cfg
 ```
 
-This will download required packages, partition `vda` and create a `/boot` file
+This will download required packages, partition `vdb` and create a `/boot` file
 system on vda1. A stratis pool named `p1` and a file system named `fs1` will be
 created and mounted at `/mnt/stratisroot`.
 
-Stratify will then run the anaconda installer. A kickstart file may be given by
+Stratify will then run the anaconda installer. A kickstart file must be given by
 passing `--kickstart /root/ks.cfg` (the path must be absolute).
 
 One the system has been installed hit "enter" and the script will install
