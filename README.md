@@ -322,7 +322,7 @@ To clean up chroot mounts left by a failed installation use `--cleanup`:
 ------------------------
 
 ```
-usage: stratify.py [-h] [-d TARGET] [-b] [-c] [-e] [-f FS_NAME] [-g] [-k KICKSTART] [-m] [-n] [-p POOL_NAME] [-r] [-s SYS_ROOT] [-t] [-w]
+usage: stratify.py [-h] [-d TARGET] [-b] [-c] [-e] [-f FS_NAME] [-g] [-k KICKSTART] [-m] [-n] [-p POOL_NAME] [-r] [--repo REPO] [-s SYS_ROOT] [-w]
 
 Fedora 38 Stratis Root Install Script
 
@@ -343,6 +343,7 @@ options:
   -p POOL_NAME, --pool-name POOL_NAME
                         Set the pool name
   -r, --rescue          Rescue a Stratis root installation.
+  --repo REPO           Set the repository URL to use for the installation
   -s SYS_ROOT, --sys-root SYS_ROOT
                         Set the path to the system root directory
   -w, --wipe            Wipe all devices before initialising
