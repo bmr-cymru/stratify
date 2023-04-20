@@ -37,7 +37,7 @@ installations is now 3GiB.
 # 1. Overview & Requirements
 ----------------------------
 
-tl;dr: run `stratify --text --target vda --kickstart /root/ks.cfg` in a root
+tl;dr: run `stratify --target vda --kickstart /root/ks.cfg` in a root
 terminal on a live VM to install a system with Stratis as the root file system.
 
 To create virtual machines with a Stratis root file system using `stratify.py`
@@ -346,7 +346,6 @@ options:
   -r, --rescue          Rescue a Stratis root installation.
   -s SYS_ROOT, --sys-root SYS_ROOT
                         Set the path to the system root directory
-  -t, --text            Use text mode for Anaconda
   -w, --wipe            Wipe all devices before initialising
 ```
 
