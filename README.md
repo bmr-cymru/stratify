@@ -1,7 +1,7 @@
-F37 Stratis rootfs with stratify.py
+F38 Stratis rootfs with stratify.py
 ===================================
 
-  0. [Versions & Changes](https://github.com/bmr-cymru/stratify#f37-stratis-rootfs-with-stratifypy)
+  0. [Versions & Changes](https://github.com/bmr-cymru/stratify#f38-stratis-rootfs-with-stratifypy)
   1. [Overview & Requirements](https://github.com/bmr-cymru/stratify#1-overview--requirements)
   2. [Configuring virtual machines](https://github.com/bmr-cymru/stratify#2-configuring-virtual-machines)
       1. [Configuring the Live environment](https://github.com/bmr-cymru/stratify#21-configuring-the-live-environment)
@@ -23,7 +23,7 @@ This script allows users to easily deploy systems with [Stratis][4] as the root
 file system.
 
 The script is tested with the current released Fedora media (currently Fedora
-37). The script may work with older releases but these are not routinely
+38). The script may work with older releases but these are not routinely
 tested. In particular releases that ship with Stratis versions prior to 2.4.0
 do not include packaged support for stratis as the root file system: it is
 necessary to use the `--git` option on these releases to build Stratis from
@@ -44,17 +44,17 @@ To create virtual machines with a Stratis root file system using `stratify.py`
 you will need:
  
 * The `stratify.py` script or the URL of the `bootstrap.sh` script
-* An `x86_64` virtual machine using BIOS or EFI firmware and running Fedora 37,
+* An `x86_64` virtual machine using BIOS or EFI firmware and running Fedora 38,
   either:
-   * A VM running the F37 Workstation Live media (recommended)
-   * A VM installed with any F37 media with additional storage for Stratis
+   * A VM running the F38 Workstation Live media (recommended)
+   * A VM installed with any F38 media with additional storage for Stratis
 * Sufficient storage available to the VM to contain the Stratis installation
 * (Optional) a kickstart file to automate installation settings
 
 The script can be run in either a live environment using the Fedora Workstation
 Live ISO image, or in a "host" virtual machine previously installed with Fedora
-37 and configured with an additional storage device for a stratis root file
-system to be installed to.
+and configured with an additional storage device for a stratis root file system
+to be installed to.
 
 The quickest method is to use the Live media since this does not require an
 instllation to be carried out before starting.
@@ -73,7 +73,7 @@ fully automatic. An [example][1] is available in the Stratify repository.
 # 2.1. Configuring the live environment
 --------------------------------------
 
-* Create a new virtual machine instance using the Fedora Workstation 37 Live
+* Create a new virtual machine instance using the Fedora Workstation 38 Live
   image.
 
 * Allocate at least 10GiB of storage as a single VirtIO disk (e.g. vda) and
@@ -81,16 +81,16 @@ fully automatic. An [example][1] is available in the Stratify repository.
 
 * Boot the Live image and wait for the Live desktop to load.
 
-* Open a terminal and run "sudo su -" to gain root privileges.
+* Open a terminal and run "su -" to gain root privileges.
 
 
 # 2.2. Configuring a host virtual machine
 -----------------------------------------
 
-The host VM's role is to provide a Fedora 37 environment where stratify can run
+The host VM's role is to provide a Fedora environment where stratify can run
 that has the ability to install necessary software packages from the Fedora
 repos with dnf and to call the command line anaconda installer program. A
-minimal install using any F37 media is acceptable - the host environment is
+minimal install using any F38 media is acceptable - the host environment is
 only needed for the duration of the installation. This option is suitable for
 running `stratify.py` in "headless" environments using only the console or SSH
 to interact with the system.
@@ -295,7 +295,7 @@ can be used to install dependencies and re-create the chroot layout for
 debugging purposes.
 
 As with installation this can be done from either a host system installed with
-Fedora 37, or from the Fedora 37 Live Media.
+Fedora 38, or from the Fedora 38 Live Media.
 
 To rescue a system, start the system and download `stratify.py` and then as
 root run run:
@@ -322,7 +322,7 @@ To clean up chroot mounts left by a failed installation use `--cleanup`:
 ```
 usage: stratify.py [-h] [-d TARGET] [-b] [-c] [-e] [-f FS_NAME] [-g] [-k KICKSTART] [-m] [-n] [-p POOL_NAME] [-r] [-s SYS_ROOT] [-t] [-w]
 
-Fedora 37 Stratis Root Install Script
+Fedora 38 Stratis Root Install Script
 
 options:
   -h, --help            show this help message and exit
