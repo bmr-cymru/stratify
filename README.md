@@ -59,9 +59,8 @@ to be installed to.
 The quickest method is to use the Live media since this does not require an
 installation to be carried out before starting.
 
-Using the Workstation live media does not affect the installed system: the
-installation uses whatever Fedora variant is specified in the `--repo` argument
-to `stratify.py` (or the repo command in the kickstart file if given).
+By default `stratify.py` will install from the current Fedora Server package
+repository. This can be overridden by provising a repo URL with `--repo`.
 
 A kickstart file must be given on the command line to configure the
 installation, including the root password. An [example][1] is available in the
