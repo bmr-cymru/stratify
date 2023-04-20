@@ -37,7 +37,7 @@ installations is now 3GiB.
 # 1. Overview & Requirements
 ----------------------------
 
-tl;dr: run `stratify --target vda --kickstart /root/ks.cfg` in a root
+tl;dr: run `python stratify.py --target vda --kickstart /root/ks.cfg` in a root
 terminal on a live VM to install a system with Stratis as the root file system.
 
 To create virtual machines with a Stratis root file system using `stratify.py`
