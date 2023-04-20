@@ -1,7 +1,7 @@
 F38 Stratis rootfs with stratify.py
 ===================================
 
-  0. [Versions & Changes](https://github.com/bmr-cymru/stratify#f38-stratis-rootfs-with-stratifypy)
+  0. [Versions & Changes](https://github.com/bmr-cymru/stratify#0-versions--changes)
   1. [Overview & Requirements](https://github.com/bmr-cymru/stratify#1-overview--requirements)
   2. [Configuring virtual machines](https://github.com/bmr-cymru/stratify#2-configuring-virtual-machines)
       1. [Configuring the Live environment](https://github.com/bmr-cymru/stratify#21-configuring-the-live-environment)
