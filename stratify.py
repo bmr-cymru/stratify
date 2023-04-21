@@ -901,8 +901,12 @@ def main(argv):
 
     _log_info("stratify.py %s - %s" % (_version, _date))
 
-    if args.rescue or args.cleanup:
+    if args.rescue or args.cleanup or args.wipe:
         args.nopartition = True
+    else:
+        if not args.kickstart:
+            _log_error("A kickstart file is required for installation")
+            fail(1)
 
     if args.rescue:
         if args.cleanup:
