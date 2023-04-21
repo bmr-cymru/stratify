@@ -362,11 +362,16 @@ def mkfs_vfat(device):
         _log_error("Failed to create VFAT file system on '%s'" % device)
 
 
-def create_pool(name, devices):
+def create_pool(name, devices, encrypt=False):
     """Create a stratis pool named ``name`` on the list of devices
     given in ``devices``.
     """
-    pool_cmd = ["stratis", "pool", "create", name]
+    if encrypt:
+        key_cmd = ["stratis", "key", "set", "--capture-key", "stratiskey"]
+        run(key_cmd)
+        pool_cmd = ["stratis", "pool", "create", "--key-desc", "stratiskey", name]
+    else:
+        pool_cmd = ["stratis", "pool", "create", name]
     pool_cmd.extend(["/dev/%s" % d for d in devices])
     pool_run = run(pool_cmd)
     if pool_run.returncode != 0:
@@ -860,6 +865,8 @@ def main(argv):
                         "up and unmount a rescue chroot")
     parser.add_argument("-e", "--efi", action="store_true", help="Assue the "
                         "system is using EFI firmware")
+    parser.add_argument("--encrypt", action="store_true", help="Encrypt the "
+                        "Stratis pool with a passphrase")
     parser.add_argument("-f", "--fs-name", type=str, help="Set the file "
                         "system name", default=fs_name)
     parser.add_argument("-g", "--git", action="store_true", help="Perform a "
@@ -993,7 +1000,7 @@ def main(argv):
         udevadm_settle()
 
         _log_info("Creating pool %s with %s" % (pool, stratis_dev))
-        create_pool(pool, [stratis_dev])
+        create_pool(pool, [stratis_dev], encrypt=args.encrypt)
         _log_info("Creating file system %s in pool %s" % (fs, pool))
         create_fs(pool, fs)
     else:
