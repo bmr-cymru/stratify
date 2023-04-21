@@ -130,55 +130,9 @@ ssh keys):
 passwd
 ```
 
-These steps are automated when using the provided bootstrap.sh script (see
-4.1).
-
 
 # 4. Download stratify.py
 -------------------------
-
-The stratify script can be downloaded manually from GitHub or installed
-automatically using the [bootstrap.sh][2] script.
-
-
-# 4.1. Automatic download with bootstrap.sh
-------------------------------------------
-
-The [bootstrap script][2] will configure the environment to allow root login
-over ssh using a well-known password ("redhat") and download the python script
-and kickstart file:
-
-```
-# curl https://raw.githubusercontent.com/bmr-cymru/stratify/main/bootstrap.sh | sh
-```
-
-For example:
-
-```
-# curl https://raw.githubusercontent.com/bmr-cymru/stratify/main/bootstrap.sh | sh
-Enabling ssh root login with password...
-Changing password for user root.
-passwd: all authentication tokens updated successfully.
-Starting ssh daemon...
-Downloading stratify.py...
-  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
-                                 Dload  Upload   Total   Spent    Left  Speed
-100 32606  100 32606    0     0  60210      0 --:--:-- --:--:-- --:--:-- 60269
-Downloading ks.cfg...
-  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
-                                 Dload  Upload   Total   Spent    Left  Speed
-100   803  100   803    0     0   1938      0 --:--:-- --:--:-- --:--:--  1934
-
-Host IP addresses:
-    inet 192.168.122.19/24 brd 192.168.122.255 scope global dynamic noprefixroute enp1s0
-```
-
-Users in untrusted network environments should modify the script or set a more
-secure password manually.
-
-
-# 4.2. Manual download with wget or curl
----------------------------------------
 
 Download the [Stratify script][3] using wget or curl:
 
@@ -258,15 +212,20 @@ following command:
 ```
 
 This will download required packages, partition `vdb` and create a `/boot` file
-system on vda1. A stratis pool named `p1` and a file system named `fs1` will be
+system on vdb1. A stratis pool named `p1` and a file system named `fs1` will be
 created and mounted at `/mnt/stratisroot`.
 
 Stratify will then run the anaconda installer. A kickstart file must be given by
 passing `--kickstart /root/ks.cfg` (the path must be absolute).
 
-One the system has been installed hit "enter" and the script will install
-stratis with root file system support either from the distribution repositories
-or by building from the upstream source repositories if `--git` is given.
+Once the system has been installed the script will install packages required
+for stratis root file system support from the distribution repositories.
+
+If the `--git` option is given then the script will install build dependencies,
+clone the stratis git repositories and initiate a build.
+
+Once the build is complete the script configures grub2 and creates a boot entry
+for the Stratis system.
 
 Once the script logs "Stratis root fs installation complete." the target system
 is fully installed and unmounted and the system can be safely rebooted.
@@ -274,20 +233,18 @@ is fully installed and unmounted and the system can be safely rebooted.
 Before the Stratis system can be booted the VM must be reconfigured to boot
 from the device given to `--target` in order to use the correct bootloader.
 
-The first boot entry will correspond to the Stratis installation but the grub
-menu will also include entries to allow booting the original host installation
-(the Stratis entry should be the default).
 
 # 7. If something goes wrong
 ---------------------------
 
-If the installation fails (e.g. due to a kickstart error or anaconda crash) use
-`--wipe` to erase the disk contents before repeating.
+If the installation fails use `--wipe` to erase the disk contents before
+repeating.
 
 The disk partitioning and file system creation can be skipped by using
 `--nopartition`. This assumes a partition layout appropriate to the system
 firmware exists and that the device contains a pool and file system with the
 expected names: pool `p1` and root file system `fs1`.
+
 
 ## 7.1. Rescuing a stratis system with stratify
 ----------------------------------------------
