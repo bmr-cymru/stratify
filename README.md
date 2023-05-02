@@ -87,8 +87,8 @@ Stratify repository.
 # 2.2. Configuring a host virtual machine
 -----------------------------------------
 
-The host VM's role is to provide a Fedora environment where stratify.py can run
-that has the ability to install necessary software packages from the Fedora
+The host VM's role is to provide a Fedora environment where `stratify.py` can
+run that has the ability to install necessary software packages from the Fedora
 repos with dnf and to call the command line anaconda installer program. A
 minimal install using any F38 media is acceptable - the host environment is only
 needed for the duration of the installation. This option is suitable for running
@@ -249,8 +249,8 @@ expected names: pool `p1` and root file system `fs1`.
 ## 7.1. Rescuing a stratis system with stratify
 ----------------------------------------------
 
-If a Stratis root file system installation fails to boot the stratify.py script
-can be used to install dependencies and re-create the chroot layout for
+If a Stratis root file system installation fails to boot the `stratify.py`
+script can be used to install dependencies and re-create the chroot layout for
 debugging purposes.
 
 As with installation this can be done from either a host system installed with
