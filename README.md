@@ -87,13 +87,13 @@ Stratify repository.
 # 2.2. Configuring a host virtual machine
 -----------------------------------------
 
-The host VM's role is to provide a Fedora environment where stratify can run
+The host VM's role is to provide a Fedora environment where stratify.py can run
 that has the ability to install necessary software packages from the Fedora
 repos with dnf and to call the command line anaconda installer program. A
-minimal install using any F38 media is acceptable - the host environment is
-only needed for the duration of the installation. This option is suitable for
-running `stratify.py` in "headless" environments using only the console or SSH
-to interact with the system.
+minimal install using any F38 media is acceptable - the host environment is only
+needed for the duration of the installation. This option is suitable for running
+`stratify.py` in "headless" environments using only the console or SSH to
+interact with the system.
 
 * Boot the host VM with the installation media and any kickstart or other
   options.
@@ -249,7 +249,7 @@ expected names: pool `p1` and root file system `fs1`.
 ## 7.1. Rescuing a stratis system with stratify
 ----------------------------------------------
 
-If a Stratis root file system installation fails to boot the stratify script
+If a Stratis root file system installation fails to boot the stratify.py script
 can be used to install dependencies and re-create the chroot layout for
 debugging purposes.
 
@@ -260,7 +260,7 @@ To rescue a system, start the system and download `stratify.py` and then as
 root run run:
 
 ```
-# python stratify --target <device> --rescue
+# python stratify.py --target <device> --rescue
 ```
 
 This will mount the file systems from the target device and set up the chroot
@@ -272,7 +272,7 @@ reboot.
 To clean up chroot mounts left by a failed installation use `--cleanup`:
 
 ```
-# python stratify --target <device> --cleanup
+# python stratify.py --target <device> --cleanup
 ```
 
 # 8. stratify.py options
