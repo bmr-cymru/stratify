@@ -901,7 +901,7 @@ def main(argv):
 
     _log_info("stratify.py %s - %s" % (_version, _date))
 
-    if args.rescue or args.cleanup or args.wipe:
+    if args.rescue or args.cleanup:
         args.nopartition = True
     else:
         if not args.kickstart:
@@ -941,13 +941,13 @@ def main(argv):
         _log_error("No target device given!")
         fail(1)
 
-    if args.wipe:
-        # Remove pre-existing stratis pools
-        destroy_pools()
-
     # Stop the Stratis daemon if it is running so that we can wipe any
     # stale data from the target device.
     stop_stratisd()
+
+    if args.wipe:
+        # Remove pre-existing stratis pools
+        destroy_pools()
 
     target = args.target
     pool = args.pool_name
