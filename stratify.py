@@ -1012,6 +1012,10 @@ def main(argv):
         start_stratisd()
     udevadm_settle()
 
+    if args.rescue and args.encrypt:
+        run(["stratis", "key", "set", "--capture-key", "stratiskey"])
+        run(["stratis", "pool", "start", "--name", pool, "--unlock-method", "keyring"])
+
     mount_stratis_root(pool, fs, root)
     mount_boot(boot_dev, root)
     if efi:
