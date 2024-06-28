@@ -12,8 +12,8 @@ import traceback
 import logging
 import re
 
-_version = "1.0"
-_date = "2023-03-30"
+_version = "1.1"
+_date = "2024-06-28"
 
 _debug = False
 
