@@ -863,7 +863,7 @@ def main(argv):
                         "system is using BIOS firmware")
     parser.add_argument("-c", "--cleanup", action="store_true", help="Clean "
                         "up and unmount a rescue chroot")
-    parser.add_argument("-e", "--efi", action="store_true", help="Assue the "
+    parser.add_argument("-e", "--efi", action="store_true", help="Assume the "
                         "system is using EFI firmware")
     parser.add_argument("--encrypt", action="store_true", help="Encrypt the "
                         "Stratis pool with a passphrase")
