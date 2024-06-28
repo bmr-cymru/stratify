@@ -1,5 +1,5 @@
-F38 Stratis rootfs with stratify.py
-===================================
+Fedora Stratis rootfs with stratify.py
+======================================
 
   0. [Versions & Changes](https://github.com/bmr-cymru/stratify#0-versions--changes)
   1. [Overview & Requirements](https://github.com/bmr-cymru/stratify#1-overview--requirements)
@@ -23,7 +23,7 @@ This script allows users to easily deploy systems with [Stratis][4] as the root
 file system.
 
 The script is tested with the current released Fedora media (currently Fedora
-38). The script may work with older releases but these are not routinely
+40). The script may work with older releases but these are not routinely
 tested. In particular releases that ship with Stratis versions prior to 2.4.0
 do not include packaged support for stratis as the root file system: it is
 necessary to use the `--git` option on these releases to build Stratis from
@@ -44,10 +44,10 @@ To create virtual machines with a Stratis root file system using `stratify.py`
 you will need:
  
 * The `stratify.py` script or the URL of the `bootstrap.sh` script
-* An `x86_64` virtual machine using BIOS or EFI firmware and running Fedora 38,
+* An `x86_64` virtual machine using BIOS or EFI firmware and running Fedora 40,
   either:
-   * A VM running the F38 Workstation Live media (recommended)
-   * A VM installed with any F38 media with additional storage for Stratis
+   * A VM running the F40 Workstation Live media (recommended)
+   * A VM installed with any F40 media with additional storage for Stratis
 * Sufficient storage available to the VM to contain the Stratis installation
 * A kickstart file to set installation options
 
@@ -73,7 +73,7 @@ Stratify repository.
 # 2.1. Configuring the live environment
 --------------------------------------
 
-* Create a new virtual machine instance using the Fedora Workstation 38 Live
+* Create a new virtual machine instance using the Fedora Workstation 40 Live
   image.
 
 * Allocate at least 10GiB of storage as a single VirtIO disk (e.g. vda) and
@@ -90,7 +90,7 @@ Stratify repository.
 The host VM's role is to provide a Fedora environment where `stratify.py` can
 run that has the ability to install necessary software packages from the Fedora
 repos with dnf and to call the command line anaconda installer program. A
-minimal install using any F38 media is acceptable - the host environment is only
+minimal install using any F40 media is acceptable - the host environment is only
 needed for the duration of the installation. This option is suitable for running
 `stratify.py` in "headless" environments using only the console or SSH to
 interact with the system.
@@ -254,7 +254,7 @@ script can be used to install dependencies and re-create the chroot layout for
 debugging purposes.
 
 As with installation this can be done from either a host system installed with
-Fedora 38, or from the Fedora 38 Live Media.
+Fedora 40, or from the Fedora 40 Live Media.
 
 To rescue a system, start the system and download `stratify.py` and then as
 root run run:
@@ -279,9 +279,9 @@ To clean up chroot mounts left by a failed installation use `--cleanup`:
 ------------------------
 
 ```
-usage: stratify.py [-h] [-d TARGET] [-b] [-c] [-e] [-f FS_NAME] [-g] [-k KICKSTART] [-m] [-n] [-p POOL_NAME] [-r] [--repo REPO] [-s SYS_ROOT] [-w]
+usage: stratify.py [-h] [-d TARGET] [-b] [-c] [-e] [--encrypt] [-f FS_NAME] [-g] [-k KICKSTART] [-n] [-p POOL_NAME] [-r] [--repo REPO] [-s SYS_ROOT] [-w]
 
-Fedora 38 Stratis Root Install Script
+Fedora Stratis Root Install Script
 
 options:
   -h, --help            show this help message and exit
@@ -289,13 +289,13 @@ options:
                         Specify the device to use
   -b, --bios            Assume thesystem is using BIOS firmware
   -c, --cleanup         Clean up and unmount a rescue chroot
-  -e, --efi             Assue the system is using EFI firmware
+  -e, --efi             Assume the system is using EFI firmware
+  --encrypt             Encrypt the Stratis pool with a passphrase
   -f FS_NAME, --fs-name FS_NAME
                         Set the file system name
   -g, --git             Perform a build from git master branch instead of packages
   -k KICKSTART, --kickstart KICKSTART
                         Path to a local kickstart file
-  -m, --mbr             Use MBR disk labels
   -n, --nopartition     Do not partition disks or create Stratis fs
   -p POOL_NAME, --pool-name POOL_NAME
                         Set the pool name
