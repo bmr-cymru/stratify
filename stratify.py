@@ -307,16 +307,14 @@ def wipe_device(name):
         _log_error("Failed to wipe disk labels from '%s'" % name)
 
 
-def mk_parttable(name, mbr=False):
-    """Create a partition table on device ``name``. A GPT partition table is
-    created unless the ``mbr`` argument is ``True``.
+def mk_parttable(name):
+    """Create a GPT partition table on device ``name``.
     """
-    part_cmd = ["fdisk", "/dev/%s" % name]
-    part_input = ("%s\nw\n" % 'o' if mbr else 'g').encode('utf8')
+    part_cmd = ["fdisk", "-n", "-w", "always", "-W", "always", "/dev/%s" % name]
+    part_input = ("g\nw\n").encode('utf8')
     part_run = run(part_cmd, input=part_input)
     if part_run.returncode != 0:
-        _log_error("Could not create %s disk label on '%s'" %
-                   ("GPT" if gpt else "MBR", name))
+        _log_error("Could not create GPT disk label on '%s'", name)
         fail(1)
 
 
@@ -520,11 +518,11 @@ def wipe_partitions(target):
     wipe_device(target)
 
 
-def create_partitions(target, mbr=False, efi=False):
+def create_partitions(target, efi=False):
     """Create a default partition layout on ``target``.
     """
     _log_info("Creating partition table on %s" % target)
-    mk_parttable(target, mbr=mbr)
+    mk_parttable(target)
 
     part_sizes = [EFI_PART_SIZE] if efi else []
     part_sizes.extend([BOOT_PART_SIZE, 0])
@@ -873,8 +871,6 @@ def main(argv):
                         "build from git master branch instead of packages")
     parser.add_argument("-k", "--kickstart", type=str, help="Path to a local "
                         "kickstart file")
-    parser.add_argument("-m", "--mbr", action="store_true", help="Use MBR "
-                        "disk labels")
     parser.add_argument("-n", "--nopartition", action="store_true",
                         help="Do not partition disks or create Stratis fs")
     parser.add_argument("-p", "--pool-name", type=str, help="Set the pool "
@@ -924,10 +920,6 @@ def main(argv):
 
     if args.kickstart and not isabs(args.kickstart):
         _log_error("--kickstart argument must be an absolute path")
-        fail(1)
-
-    if args.mbr and args.efi:
-        _log_error("Cannot use MBR partitions with --efi")
         fail(1)
 
     if args.bios and args.efi:
