@@ -879,7 +879,7 @@ def get_fedora_version():
 
 
 def main(argv):
-    parser = ArgumentParser(prog=basename(argv[0]), description="Fedora 38 "
+    parser = ArgumentParser(prog=basename(argv[0]), description="Fedora "
                             "Stratis Root Install Script")
     parser.add_argument("-d", "--target", type=str, help="Specify the device "
                         "to use", default="vda")
