@@ -33,6 +33,9 @@ etc_fstab = "etc/fstab"
 # Default size of the /boot/efi partition
 EFI_PART_SIZE = 600
 
+# default size of the BIOS boot partition
+BIOS_BOOT_SIZE = 1
+
 # Default size of the /boot partition
 BOOT_PART_SIZE = 1000
 
@@ -223,6 +226,12 @@ def get_efi_device(name, parts):
     return _next_device(name, parts)
 
 
+def get_bios_boot_device(name, parts):
+    """Allocate a partition name to use for the BIOS boot partition.
+    """
+    return _next_device(name, parts)
+
+
 def get_boot_device(name, parts):
     """Allocate a partition name to use for the /boot file system.
     """
@@ -326,13 +335,17 @@ def mk_partitions(name, sizes):
     the corresponding partition should occupy all remaining space (no
     further entries will be processed).
     """
-    part_cmd = ["fdisk", "/dev/%s" % name]
+    part_cmd = ["fdisk", "-w", "always", "-W", "always", "/dev/%s" % name]
     if len(sizes) > 4:
         _log_warn("mk_partitions() supports at most 4 partitions per disk.")
         sizes = sizes[0:3]
-    for size in sizes:
+    for idx, size in enumerate(sizes):
         psize = ("+%dm" % size) if size > 0 else ""
-        part_input = ("n\np\n\n\n%s\nw\n" % psize).encode('utf8')
+        pidx = "%d" % (idx + 1)
+        if size == BIOS_BOOT_SIZE:
+            part_input = ("n\n%s\n\n%s\nt\n4\nw\n" % (pidx, psize)).encode('utf8')
+        else:
+            part_input = ("n\n%s\n\n%s\nw\n" % (pidx, psize)).encode('utf8')
         part_run = run(part_cmd, input=part_input)
         if part_run.returncode != 0:
             _log_error("Failed to create partition on '%s' (size=%s)" %
@@ -524,7 +537,11 @@ def create_partitions(target, efi=False):
     _log_info("Creating partition table on %s" % target)
     mk_parttable(target)
 
-    part_sizes = [EFI_PART_SIZE] if efi else []
+    if efi:
+        part_sizes = [EFI_PART_SIZE]
+    else:
+        part_sizes = [BIOS_BOOT_SIZE]
+
     part_sizes.extend([BOOT_PART_SIZE, 0])
     _log_info("Partitioning target device %s %s" % (target, part_sizes))
     mk_partitions(target, part_sizes)
@@ -972,6 +989,9 @@ def main(argv):
     if efi:
         efi_dev = get_efi_device(target, parts)
         _log_info("Using %s as EFI device" % efi_dev)
+    else:
+        bios_boot_dev = get_bios_boot_device(target, parts)
+        _log_info("Using %s as BIOS boot device" % bios_boot_dev)
 
     boot_dev = get_boot_device(target, parts)
     _log_info("Using %s as boot device" % boot_dev)
