@@ -37,7 +37,7 @@ EFI_PART_SIZE = 600
 BOOT_PART_SIZE = 1000
 
 # Regular expression to match UUID
-UUID_REGEX = "\S{8}-\S{4}-\S{4}-\S{4}-\S{12}"
+UUID_REGEX = r"\S{8}-\S{4}-\S{4}-\S{4}-\S{12}"
 
 # Packages needed in the live host
 host_package_deps = [
