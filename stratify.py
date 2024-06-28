@@ -824,6 +824,15 @@ def create_boot_entry(root, root_dev, title=None):
     boom_run = runat(boom_cmd, root, "/")
 
 
+def configure_etc_kernel_cmdline(root, root_dev, pool_uuid):
+    """Configure /etc/kernel/cmdline to boot from Stratis root.
+    """
+    with open(join(root, "etc/kernel/cmdline"), "w", encoding="utf8") as file:
+        file.write(
+            "root=%s ro stratis.rootfs.pool_uuid=%s\n" % (root_dev, pool_uuid)
+        )
+
+
 def restorecon(root, path, recursive=False):
     """Call the ``restorecon`` command to restore SELinux contexts to
     ``path``. If ``root`` is not ``None`` the command is executed using
@@ -1080,8 +1089,13 @@ def main(argv):
               stratis_pool_uuid)
     configure_boom(root, stratis_pool_uuid)
 
+    root_dev = "/dev/stratis/%s/%s" % (pool, fs)
+
     _log_info("Creating stratis root fs boot entry")
-    create_boot_entry(root, "/dev/stratis/%s/%s" % (pool, fs), title=None)
+    create_boot_entry(root, root_dev, title=None)
+
+    _log_info("Configuring /etc/kernel/cmdline")
+    configure_etc_kernel_cmdline(root, root_dev, stratis_pool_uuid)
 
     _log_info("Restoring SELinux contexts...")
     restorecon(root, "/etc", recursive=True)
