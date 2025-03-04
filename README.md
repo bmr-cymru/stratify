@@ -196,7 +196,8 @@ the host system, or `--git-install` to use a git build only for the
 installation root. Note that if using `--git-build` or `--git` additional space
 will be required on the host file system. If using Live mode the tmpfs backing
 the root file system will be automatically resized to a default of 6GiB unless
-either `--no-bigify-root` or `--bigify-root=SIZE` is given.
+either `--no-bigify-root` or `--bigify-root=SIZE` is given. Additionally the VM
+used to run the Live system should have at least 8GiB memory allocated.
 
 Once the build is complete the script configures grub2 and creates a boot entry
 for the Stratis system.
