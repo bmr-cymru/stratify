@@ -888,6 +888,13 @@ def get_fedora_version():
                 return line.split("=")[1]
 
 
+def disable_selinux():
+    """Disable SELinux to avoid conflict with installation root
+    """
+    setenforce_0_cmd = ["setenforce", "0"]
+    run(setenforce_0_cmd, capture_output=False)
+
+
 def main(argv):
     parser = ArgumentParser(prog=basename(argv[0]), description="Fedora "
                             "Stratis Root Install Script")
@@ -942,6 +949,8 @@ def main(argv):
     _log.addHandler(console_handler)
 
     _log_info("stratify.py %s - %s" % (_version, _date))
+    _log_info("Disabling SELinux to avoid conflict with install root")
+    disable_selinux()
 
     if args.rescue or args.cleanup:
         args.nopartition = True
