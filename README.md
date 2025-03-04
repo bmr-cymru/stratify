@@ -190,7 +190,10 @@ Once the system has been installed the script will install packages required
 for stratis root file system support from the distribution repositories.
 
 If the `--git` option is given then the script will install build dependencies,
-clone the stratis git repositories and initiate a build.
+clone the stratis git repositories and initiate a build for both the host
+system and the installation root. Use `--git-build` to only use a git build on
+the host system, or `--git-install` to use a git build only for the
+installation root.
 
 Once the build is complete the script configures grub2 and creates a boot entry
 for the Stratis system.
@@ -279,29 +282,30 @@ To clean up chroot mounts left by a failed installation use `--cleanup`:
 ------------------------
 
 ```
-usage: stratify.py [-h] [-d TARGET] [-b] [-c] [-e] [--encrypt] [-f FS_NAME] [-g] [-k KICKSTART] [-n] [-p POOL_NAME] [-r] [--repo REPO] [-s SYS_ROOT] [-w]
+usage: stratify.py [-h] [-d TARGET] [-b] [-c] [-e] [--encrypt] [-f FS_NAME] [-g] [-B] [-I] [-k KICKSTART] [-n] [-p POOL_NAME] [-r] [--repo REPO] [-s SYS_ROOT] [-w]
 
 Fedora Stratis Root Install Script
 
 options:
   -h, --help            show this help message and exit
-  -d TARGET, --target TARGET
-                        Specify the device to use
+  -d, --target TARGET   Specify the device to use
   -b, --bios            Assume thesystem is using BIOS firmware
   -c, --cleanup         Clean up and unmount a rescue chroot
   -e, --efi             Assume the system is using EFI firmware
   --encrypt             Encrypt the Stratis pool with a passphrase
-  -f FS_NAME, --fs-name FS_NAME
+  -f, --fs-name FS_NAME
                         Set the file system name
   -g, --git             Perform a build from git master branch instead of packages
-  -k KICKSTART, --kickstart KICKSTART
+  -B, --git-build       Perform a build from git master branch on the host before creating pools
+  -I, --git-install     Perform a build from git master branch on the target system
+  -k, --kickstart KICKSTART
                         Path to a local kickstart file
   -n, --nopartition     Do not partition disks or create Stratis fs
-  -p POOL_NAME, --pool-name POOL_NAME
+  -p, --pool-name POOL_NAME
                         Set the pool name
   -r, --rescue          Rescue a Stratis root installation.
   --repo REPO           Set the repository URL to use for the installation
-  -s SYS_ROOT, --sys-root SYS_ROOT
+  -s, --sys-root SYS_ROOT
                         Set the path to the system root directory
   -w, --wipe            Wipe all devices before initialising
 ```
@@ -331,12 +335,10 @@ Stratis pool when carrying out repeated installations, see comments in
 
 # 10. References & Links
 
-* [Stratis project][4]
-* [stratify.py script][3]
-* [bootstrap script][2]
+* [Stratis project][3]
+* [stratify.py script][2]
 * [example kickstart][1]
 
 [1]: https://raw.githubusercontent.com/bmr-cymru/stratify/main/ks.cfg
-[2]: https://raw.githubusercontent.com/bmr-cymru/stratify/main/bootstrap.sh
-[3]: https://raw.githubusercontent.com/bmr-cymru/stratify/main/stratify.py
-[4]: https://stratis-storage.github.io/
+[2]: https://raw.githubusercontent.com/bmr-cymru/stratify/main/stratify.py
+[3]: https://stratis-storage.github.io/

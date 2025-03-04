@@ -46,9 +46,12 @@ UUID_REGEX = r"\S{8}-\S{4}-\S{4}-\S{4}-\S{12}"
 host_package_deps = [
     "git",
     "anaconda",
+    "vim-enhanced"
+]
+
+host_package_deps_stratis = [
     "stratisd",
     "stratis-cli",
-    "vim-enhanced"
 ]
 
 # Packages needed to build from git
@@ -130,12 +133,15 @@ git_deps = [
 ]
 
 package_deps = [
-    "stratisd",
-    "stratisd-dracut",
-    "stratis-cli",
     "cryptsetup-libs",
     "clevis-luks",
     "keyutils"
+]
+
+package_deps_stratis = [
+    "stratisd",
+    "stratisd-dracut",
+    "stratis-cli",
 ]
 
 chroot_bind_mounts = [
@@ -616,12 +622,15 @@ def git_clone(into, url, branch):
     path ``into``.
     """
     git_cmd = ["git", "clone", "-b", branch, url]
+    git_dir = url.rsplit('/')[-1]
+    if exists(join(into, git_dir)):
+        return git_dir
     git_run = run(git_cmd, cwd=into)
     if git_run.returncode != 0:
         _log_error("Failed to clone git repository %s" % url)
         fail(1)
     # return the repository directory name
-    return url.rsplit('/')[-1]
+    return git_dir
 
 
 def runat(cmd, root_dir, cwd="/", shell=False, capture_output=False):
@@ -641,8 +650,9 @@ def install_from_git(root):
     """
     git_basedir = join(root, "root", "git")
     git_chrootdir = join("/", "root", "git")
-    _log_info("Creating git directory %s" % git_basedir)
-    mkdir(git_basedir)
+    if not exists(git_basedir):
+        _log_info("Creating git directory %s" % git_basedir)
+        mkdir(git_basedir)
     for git_dep in git_deps:
         _log_info("Cloning git repository %s into %s" %
                   (git_dep[0], git_basedir))
@@ -895,6 +905,12 @@ def main(argv):
                         "system name", default=fs_name)
     parser.add_argument("-g", "--git", action="store_true", help="Perform a "
                         "build from git master branch instead of packages")
+    parser.add_argument("-B", "--git-build", action="store_true",
+                        help="Perform a build from git master branch on the"
+                        " host before creating pools")
+    parser.add_argument("-I", "--git-install", action="store_true",
+                        help="Perform a build from git master branch on the"
+                        " target system")
     parser.add_argument("-k", "--kickstart", type=str, help="Path to a local "
                         "kickstart file")
     parser.add_argument("-n", "--nopartition", action="store_true",
@@ -910,6 +926,10 @@ def main(argv):
     parser.add_argument("-w", "--wipe", action="store_true", help="Wipe all "
                         "devices before initialising")
     args = parser.parse_args(argv[1:])
+
+    if args.git:
+        args.git_build = True
+        args.git_install = True
 
     logging.basicConfig(filename="stratify.log", level=logging.DEBUG,
                         filemode="w", format='%(asctime)s %(message)s')
@@ -952,8 +972,16 @@ def main(argv):
         _log_error("Cannot use --bios with --efi")
         fail(1)
 
+    host_packages = host_package_deps
+    if not args.git_build:
+        host_packages += host_package_deps_stratis
+
     # Install dependencies in the live host
-    install_deps(host_package_deps, "host")
+    install_deps(host_packages, "host")
+
+    if args.git_build:
+        install_deps(build_deps, "build")
+        install_from_git("/")
 
     if not check_target(args.target):
         _log_error("No target device given!")
