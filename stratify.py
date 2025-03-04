@@ -1030,13 +1030,13 @@ def main(argv):
         _log_error("No target device given!")
         fail(1)
 
-    # Stop the Stratis daemon if it is running so that we can wipe any
-    # stale data from the target device.
-    stop_stratisd()
-
     if args.wipe:
         # Remove pre-existing stratis pools
         destroy_pools()
+
+    # Stop the Stratis daemon if it is running so that we can wipe any
+    # stale data from the target device.
+    stop_stratisd()
 
     target = args.target
     pool = args.pool_name
