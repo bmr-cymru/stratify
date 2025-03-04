@@ -129,7 +129,7 @@ git_deps = [
     ("https://github.com/stratis-storage/stratisd",
      "master", ["make build-all", "make install"]),
     ("https://github.com/stratis-storage/stratis-cli",
-     "master", ["python3 setup.py install"])
+     "master", ["pip install -v ."])
 ]
 
 package_deps = [
