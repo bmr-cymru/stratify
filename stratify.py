@@ -23,8 +23,8 @@ import logging
 import shutil
 import re
 
-_version = "1.1"
-_date = "2024-06-28"
+_version = "1.2"
+_date = "2025-03-04"
 
 _debug = False
 
