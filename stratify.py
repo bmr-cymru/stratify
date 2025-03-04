@@ -7,7 +7,17 @@ from subprocess import run
 from sys import exit, argv
 from argparse import ArgumentParser
 from os.path import basename, join, exists, isabs
-from os import mkdir, chmod, chroot, chdir, listdir, unlink, symlink, fdatasync
+from os import (
+    environ,
+    mkdir,
+    chmod,
+    chroot,
+    chdir,
+    listdir,
+    unlink,
+    symlink,
+    fdatasync
+)
 import traceback
 import logging
 import re
@@ -127,9 +137,9 @@ boot_deps_efi = [
 # (CLONE_URL, BRANCH, INSTALL_CMD).
 git_deps = [
     ("https://github.com/stratis-storage/stratisd",
-     "master", ["make build-all", "make install"]),
+     "master", ["make build-all", "make install"], "DESTDIR=%s"),
     ("https://github.com/stratis-storage/stratis-cli",
-     "master", ["pip install -v ."])
+     "master", ["pip install -v ."], "--root=%s")
 ]
 
 package_deps = [
@@ -643,24 +653,44 @@ def runat(cmd, root_dir, cwd="/", shell=False, capture_output=False):
                capture_output=capture_output)
 
 
+def reponame(url):
+    """Return the name of the Git repository represented by ``url``.
+    """
+    return url.rsplit('/')[-1]
+
+
 def install_from_git(root):
     """For each (GIT_URL, BRANCH, INSTALL COMMAND) tuple in ``git_deps``
     clone the repository into ``root``/git/<repository> and execute the
     install command in the chroot.
     """
-    git_basedir = join(root, "root", "git")
-    git_chrootdir = join("/", "root", "git")
+    git_basedir = join("/", "root", "git")
+
     if not exists(git_basedir):
         _log_info("Creating git directory %s" % git_basedir)
         mkdir(git_basedir)
+
     for git_dep in git_deps:
-        _log_info("Cloning git repository %s into %s" %
-                  (git_dep[0], git_basedir))
-        git_dir = git_clone(git_basedir, git_dep[0], git_dep[1])
+        git_dir = join(git_basedir, reponame(git_dep[0]))
+        if exists(git_dir):
+            _log_info("Re-using existing git repository at %s", git_dir)
+        else:
+            _log_info("Cloning git repository %s into %s" %
+                      (git_dep[0], git_basedir))
+            git_dir = git_clone(git_basedir, git_dep[0], git_dep[1])
+
         _log_info("Installing from %s (%s)" % (git_dep[1], git_dep[2]))
         for build_cmd in git_dep[2]:
             build_cmd = build_cmd.split()
-            runat(build_cmd, root, join(git_chrootdir, git_dir))
+            if root != "/":
+                if git_dep[3][0].isupper():
+                    envstr = git_dep[3] % root
+                    envvar, envval = envstr.split("=")
+                    environ[envvar] = envval
+                else:
+                    build_cmd.append(git_dep[3] % root)
+            _log_info("Running build command: %s", " ".join(build_cmd))
+            runat(build_cmd, "/", join(git_basedir, git_dir))
 
 
 def enable_service(root, unit):
