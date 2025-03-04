@@ -20,6 +20,7 @@ from os import (
 )
 import traceback
 import logging
+import shutil
 import re
 
 _version = "1.1"
@@ -944,6 +945,15 @@ def live_mode():
     return False
 
 
+def deploy_build_tree(root):
+    """Copy the build tree to the target system.
+    """
+    git_basedir = join("/", "root", "git")
+    target_dir = join(root, "root", "git")
+    _log_info("Copying build trees from %s to %s", git_basedir, target_dir)
+    shutil.copytree(git_basedir, target_dir)
+
+
 def main(argv):
     parser = ArgumentParser(prog=basename(argv[0]), description="Fedora "
                             "Stratis Root Install Script")
@@ -1159,11 +1169,12 @@ def main(argv):
         exit(0)
 
 
-    if git_build:
+    if git_install:
         install_deps(build_deps, "build", chroot=root)
         install_from_git(root)
+        deploy_build_tree(root)
     else:
-        install_deps(package_deps, "packages", chroot=root)
+        install_deps(package_deps + package_deps_stratis, "packages", chroot=root)
 
     for unit in enable_units:
         enable_service(root, unit)
