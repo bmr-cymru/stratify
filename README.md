@@ -191,9 +191,9 @@ for stratis root file system support from the distribution repositories.
 
 If the `--git` option is given then the script will install build dependencies,
 clone the stratis git repositories and initiate a build for both the host
-system and the installation root. Use `--git-build` to only use a git build on
-the host system, or `--git-install` to use a git build only for the
-installation root. Note that if using `--git-build` or `--git` additional space
+system and the installation root. Use `--git-host` to only use a git build on
+the host system, or `--git-target` to use a git build only for the target
+installation root. Note that if using `--git-host` or `--git` additional space
 will be required on the host file system. If using Live mode the tmpfs backing
 the root file system will be automatically resized to a default of 6GiB unless
 either `--no-bigify-root` or `--bigify-root=SIZE` is given. Additionally the VM
@@ -300,8 +300,8 @@ options:
   -f, --fs-name FS_NAME
                         Set the file system name
   -g, --git             Perform a build from git master branch instead of packages
-  -B, --git-build       Perform a build from git master branch on the host before creating pools
-  -I, --git-install     Perform a build from git master branch on the target system
+  -B, --git-host        Perform a build from git master branch on the host before creating pools
+  -I, --git-target      Perform a build from git master branch on the target system
   -k, --kickstart KICKSTART
                         Path to a local kickstart file
   -n, --nopartition     Do not partition disks or create Stratis fs

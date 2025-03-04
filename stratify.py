@@ -975,10 +975,10 @@ def main(argv):
                         "system name", default=fs_name)
     parser.add_argument("-g", "--git", action="store_true", help="Perform a "
                         "build from git master branch instead of packages")
-    parser.add_argument("-B", "--git-build", action="store_true",
+    parser.add_argument("-B", "--git-host", action="store_true",
                         help="Perform a build from git master branch on the"
                         " host before creating pools")
-    parser.add_argument("-I", "--git-install", action="store_true",
+    parser.add_argument("-I", "--git-target", action="store_true",
                         help="Perform a build from git master branch on the"
                         " target system")
     parser.add_argument("-k", "--kickstart", type=str, help="Path to a local "
@@ -998,8 +998,8 @@ def main(argv):
     args = parser.parse_args(argv[1:])
 
     if args.git:
-        args.git_build = True
-        args.git_install = True
+        args.git_host = True
+        args.git_target = True
 
     logging.basicConfig(filename="stratify.log", level=logging.DEBUG,
                         filemode="w", format='%(asctime)s %(message)s')
@@ -1056,13 +1056,13 @@ def main(argv):
         fail(1)
 
     host_packages = host_package_deps
-    if not args.git_build:
+    if not args.git_host:
         host_packages += host_package_deps_stratis
 
     # Install dependencies in the live host
     install_deps(host_packages, "host")
 
-    if args.git_build:
+    if args.git_host:
         install_deps(build_deps, "build")
         install_from_git("/")
 
@@ -1083,7 +1083,6 @@ def main(argv):
     fs = args.fs_name
     root = args.sys_root
     rescue = args.rescue
-    git_build = args.git
 
     if args.bios:
         efi = False
@@ -1169,7 +1168,7 @@ def main(argv):
         exit(0)
 
 
-    if git_install:
+    if args.git_target:
         install_deps(build_deps, "build", chroot=root)
         install_from_git(root)
         deploy_build_tree(root)
