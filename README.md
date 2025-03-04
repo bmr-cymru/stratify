@@ -193,7 +193,10 @@ If the `--git` option is given then the script will install build dependencies,
 clone the stratis git repositories and initiate a build for both the host
 system and the installation root. Use `--git-build` to only use a git build on
 the host system, or `--git-install` to use a git build only for the
-installation root.
+installation root. Note that if using `--git-build` or `--git` additional space
+will be required on the host file system. If using Live mode the tmpfs backing
+the root file system will be automatically resized to a default of 6GiB unless
+either `--no-bigify-root` or `--bigify-root=SIZE` is given.
 
 Once the build is complete the script configures grub2 and creates a boot entry
 for the Stratis system.

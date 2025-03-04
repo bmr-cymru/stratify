@@ -895,6 +895,25 @@ def disable_selinux():
     run(setenforce_0_cmd, capture_output=False)
 
 
+def bigify_root(size="6g"):
+    """Resize the tmpfs backing / to accomodate install/build.
+    """
+    _log_info("Resizing Live /run tmpfs to %s", size)
+    mount_cmd = ["mount", f"-oremount,size={size}", "/run"]
+    run(mount_cmd, capture_output=False)
+
+
+def live_mode():
+    """Return ``True`` if running in Live mode, or ``False`` otherwise.
+    """
+    with open("/proc/mounts", "r", encoding="utf8") as mounts:
+        for line in mounts.read().splitlines():
+            fields = line.split()
+            if fields[0] == "LiveOS_rootfs":
+                return True
+    return False
+
+
 def main(argv):
     parser = ArgumentParser(prog=basename(argv[0]), description="Fedora "
                             "Stratis Root Install Script")
@@ -902,6 +921,10 @@ def main(argv):
                         "to use", default="vda")
     parser.add_argument("-b", "--bios", action="store_true", help="Assume the"
                         "system is using BIOS firmware")
+    parser.add_argument("--bigify-root", type=str, help="Specify the size"
+                        "of the tmpfs used to back /")
+    parser.add_argument("--no-bigify-root", action="store_true", help="Do not"
+                        " attempt to resize /")
     parser.add_argument("-c", "--cleanup", action="store_true", help="Clean "
                         "up and unmount a rescue chroot")
     parser.add_argument("-e", "--efi", action="store_true", help="Assume the "
@@ -951,6 +974,17 @@ def main(argv):
     _log_info("stratify.py %s - %s" % (_version, _date))
     _log_info("Disabling SELinux to avoid conflict with install root")
     disable_selinux()
+
+    if args.no_bigify_root:
+        _log_info("Not resizing / per command-line argument")
+        live_root_size = None
+    elif args.bigify_root:
+        live_root_size = args.bigify_root
+    else:
+        live_root_size = "6g"
+
+    if live_mode() and live_root_size:
+        bigify_root(size=live_root_size)
 
     if args.rescue or args.cleanup:
         args.nopartition = True
