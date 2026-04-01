@@ -188,7 +188,7 @@ def whole_disk(name):
     """
     if name.startswith("vd") or name.startswith("sd"):
         return not name[-1].isdigit()
-    if name.startswith("mpath"):
+    if name.startswith("mpath") or name.startswith("nvme"):
         return not name[name.rindex('p') + 1].isdigit()
 
 
@@ -197,7 +197,7 @@ def filter_device(name):
     name prefixes, or ``False`` otherwise.
     """
     # Allowed device name prefixes
-    dev_filter = ["sd", "vd", "mpath"]
+    dev_filter = ["sd", "vd", "mpath", "nvme"]
     for df in dev_filter:
         if name.startswith(df):
             return True
